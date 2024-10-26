@@ -119,8 +119,6 @@
                     android:background="#1C2E3C"
                     android:scaleType="centerInside"
                     android:src="@drawable/fb_icon"
-                    app:layout_constraintStart_toEndOf="@id/facebook_button"
-                    app:layout_constraintTop_toBottomOf="@id/btn_sign_in"
                     tools:ignore="ButtonStyle,ContentDescription,HardcodedText" />
 
                 <!-- Email Button -->
@@ -131,8 +129,6 @@
                     android:background="#1C2E3C"
                     android:scaleType="centerInside"
                     android:src="@drawable/img_1"
-                    app:layout_constraintStart_toEndOf="@id/email_button"
-                    app:layout_constraintTop_toBottomOf="@id/btn_sign_in"
                     tools:ignore="ContentDescription" />
 
 
@@ -144,8 +140,6 @@
                     android:background="#1C2E3C"
                     android:scaleType="centerInside"
                     android:src="@drawable/insta"
-                    app:layout_constraintStart_toEndOf="@id/instagram_button"
-                    app:layout_constraintTop_toBottomOf="@id/btn_sign_in"
                     tools:ignore="ContentDescription" />
             </LinearLayout>
 
