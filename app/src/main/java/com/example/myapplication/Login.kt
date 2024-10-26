@@ -7,8 +7,11 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
+import org.w3c.dom.Text
 
 
 class Login : AppCompatActivity() {
@@ -20,6 +23,7 @@ class Login : AppCompatActivity() {
         val emailEditText = findViewById<EditText>(R.id.etEmail)
         val passwordEditText = findViewById<EditText>(R.id.etPassword)
         val loginButton = findViewById<Button>(R.id.btn_sign_in)
+        val regester = findViewById<TextView>(R.id.tvRegister)
         val facebookButton = findViewById<ImageButton>(R.id.facebook_button)
         val instagramButton = findViewById<ImageButton>(R.id.instagram_button)
 
@@ -40,6 +44,17 @@ class Login : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
+        }
+
+
+        regester.setOnClickListener {
+
+            val registerTextView = findViewById<TextView>(R.id.tvRegister)
+            registerTextView.text = HtmlCompat.fromHtml("<u>Register</u>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+
+
+            val intent = Intent(this, Sign_in::class.java)
+            startActivity(intent)
         }
 
         // Facebook Button Logic

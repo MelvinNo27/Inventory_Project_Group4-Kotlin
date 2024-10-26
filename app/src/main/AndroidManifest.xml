@@ -29,5 +29,10 @@
             android:exported="true">
         </activity>
 
+        <activity
+            android:name=".Sign_in"
+            />
+
+
     </application>
 </manifest>

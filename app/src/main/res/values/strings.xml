@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="register_text"><u>Register</u></string>
+    <string name="login_text"><u>Login</u></string>
 </resources>
