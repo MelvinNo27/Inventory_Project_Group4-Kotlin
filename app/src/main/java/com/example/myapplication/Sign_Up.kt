@@ -13,30 +13,30 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 
 class Sign_Up : AppCompatActivity() {
-    // Define a TAG for logging
     private val TAG = "RegisterActivity"
     private lateinit var auth: FirebaseAuth
+
+    // Declare fullNameEditText as a member variable
+    private lateinit var fullNameEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        // Initialize FirebaseAuth
         auth = FirebaseAuth.getInstance()
 
-        // UI Elements
-        val fullNameEditText = findViewById<EditText>(R.id.User_Name)
+        // Initialize fullNameEditText
+        fullNameEditText = findViewById(R.id.User_Name)
         val emailEditText = findViewById<EditText>(R.id.etSign_inEmail)
         val passwordEditText = findViewById<EditText>(R.id.etSign_inPassword)
         val confirmPasswordEditText = findViewById<EditText>(R.id.etConfirmPassword)
         val signupButton = findViewById<Button>(R.id.signUpButton)
         val login = findViewById<TextView>(R.id.tvlogin)
-        val googleButton = findViewById<ImageView>(R.id.google_button)
         val facebookButton = findViewById<ImageView>(R.id.facebook_button)
         val instagramButton = findViewById<ImageView>(R.id.instagram_button)
-
 
         signupButton.setOnClickListener {
             val fullName = fullNameEditText.text.toString()
@@ -49,11 +49,9 @@ class Sign_Up : AppCompatActivity() {
                 return@setOnClickListener
             } else if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-                findViewById<EditText>(R.id.etSign_inPassword).text.clear()
-                findViewById<EditText>(R.id.etConfirmPassword).text.clear()
                 return@setOnClickListener
             } else {
-                // All conditions met, proceed with Firebase registration
+                // Proceed with Firebase registration
                 registerUser(email, password)
             }
         }
@@ -77,10 +75,6 @@ class Sign_Up : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/accounts/login/"))
             startActivity(intent)
         }
-        googleButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Faccounts.google.com%2F&followup=https%3A%2F%2Faccounts.google.com%2F&ifkv=AcMMx-dR8A6C_Lmy1Xn0jrj6niUBdB_Y0ZPDKfN6b6QwEem4ZNZ0BmGc3UvKQteqEQNBRg4cxHmZ&passive=1209600&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S201590499%3A1730116311149282&ddm=0"))
-            startActivity(intent)
-        }
     }
 
     // Function to register the user using Firebase Auth
@@ -88,19 +82,27 @@ class Sign_Up : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Registration success, update UI with the signed-in user's information
                     val user = auth.currentUser
-                    Toast.makeText(this, "Sign-up Successful!", Toast.LENGTH_SHORT).show()
-                    updateUI(user)
+                    // Update the user's display name
+                    val fullName = fullNameEditText.text.toString()
+                    val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(fullName)
+                        .build()
+                    user?.updateProfile(profileUpdates)
+                        ?.addOnCompleteListener { profileTask ->
+                            if (profileTask.isSuccessful) {
+                                Toast.makeText(this, "Sign-up Successful!", Toast.LENGTH_SHORT).show()
+                                updateUI(user)
+                            } else {
+                                Toast.makeText(this, "Failed to set user name.", Toast.LENGTH_SHORT).show()
+                                updateUI(null)
+                            }
+                        }
                 } else {
-                    // If registration fails, log the exception and show an error message
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     val errorMessage = task.exception?.message ?: "Authentication failed."
                     Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                     updateUI(null)
-                    findViewById<EditText>(R.id.etSign_inEmail).text.clear()
-                    findViewById<EditText>(R.id.etSign_inPassword).text.clear()
-                    findViewById<EditText>(R.id.etConfirmPassword).text.clear()
                 }
             }
     }
@@ -108,16 +110,23 @@ class Sign_Up : AppCompatActivity() {
     // Function to update the UI based on registration status
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            // Navigate to HomeActivity if registration is successful
-            val intent = Intent(this, HomeActivity::class.java)
+            // Successful registration
+            val intent = Intent(this, Login::class.java)
             startActivity(intent)
             finish() // Finish the current activity to prevent going back to it
         } else {
-            // Stay on the same screen if user is null (registration failed)
+            // Registration failed
             Toast.makeText(this, "Please try again.", Toast.LENGTH_SHORT).show()
-            findViewById<EditText>(R.id.etSign_inEmail).text.clear()
-            findViewById<EditText>(R.id.etSign_inPassword).text.clear()
-            findViewById<EditText>(R.id.etConfirmPassword).text.clear()
+        }
+    }
+    override fun onStart() {
+        super.onStart()
+        // Check if the user is already signed in
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }

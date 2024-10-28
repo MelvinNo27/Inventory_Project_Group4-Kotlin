@@ -35,7 +35,6 @@ class Login : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.btnSignIn)
         val register = findViewById<TextView>(R.id.tvSignUp)
         val forgotPassword = findViewById<TextView>(R.id.tvForgotPassword)
-        val googleButton = findViewById<ImageView>(R.id.google_button) // Google button
 
         // Login Button Logic
         loginButton.setOnClickListener {
@@ -98,16 +97,5 @@ class Login : AppCompatActivity() {
 
         // Move the cursor to the end of the text
         passwordEditText.setSelection(passwordEditText.text.length)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        // Check if the user is already signed in
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
     }
 }

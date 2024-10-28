@@ -15,7 +15,7 @@
 
         <!-- Sign In Activity (Main Entry Point) -->
         <activity
-            android:name=".Login"
+            android:name=".Sign_Up"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,23 +23,15 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".HomeActivity" />
+
         <activity
-            android:name=".HomeActivity"
-            />
-        <activity
-            android:name=".Sign_Up"
+            android:name=".Login"
             android:exported="true">
         </activity>
 
         <activity android:name=".ForgotPasswordActivity"/>
 
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenDensity|uiMode"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <uses-permission android:name="android.permission.INTERNET"/>
 
 
 
