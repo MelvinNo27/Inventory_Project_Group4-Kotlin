@@ -26,14 +26,17 @@ class Sign_Up : AppCompatActivity() {
         // Initialize FirebaseAuth
         auth = FirebaseAuth.getInstance()
 
-        val fullNameEditText = findViewById<EditText>(R.id.FullName)
+        // UI Elements
+        val fullNameEditText = findViewById<EditText>(R.id.User_Name)
         val emailEditText = findViewById<EditText>(R.id.etSign_inEmail)
         val passwordEditText = findViewById<EditText>(R.id.etSign_inPassword)
         val confirmPasswordEditText = findViewById<EditText>(R.id.etConfirmPassword)
         val signupButton = findViewById<Button>(R.id.signUpButton)
         val login = findViewById<TextView>(R.id.tvlogin)
+        val googleButton = findViewById<ImageView>(R.id.google_button)
         val facebookButton = findViewById<ImageView>(R.id.facebook_button)
         val instagramButton = findViewById<ImageView>(R.id.instagram_button)
+
 
         signupButton.setOnClickListener {
             val fullName = fullNameEditText.text.toString()
@@ -74,6 +77,10 @@ class Sign_Up : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/accounts/login/"))
             startActivity(intent)
         }
+        googleButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Faccounts.google.com%2F&followup=https%3A%2F%2Faccounts.google.com%2F&ifkv=AcMMx-dR8A6C_Lmy1Xn0jrj6niUBdB_Y0ZPDKfN6b6QwEem4ZNZ0BmGc3UvKQteqEQNBRg4cxHmZ&passive=1209600&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S201590499%3A1730116311149282&ddm=0"))
+            startActivity(intent)
+        }
     }
 
     // Function to register the user using Firebase Auth
@@ -102,7 +109,7 @@ class Sign_Up : AppCompatActivity() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             // Navigate to HomeActivity if registration is successful
-            val intent = Intent(this, Login::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish() // Finish the current activity to prevent going back to it
         } else {

@@ -45,7 +45,10 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.auth)
     implementation(platform(libs.firebase.bom))
+    implementation (libs.play.services.auth)
     testImplementation(libs.junit)
+    implementation (libs.facebook.android.sdk)
+    implementation (libs.play.services.auth)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

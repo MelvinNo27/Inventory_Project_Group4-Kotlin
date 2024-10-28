@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
-    <string name="register_text"><u>Register</u></string>
     <string name="login_text"><u>Login</u></string>
+    <string name="Sign_Up">Sign Up</string>
+    <string name="Client_ID">928488326880-9ur6lkdcsmha1hl2fmuootd1fpa7m215.apps.googleusercontent.com</string>
+    <string name="forgot_password_text"><u>Forgot Password?</u></string>
 </resources>
