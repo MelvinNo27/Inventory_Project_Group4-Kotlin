@@ -23,15 +23,15 @@
             </intent-filter>
         </activity>
 
-        <!-- Home Activity (Added for post-login navigation) -->
         <activity
             android:name=".HomeActivity"
+            />
+        <activity
+            android:name=".Sign_Up"
             android:exported="true">
         </activity>
 
-        <activity
-            android:name=".Sign_in"
-            />
+
 
 
     </application>

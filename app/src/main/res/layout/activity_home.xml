@@ -1,47 +1,113 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+    android:padding="16dp"
     tools:context=".HomeActivity">
 
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
+    <!-- Top Bar with Menu Icon and Title -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="100dp"
-        android:layout_marginTop="100dp"
-        android:alpha="0.9"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Hamburger Menu Icon -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/baseline_menu_24"
+        android:contentDescription="Menu" />
+
+        <!-- Title Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Dashboard"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Greeting Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Hi! Mr. Ebrahim"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Have a nice day"
+        android:textColor="#A6A6A6"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Monday, October 27"
+        android:textColor="#A6A6A6"
+        android:textSize="14sp" />
+
+    <!-- Grid of Dashboard Items -->
+
+    <!-- Floating Add Button -->
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:columnCount="2"
+        android:rowCount="2">
+
+        <!-- Rooms Card -->
+        <ImageView
+            android:layout_width="149dp"
+            android:layout_height="157dp"
+            android:contentDescription="Rooms Icon"
+            android:src="@drawable/rooms" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="454dp"
-            android:background="@drawable/img"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="24dp">
+        <!-- Units Card -->
+        <ImageView
+            android:layout_width="149dp"
+            android:layout_height="157dp"
+            android:contentDescription="Units Icon"
+            android:src="@drawable/Units" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes!!!!!!!"
-                android:layout_marginTop="350dp"
-                android:textColor="#0F0F0F"
-                android:textSize="30sp"
-                tools:ignore="HardcodedText,MissingConstraints"
-                tools:layout_editor_absoluteX="2dp"
-                tools:layout_editor_absoluteY="0dp" />
-        </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Low Stock Alerts Card -->
+        <ImageView
+            android:layout_width="149dp"
+            android:layout_height="157dp"
+            android:contentDescription="Low Stock Alerts Icon"
+            android:src="@drawable/Alerts" />
+
+
+        <!-- Critical Issues Card -->
+        <ImageView
+            android:layout_width="149dp"
+            android:layout_height="157dp"
+            android:contentDescription="Critical Issues Icon"
+            android:src="@drawable/Issue" />
+    </GridLayout>
+
+    <ImageView
+        android:id="@+id/floatingAddButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="end|bottom"
+        android:layout_marginTop="16dp"
+        android:elevation="4dp"
+        android:padding="14dp"
+        android:src="@drawable/plus" />
+</LinearLayout>
