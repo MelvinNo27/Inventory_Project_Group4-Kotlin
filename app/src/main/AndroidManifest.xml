@@ -15,7 +15,7 @@
 
         <!-- Sign In Activity (Main Entry Point) -->
         <activity
-            android:name=".Sign_Up"
+            android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,16 +23,18 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".Userdashboard" />
 
         <activity
-            android:name=".Login"
+            android:name=".Sign_Up"
             android:exported="true">
         </activity>
 
         <activity android:name=".ForgotPasswordActivity"/>
 
-
+        <activity
+            android:name=".AdminDashboard"
+            android:exported="true" />
 
 
 

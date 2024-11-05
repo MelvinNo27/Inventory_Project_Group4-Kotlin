@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HomeActivity : AppCompatActivity() {
+class Userdashboard : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var dateTextView: TextView
     private lateinit var timeTextView: TextView
@@ -26,7 +26,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_user)
 
         // Initialize Firebase Auth
         val auth = FirebaseAuth.getInstance()

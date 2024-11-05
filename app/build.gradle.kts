@@ -48,7 +48,11 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation (libs.play.services.auth)
     testImplementation(libs.junit)
+    implementation (libs.firebase.auth.v2108)
+    implementation (libs.play.services.auth.v2050)
     implementation (libs.play.services.auth)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation (libs.firebase.auth.v2106)
+    implementation (libs.play.services.auth.v2010)
 }

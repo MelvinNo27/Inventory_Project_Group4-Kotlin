@@ -41,26 +41,32 @@ class Login : AppCompatActivity() {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
-            if (TextUtils.isEmpty(email)) {
+            if (email == "Admin" && password == "Admin") {
+                // Redirect to Admin Dashboard
+                startActivity(Intent(this, AdminDashboard::class.java))
+            } else if (TextUtils.isEmpty(email)) {
                 Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            }
-            if (TextUtils.isEmpty(password)) {
+            } else if (TextUtils.isEmpty(password)) {
                 Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            }
-
-            // Sign in with Firebase Auth
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(applicationContext, "Login Successful", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(applicationContext, HomeActivity::class.java))
-                        finish()
-                    } else {
-                        Toast.makeText(this@Login, "Email doesn't exist, please try again or sign up.", Toast.LENGTH_SHORT).show()
+            } else {
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Check if email exists in Firebase
+                            val currentUser = auth.currentUser
+                            if (currentUser != null) {
+                                Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
+                                startActivity(Intent(this, Userdashboard::class.java))
+                                finish()
+                            }
+                        } else {
+                            // Login failed
+                            Toast.makeText(this, "Email doesn't exist or incorrect password. Please try again or sign up.", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
+            }
         }
 
         // Register TextView Click Listener
