@@ -12,28 +12,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 
 class Sign_Up : AppCompatActivity() {
     private val TAG = "RegisterActivity"
     private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
-    private val RC_SIGN_IN = 9001
 
     // Declare fullNameEditText as a member variable
     private lateinit var fullNameEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+        setContentView(R.layout.activity_sign_up)
 
         auth = FirebaseAuth.getInstance()
 
@@ -44,21 +37,8 @@ class Sign_Up : AppCompatActivity() {
         val confirmPasswordEditText = findViewById<EditText>(R.id.etConfirmPassword)
         val signupButton = findViewById<Button>(R.id.signUpButton)
         val login = findViewById<TextView>(R.id.tvlogin)
-        val googleButton = findViewById<ImageView>(R.id.google_button)
         val facebookButton = findViewById<ImageView>(R.id.facebook_button)
         val instagramButton = findViewById<ImageView>(R.id.instagram_button)
-
-        // Configure Google Sign-In with account selection prompt each time
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.Client_ID))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        googleButton.setOnClickListener {
-            signInWithGoogle()
-        }
 
         signupButton.setOnClickListener {
             val fullName = fullNameEditText.text.toString()
@@ -95,49 +75,7 @@ class Sign_Up : AppCompatActivity() {
         }
     }
 
-    // Function to handle Google Sign-Up
-    private fun signInWithGoogle() {
-        googleSignInClient.signOut() // Ensures the Google account selection prompt is shown every time
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
-    // Function to handle result from Google Sign-In Intent
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                Log.w(TAG, "Google sign in failed", e)
-                Toast.makeText(this, "Google sign-in failed.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    // Function to authenticate with Firebase using Google account
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    if (user?.displayName.isNullOrEmpty()) {
-                        promptForFullName(user)
-                    } else {
-                        updateUI(user)
-                    }
-                } else {
-                    handleAuthError(task.exception)
-                }
-            }
-    }
-
-    // Handle potential errors during Google sign-in, such as existing accounts
+    // Function to handle potential errors during authentication, such as existing accounts
     private fun handleAuthError(exception: Exception?) {
         if (exception is FirebaseAuthUserCollisionException) {
             // Inform the user and redirect to login
@@ -219,7 +157,6 @@ class Sign_Up : AppCompatActivity() {
                 }
             }
     }
-
 
     // Function to update the UI based on registration status
     private fun updateUI(user: FirebaseUser?) {

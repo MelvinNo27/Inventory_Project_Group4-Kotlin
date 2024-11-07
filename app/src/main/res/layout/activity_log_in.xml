@@ -20,7 +20,6 @@
         <ImageView
             android:layout_width="120dp"
             android:layout_height="123dp"
-            android:padding="10dp"
             android:layout_marginTop="-50dp"
             android:layout_marginBottom="35dp"
             android:src="@drawable/logo" />
@@ -33,7 +32,7 @@
             android:layout_marginBottom="10dp"
             android:text="Log In to your Account"
             android:textColor="@color/white"
-            android:textSize="17sp" />
+            android:textSize="25sp" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -47,7 +46,7 @@
             android:inputType="textEmailAddress"
             android:textColor="@color/white"
             android:padding="14dp"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textColorHint="@color/white" />
 
         <!-- Confirm Password Field -->
@@ -168,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:text="Don't have an Account? "
                 android:textColor="@color/white"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tvSignUp"
@@ -176,9 +175,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Sign_Up"
                 android:textColor="@color/white"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 android:background="?attr/selectableItemBackground"
-                android:padding="4dp" />
+                 />
 
         </LinearLayout>
 
