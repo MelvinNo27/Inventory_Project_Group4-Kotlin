@@ -98,12 +98,6 @@
                 android:contentDescription="Critical Issues Icon"
                 android:src="@drawable/issue_icon" />
 
-            <ImageView
-                android:layout_width="149dp"
-                android:layout_height="157dp"
-                android:layout_marginStart="-20dp"
-                android:padding="45dp"
-                android:src="@drawable/plus" />
         </GridLayout>
     </LinearLayout>
 

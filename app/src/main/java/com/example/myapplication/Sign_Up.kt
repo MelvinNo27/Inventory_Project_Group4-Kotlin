@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -18,11 +19,12 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 
 class Sign_Up : AppCompatActivity() {
-    private val TAG = "RegisterActivity"
+
     private lateinit var auth: FirebaseAuth
 
     // Declare fullNameEditText as a member variable
     private lateinit var fullNameEditText: EditText
+    private var isPasswordVisible = false // Variable to toggle password visibility
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,7 @@ class Sign_Up : AppCompatActivity() {
 
         // Initialize fullNameEditText
         fullNameEditText = findViewById(R.id.User_Name)
+        val ivShowPassword = findViewById<ImageView>(R.id.ivShowPassword)
         val emailEditText = findViewById<EditText>(R.id.etSign_inEmail)
         val passwordEditText = findViewById<EditText>(R.id.etSign_inPassword)
         val confirmPasswordEditText = findViewById<EditText>(R.id.etConfirmPassword)
@@ -73,6 +76,9 @@ class Sign_Up : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/accounts/login/"))
             startActivity(intent)
         }
+        ivShowPassword.setOnClickListener {
+            togglePasswordVisibility(passwordEditText, ivShowPassword)
+        }
     }
 
     // Function to handle potential errors during authentication, such as existing accounts
@@ -82,7 +88,6 @@ class Sign_Up : AppCompatActivity() {
             Toast.makeText(this, "Account already exists. Redirecting to login.", Toast.LENGTH_LONG).show()
             redirectToLogin()
         } else {
-            Log.w(TAG, "signInWithCredential:failure", exception)
             Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
         }
     }
@@ -150,7 +155,6 @@ class Sign_Up : AppCompatActivity() {
                             }
                         }
                 } else {
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     val errorMessage = task.exception?.message ?: "Authentication failed."
                     Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                     updateUI(null)
@@ -168,6 +172,25 @@ class Sign_Up : AppCompatActivity() {
             Toast.makeText(this, "Please try again.", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun togglePasswordVisibility(passwordEditText: EditText, ivShowPassword: ImageView) {
+        if (isPasswordVisible) {
+            // Hide Password
+            passwordEditText.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            ivShowPassword.setImageResource(R.drawable.offpass) // Use closed-eye icon
+            isPasswordVisible = false
+        } else {
+            // Show Password
+            passwordEditText.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            ivShowPassword.setImageResource(R.drawable.baseline_remove_red_eye_24) // Use open-eye icon
+            isPasswordVisible = true
+        }
+        // Move the cursor to the end of the text
+        passwordEditText.setSelection(passwordEditText.text.length)
+    }
+
 
     override fun onStart() {
         super.onStart()
