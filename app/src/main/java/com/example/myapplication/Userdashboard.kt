@@ -3,18 +3,17 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import com.example.myapplication.databinding.ActivityUserBinding
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
 class Userdashboard : AppCompatActivity() {
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var dateTextView: TextView
-    private lateinit var timeTextView: TextView
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivityUserBinding
     private val handler = android.os.Handler()
 
     private val updateDateTimeRunnable: Runnable = object : Runnable {
@@ -26,33 +25,23 @@ class Userdashboard : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user)
+
+        // Initialize ViewBinding
+        binding = ActivityUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Initialize Firebase Auth
-        val auth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
-        // Find the logout button
-        val logoutButton = findViewById<TextView>(R.id.floatingAddButton)
-
-        // Initialize the DrawerLayout
-        drawerLayout = findViewById(R.id.drawer_layout)
-
-        // Initialize TextViews for date and time
-        dateTextView = findViewById(R.id.dateTextView)
-        timeTextView = findViewById(R.id.timeTextView)
-
-        // Get the user's name
+        // Get the user's name and display in the welcomeTextView
         val user = auth.currentUser
-        val welcomeTextView = findViewById<TextView>(R.id.welcomeTextView)
-
-        // Display the user's name
         if (user != null) {
             val displayName = user.displayName
-            welcomeTextView.text = "Hello Sir, $displayName!"
+            binding.welcomeTextView.text = "Hello Sir, $displayName!"
         }
 
-        // Set onClickListener for the logout button
-        logoutButton.setOnClickListener {
+        // Set onClickListener for the logout button (floatingAddButton in XML)
+        binding.floatingAddButton.setOnClickListener {
             auth.signOut()
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
@@ -68,9 +57,9 @@ class Userdashboard : AppCompatActivity() {
         val currentDate = SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(Date())
         val currentTime = SimpleDateFormat("hh:mm:ss a", Locale.getDefault()).format(Date())
 
-        // Update the TextViews
-        dateTextView.text = currentDate
-        timeTextView.text = currentTime
+        // Update the TextViews with current date and time
+        binding.dateTextView.text = currentDate
+        binding.timeTextView.text = currentTime
     }
 
     override fun onDestroy() {
@@ -80,6 +69,6 @@ class Userdashboard : AppCompatActivity() {
 
     // Method to open the navigation drawer
     fun openDrawer(view: View) {
-        drawerLayout.openDrawer(GravityCompat.START)
+        binding.drawerLayout.openDrawer(GravityCompat.START)
     }
 }

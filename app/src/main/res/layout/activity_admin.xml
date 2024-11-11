@@ -1,10 +1,8 @@
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Userdashboard">
+    android:layout_height="match_parent">
 
     <!-- Main Content -->
 
@@ -71,7 +69,7 @@
 
             <!-- Rooms Card -->
             <ImageView
-                android:id="@+id/btnUsers"
+                android:id="@+id/Users"
                 android:layout_width="149dp"
                 android:layout_height="157dp"
                 android:contentDescription="Users"
@@ -79,7 +77,7 @@
 
             <!-- Units Card -->
             <ImageView
-                android:id="@+id/btnCategories"
+                android:id="@+id/Rooms"
                 android:layout_width="149dp"
                 android:layout_height="157dp"
                 android:padding="20dp"
@@ -87,7 +85,7 @@
 
             <!-- Low Stock Alerts Card -->
             <ImageView
-                    android:id="@+id/btnCurrentStocks"
+                    android:id="@+id/Reports"
                 android:layout_width="149dp"
                 android:layout_height="157dp"
                 android:padding="20dp"

@@ -34,25 +34,36 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
 
+    // AndroidX Libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
-    implementation (libs.firebase.firestore.ktx)
     implementation(libs.androidx.constraintlayout)
+
+    // Firebase Libraries
+    implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.auth)
     implementation(platform(libs.firebase.bom))
-    implementation (libs.play.services.auth)
+    implementation(libs.firebase.database)
+
+    // Google Play Services Auth for Google Sign-In
+    implementation(libs.play.services.auth)
+
+    // Firebase Authentication (specific versions)
+    implementation(libs.firebase.auth.v2108)
+    implementation(libs.firebase.auth.v2106)
+
+    // Testing Libraries
     testImplementation(libs.junit)
-    implementation (libs.firebase.auth.v2108)
-    implementation (libs.play.services.auth.v2050)
-    implementation (libs.play.services.auth)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation (libs.firebase.auth.v2106)
-    implementation (libs.play.services.auth.v2010)
 }

@@ -5,8 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    tools:context=".Login">
+    android:background="@drawable/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,22 +16,42 @@
 
 
         <!-- Password Input Field -->
+
         <ImageView
             android:layout_width="120dp"
             android:layout_height="123dp"
             android:layout_marginTop="-50dp"
-            android:layout_marginBottom="35dp"
             android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WELCOME"
+            android:textColor="@color/white"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:text="TO STOCKIFY"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingBottom="24dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginEnd="80dp"
             android:text="Log In to your Account"
             android:textColor="@color/white"
-            android:textSize="25sp" />
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -53,7 +72,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="8dp">
 
             <!-- Password Input Field -->
             <EditText
@@ -72,7 +91,7 @@
 
             <!-- Password Visibility Icon -->
             <ImageView
-                android:id="@+id/ivShowPassword"
+                android:id="@+id/loginShowPassword"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
@@ -88,8 +107,8 @@
             android:id="@+id/tvForgotPassword"
             android:layout_width="132dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:layout_marginStart="-95dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="95dp"
             android:text="Forgot Password?"
             android:textColor="@color/white"
             android:textSize="12sp" />
@@ -104,7 +123,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:padding="12dp"
-            android:layout_marginBottom="50dp" />
+            android:layout_marginBottom="20dp" />
 
         <!-- Divider Line with Text -->
         <TextView
@@ -112,48 +131,22 @@
             android:layout_height="wrap_content"
             android:text="______________Or sign In with______________"
             android:textColor="@color/white"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:layout_marginBottom="50dp" />
+            android:textSize="15sp"
+            android:gravity="center" />
 
-        <!-- Social Media Icons -->
-        <LinearLayout
+        <Button
+            android:id="@+id/googleSignInButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:text="Sign in with Google"
+            android:backgroundTint="#183749"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginBottom="32dp"
-            android:weightSum="4">
+            android:layout_margin="16dp" />
 
-            <!-- Google Icon -->
-            <ImageView
-                android:id="@+id/google_button"
-                android:layout_width="8dp"
-                android:layout_height="38dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/google_icon"
-                android:contentDescription="Google Sign In" />
-
-            <!-- Facebook Icon -->
-            <ImageView
-                android:id="@+id/facebook_button"
-                android:layout_width="8dp"
-                android:layout_height="38dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/fb_icon"
-                android:contentDescription="Facebook Sign In" />
-
-            <!-- Instagram Icon -->
-            <ImageView
-                android:id="@+id/instagram_button"
-                android:layout_width="8dp"
-                android:layout_height="38dp"
-                android:layout_weight="1"
-                android:src="@drawable/insta"
-                android:contentDescription="Instagram Sign In" />
-        </LinearLayout>
 
         <!-- Sign Up Link -->
         <LinearLayout

@@ -1,0 +1,31 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background of the ProgressBar -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <corners android:radius="10dp" />
+            <solid android:color="#16181AFF" /> <!-- Background color -->
+        </shape>
+    </item>
+
+    <!-- Progress of the ProgressBar -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <layer-list>
+                <item>
+                    <!-- Shape of the progress line -->
+                    <shape android:shape="rectangle">
+                        <corners android:radius="10dp" />
+                        <solid android:color="#3BC8FF" /> <!-- Progress line color -->
+                    </shape>
+                </item>
+                <item android:left="300dp"> <!-- Adjust to control circle position -->
+                    <!-- Moving circle shape -->
+                    <shape android:shape="oval">
+                        <size android:width="25dp" android:height="25dp" />
+                        <solid android:color="#3BC8FF" /> <!-- Circle color -->
+                    </shape>
+                </item>
+            </layer-list>
+        </clip>
+    </item>
+</layer-list>

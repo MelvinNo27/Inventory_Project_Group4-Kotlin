@@ -3,23 +3,19 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.myapplication.databinding.ActivityAdminBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class AdminDashboard : AppCompatActivity() {
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var dateTextView: TextView
-    private lateinit var timeTextView: TextView
+
+    private lateinit var binding: ActivityAdminBinding // ViewBinding instance
     private val handler = android.os.Handler()
-
-
 
     private val updateDateTimeRunnable: Runnable = object : Runnable {
         override fun run() {
@@ -30,40 +26,36 @@ class AdminDashboard : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_admin)
-        val logoutButton = findViewById<TextView>(R.id.floatingAddButton)
-        val btnUsers = findViewById<ImageView>(R.id.btnUsers)
-        val btnCategory = findViewById<ImageView>(R.id.btnCategories)
-        val btnProducts = findViewById<ImageView>(R.id.btnCurrentStocks)
 
+        // Initialize ViewBinding
+        binding = ActivityAdminBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Initialize the DrawerLayout
-        drawerLayout = findViewById(R.id.drawer_layout)
-        dateTextView = findViewById(R.id.dateTextView)
-        timeTextView = findViewById(R.id.timeTextView)
-
-
-        logoutButton.setOnClickListener {
+        binding.floatingAddButton.setOnClickListener {
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
             finish()
         }
 
-
-        btnUsers.setOnClickListener {
+        binding.Users.setOnClickListener {
             // Handle Users button click
+            startActivity(Intent(this, UserList::class.java))
         }
 
-        btnCategory.setOnClickListener {
+        binding.Rooms.setOnClickListener {
             // Handle Category button click
+
+
         }
 
-        btnProducts.setOnClickListener {
+        binding.Reports.setOnClickListener {
             // Handle Products button click
+
+
         }
 
+        // Start the update of date and time
         handler.post(updateDateTimeRunnable)
-
     }
 
     private fun updateDateTime() {
@@ -72,8 +64,8 @@ class AdminDashboard : AppCompatActivity() {
         val currentTime = SimpleDateFormat("hh:mm:ss a", Locale.getDefault()).format(Date())
 
         // Update the TextViews
-        dateTextView.text = currentDate
-        timeTextView.text = currentTime
+        binding.dateTextView.text = currentDate
+        binding.timeTextView.text = currentTime
     }
 
     override fun onDestroy() {
@@ -83,6 +75,6 @@ class AdminDashboard : AppCompatActivity() {
 
     // Method to open the navigation drawer
     fun openDrawer(view: View) {
-        drawerLayout.openDrawer(GravityCompat.START)
+        binding.drawerLayout.openDrawer(GravityCompat.START)
     }
 }

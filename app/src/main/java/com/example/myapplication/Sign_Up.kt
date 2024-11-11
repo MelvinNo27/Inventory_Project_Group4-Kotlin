@@ -1,154 +1,105 @@
 package com.example.myapplication
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
+import com.example.myapplication.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.AuthCredential
+import com.google.android.gms.common.api.ApiException
 
 class Sign_Up : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivitySignUpBinding // ViewBinding instance
+    private lateinit var googleSignInClient: GoogleSignInClient
 
-    // Declare fullNameEditText as a member variable
-    private lateinit var fullNameEditText: EditText
     private var isPasswordVisible = false // Variable to toggle password visibility
+    private val RC_SIGN_IN = 9001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+
+        // Initialize ViewBinding
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
 
-        // Initialize fullNameEditText
-        fullNameEditText = findViewById(R.id.User_Name)
-        val ivShowPassword = findViewById<ImageView>(R.id.ivShowPassword)
-        val emailEditText = findViewById<EditText>(R.id.etSign_inEmail)
-        val passwordEditText = findViewById<EditText>(R.id.etSign_inPassword)
-        val confirmPasswordEditText = findViewById<EditText>(R.id.etConfirmPassword)
-        val signupButton = findViewById<Button>(R.id.signUpButton)
-        val login = findViewById<TextView>(R.id.tvlogin)
-        val facebookButton = findViewById<ImageView>(R.id.facebook_button)
-        val instagramButton = findViewById<ImageView>(R.id.instagram_button)
+        // Google Sign-In configuration
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.Client_ID)) // Your web client ID from Firebase Console
+            .requestEmail()
+            .build()
 
-        signupButton.setOnClickListener {
-            val fullName = fullNameEditText.text.toString()
-            val email = emailEditText.text.toString()
-            val password = passwordEditText.text.toString()
-            val confirmPassword = confirmPasswordEditText.text.toString()
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
 
-            if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        // Email Sign-Up button click
+            binding.signUpButton.setOnClickListener {
+            binding.UserName.text.toString()
+            binding.etSignInEmail.text.toString()
+            binding.etSignInPassword.text.toString()
+            binding.etConfirmPassword.text.toString()
+
+            if (binding.UserName.text.toString().isEmpty() || binding.etSignInEmail.text.toString().isEmpty() || binding.etSignInPassword.text.toString().isEmpty() || binding.etConfirmPassword.text.toString().isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            } else if (password != confirmPassword) {
+            } else if (binding.etSignInPassword.text.toString() != binding.etConfirmPassword.text.toString()) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else {
-                // Proceed with Firebase registration if all checks pass
-                registerUser(email, password)
+                // Proceed with Firebase email/password registration
+                registerUser(binding.etSignInEmail.text.toString(), binding.etSignInPassword.text.toString())
             }
         }
 
-        login.setOnClickListener {
-            login.text = HtmlCompat.fromHtml("<u>Login</u>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        // Google Sign-In button click
+        binding.googleSignUpButton.setOnClickListener {
+            // Force sign out to show account picker every time
+            googleSignInClient.signOut().addOnCompleteListener {
+                signInWithGoogle()
+            }
+        }
+
+        // Login link
+        binding.tvlogin.setOnClickListener {
+            binding.tvlogin.text = HtmlCompat.fromHtml("<u>Login</u>", HtmlCompat.FROM_HTML_MODE_LEGACY)
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
         }
 
-        // Facebook and Instagram Button Logic
-        facebookButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/login"))
-            startActivity(intent)
-        }
-        instagramButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/accounts/login/"))
-            startActivity(intent)
-        }
-        ivShowPassword.setOnClickListener {
-            togglePasswordVisibility(passwordEditText, ivShowPassword)
+        // Toggle password visibility
+        binding.SignUpShowPassword.setOnClickListener {
+            togglePasswordVisibility(binding.etSignInPassword, binding.SignUpShowPassword)
         }
     }
 
-    // Function to handle potential errors during authentication, such as existing accounts
-    private fun handleAuthError(exception: Exception?) {
-        if (exception is FirebaseAuthUserCollisionException) {
-            // Inform the user and redirect to login
-            Toast.makeText(this, "Account already exists. Redirecting to login.", Toast.LENGTH_LONG).show()
-            redirectToLogin()
-        } else {
-            Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    // Redirect the user to the login screen
-    private fun redirectToLogin() {
-        val intent = Intent(this, Login::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    // Prompt user to enter their full name if it's missing
-    private fun promptForFullName(user: FirebaseUser?) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Enter your full name")
-
-        // Set up the input
-        val input = EditText(this)
-        builder.setView(input)
-
-        // Set up the buttons
-        builder.setPositiveButton("Save") { dialog, _ ->
-            val fullName = input.text.toString().trim()
-            if (fullName.isNotEmpty()) {
-                val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(fullName)
-                    .build()
-                user?.updateProfile(profileUpdates)
-                    ?.addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(this, "Welcome, $fullName!", Toast.LENGTH_SHORT).show()
-                            updateUI(user)
-                        } else {
-                            Toast.makeText(this, "Failed to save name.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-            } else {
-                Toast.makeText(this, "Name cannot be empty.", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
-            }
-        }
-        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-        builder.show()
-    }
-
-    // Function to register the user using Firebase Auth
+    // Function to register the user using Firebase Auth (email/password)
     private fun registerUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
                     // Update the user's display name with full name input
-                    val fullName = fullNameEditText.text.toString()
                     val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setDisplayName(fullName)
+                        .setDisplayName(binding.UserName.text.toString())
                         .build()
-                    user?.updateProfile(profileUpdates)
+                    auth.currentUser?.updateProfile(profileUpdates)
                         ?.addOnCompleteListener { profileTask ->
                             if (profileTask.isSuccessful) {
                                 Toast.makeText(this, "Sign-up Successful!", Toast.LENGTH_SHORT).show()
-                                updateUI(user)
+                                updateUI(auth.currentUser)
                             } else {
                                 Toast.makeText(this, "Failed to set user name.", Toast.LENGTH_SHORT).show()
                                 updateUI(null)
@@ -162,11 +113,45 @@ class Sign_Up : AppCompatActivity() {
             }
     }
 
+
+
+
+    // Google Sign-In
+    private fun signInWithGoogle() {
+        startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
+    }
+
+    // Handle Google Sign-In result
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            try {
+                firebaseAuthWithGoogle( GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException::class.java).idToken!!)
+            } catch (e: ApiException) {
+                Log.w("Google Sign-In", "Google sign in failed", e)
+                Toast.makeText(this, "Google Sign-In Failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // Firebase Authentication with Google Sign-In
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        auth.signInWithCredential(GoogleAuthProvider.getCredential(idToken, null))
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    updateUI(auth.currentUser)
+                } else {
+                    Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
+                    updateUI(null)
+                }
+            }
+    }
+
     // Function to update the UI based on registration status
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            val intent = Intent(this, Userdashboard::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, Login::class.java))
             finish()
         } else {
             Toast.makeText(this, "Please try again.", Toast.LENGTH_SHORT).show()
@@ -191,14 +176,4 @@ class Sign_Up : AppCompatActivity() {
         passwordEditText.setSelection(passwordEditText.text.length)
     }
 
-
-    override fun onStart() {
-        super.onStart()
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            val intent = Intent(this, Userdashboard::class.java)
-            startActivity(intent)
-            finish()
-        }
     }
-}
