@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.database)
+    implementation (libs.google.firebase.analytics)  // Add Firebase dependencies as needed
 
     // Google Play Services Auth for Google Sign-In
     implementation(libs.play.services.auth)

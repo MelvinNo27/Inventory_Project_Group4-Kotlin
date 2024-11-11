@@ -82,7 +82,10 @@ class Sign_Up : AppCompatActivity() {
 
         // Toggle password visibility
         binding.SignUpShowPassword.setOnClickListener {
-            togglePasswordVisibility(binding.etSignInPassword, binding.SignUpShowPassword)
+            PasswordVisibility()
+        }
+        binding.ivShowConfirmPassword.setOnClickListener {
+            ConfirmPasswordVisibility()
         }
     }
 
@@ -106,8 +109,7 @@ class Sign_Up : AppCompatActivity() {
                             }
                         }
                 } else {
-                    val errorMessage = task.exception?.message ?: "Authentication failed."
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, task.exception?.message ?: "Authentication failed.", Toast.LENGTH_SHORT).show()
                     updateUI(null)
                 }
             }
@@ -158,22 +160,38 @@ class Sign_Up : AppCompatActivity() {
         }
     }
 
-    private fun togglePasswordVisibility(passwordEditText: EditText, ivShowPassword: ImageView) {
+    private fun PasswordVisibility() {
         if (isPasswordVisible) {
             // Hide Password
-            passwordEditText.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            ivShowPassword.setImageResource(R.drawable.offpass) // Use closed-eye icon
+            binding.etSignInPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.SignUpShowPassword.setImageResource(R.drawable.offpass) // Use closed-eye icon
             isPasswordVisible = false
         } else {
             // Show Password
-            passwordEditText.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            ivShowPassword.setImageResource(R.drawable.baseline_remove_red_eye_24) // Use open-eye icon
+            binding.etSignInPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            binding.SignUpShowPassword.setImageResource(R.drawable.baseline_remove_red_eye_24) // Use open-eye icon
             isPasswordVisible = true
         }
+
         // Move the cursor to the end of the text
-        passwordEditText.setSelection(passwordEditText.text.length)
+        binding.etSignInPassword.setSelection(binding.etSignInPassword.text.length)
+    }
+
+    private fun ConfirmPasswordVisibility() {
+        if (isPasswordVisible) {
+            // Hide Password
+            binding.etConfirmPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.ivShowConfirmPassword.setImageResource(R.drawable.offpass) // Use closed-eye icon
+            isPasswordVisible = false
+        } else {
+            // Show Password
+            binding.etConfirmPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            binding.ivShowConfirmPassword.setImageResource(R.drawable.baseline_remove_red_eye_24) // Use open-eye icon
+            isPasswordVisible = true
+        }
+
+        // Move the cursor to the end of the text
+        binding.etConfirmPassword.setSelection(binding.etConfirmPassword.text.length)
     }
 
     }
