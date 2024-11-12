@@ -3,19 +3,20 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import com.example.myapplication.databinding.ActivityAdminBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class AdminDashboard : AppCompatActivity() {
 
     private lateinit var binding: ActivityAdminBinding // ViewBinding instance
     private val handler = android.os.Handler()
+    private lateinit var rootDatabaseRef: DatabaseReference
 
     private val updateDateTimeRunnable: Runnable = object : Runnable {
         override fun run() {
@@ -27,20 +28,22 @@ class AdminDashboard : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        rootDatabaseRef = FirebaseDatabase.getInstance().getReference("items") // Correct database reference
+
         // Initialize ViewBinding
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.floatingAddButton.setOnClickListener {
-            val intent = Intent(this, Login::class.java)
-            startActivity(intent)
+        binding.logOutButton.setOnClickListener {
+            startActivity(Intent(this, Login::class.java))
             finish()
         }
 
         binding.Users.setOnClickListener {
-            // Handle Users button click
+            // Ensure that it is not triggering an unintended action
             startActivity(Intent(this, UserList::class.java))
         }
+
 
         binding.Rooms.setOnClickListener {
             // Handle Category button click

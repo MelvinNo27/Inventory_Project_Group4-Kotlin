@@ -5,6 +5,7 @@ firebaseAuthVersion = "21.0.8"
 firebaseBom = "33.5.1"
 googleFirebaseAnalytics = "21.0.0"
 googleFirebaseAuth = "21.0.6"
+googleFirebaseDatabase = "20.0.5'"
 googlePlayServicesAuth = "20.1.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -27,6 +28,7 @@ facebook-android-sdk = { module = "com.facebook.android:facebook-android-sdk", v
 firebase-auth-v2106 = { module = "com.google.firebase:firebase-auth", version.ref = "googleFirebaseAuth" }
 firebase-auth-v2108 = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuthVersion" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-database-v2005 = { module = "com.google.firebase:firebase-database", version.ref = "googleFirebaseDatabase" }
 firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "googleFirebaseAnalytics" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

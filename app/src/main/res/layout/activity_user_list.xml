@@ -70,20 +70,19 @@
 
         <!-- Scrollable Table -->
         <ScrollView
-            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.widget.TableLayout
+            <!-- TableLayout that holds the items -->
+            <TableLayout
                 android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="0"
-                android:layout_margin="10dp">
+                android:stretchColumns="1"
+                android:padding="8dp"
+                android:layout_margin="8dp">
 
-
-
-            </android.widget.TableLayout>
+            </TableLayout>
         </ScrollView>
     </LinearLayout>
 

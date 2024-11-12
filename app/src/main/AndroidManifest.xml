@@ -19,7 +19,7 @@
 
         <!-- Sign In Activity (Main Entry Point) -->
         <activity
-            android:name=".SplashScreen"
+            android:name=".UserList"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,11 +49,9 @@
             android:exported="true"/>
 
         <activity
-            android:name=".UserList"
+            android:name=".SplashScreen"
             android:exported="true"/>
-        <activity
-            android:name=".AddItem"
-            android:exported="true"/>
+
 
 
     </application>
