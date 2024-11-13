@@ -85,7 +85,7 @@
 
             <!-- Low Stock Alerts Card -->
             <ImageView
-                    android:id="@+id/Reports"
+                android:id="@+id/Reports"
                 android:layout_width="149dp"
                 android:layout_height="157dp"
                 android:padding="20dp"

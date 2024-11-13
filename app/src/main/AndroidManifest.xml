@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -16,43 +15,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-
+        <activity
+            android:name=".RoomsActivity"
+            android:exported="false" />
         <!-- Sign In Activity (Main Entry Point) -->
         <activity
             android:name=".UserList"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Userdashboard"
-            android:exported="true"/>
+        <activity
+            android:name=".Userdashboard"
+            android:exported="true" />
         <activity
             android:name=".Sign_Up"
-            android:exported="true"/>
-
+            android:exported="true" />
         <activity
             android:name=".ForgotPasswordActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".AdminDashboard"
             android:exported="true" />
         <activity
             android:name=".Login"
-            android:exported="true"/>
-
+            android:exported="true" />
         <activity
             android:name=".Admin_User"
-            android:exported="true"/>
-
+            android:exported="true" />
         <activity
             android:name=".SplashScreen"
-            android:exported="true"/>
-
-
-
+            android:exported="true" />
     </application>
+
 </manifest>
