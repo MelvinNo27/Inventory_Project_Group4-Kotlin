@@ -105,11 +105,17 @@ class SplashScreen : AppCompatActivity() {
             .setMessage("Please check your internet connection and try again.")
             .setCancelable(false)
             .setPositiveButton("OK") { _, _ ->
-                // Close the app if no internet
-                finish()
+                // Launch Wi-Fi settings to allow the user to enable the internet
+                openWifiSettings()
             }
             .create()
 
         alertDialog.show()
+    }
+
+    private fun openWifiSettings() {
+        // Intent to open Wi-Fi settings
+        val intent = Intent(android.provider.Settings.ACTION_WIFI_SETTINGS)
+        startActivity(intent)
     }
 }
