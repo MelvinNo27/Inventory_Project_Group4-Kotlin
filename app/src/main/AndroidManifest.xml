@@ -16,9 +16,17 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".RoomsActivity"
+            android:name=".room7"
             android:exported="false" />
-        <!-- Sign In Activity (Main Entry Point) -->
+        <activity
+            android:name=".Select_room"
+            android:exported="false" />
+        <activity
+            android:name=".room14"
+            android:exported="false" />
+        <activity
+            android:name=".RoomsActivity"
+            android:exported="false" /> <!-- Sign In Activity (Main Entry Point) -->
         <activity
             android:name=".UserList"
             android:exported="true">
