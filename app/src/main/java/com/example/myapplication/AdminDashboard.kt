@@ -28,7 +28,7 @@ class AdminDashboard : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        rootDatabaseRef = FirebaseDatabase.getInstance().getReference("items") // Correct database reference
+        rootDatabaseRef = FirebaseDatabase.getInstance().getReference("MyData") // Correct database reference
 
         // Initialize ViewBinding
         binding = ActivityAdminBinding.inflate(layoutInflater)
@@ -42,6 +42,8 @@ class AdminDashboard : AppCompatActivity() {
         binding.Users.setOnClickListener {
             // Ensure that it is not triggering an unintended action
             startActivity(Intent(this, UserList::class.java))
+            finish()
+
         }
 
 
@@ -80,4 +82,10 @@ class AdminDashboard : AppCompatActivity() {
     fun openDrawer(view: View) {
         binding.drawerLayout.openDrawer(GravityCompat.START)
     }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity() // Close all activities and exit the app
+    }
+
 }
+

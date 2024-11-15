@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivitySplashScreenBinding
@@ -16,6 +15,10 @@ class SplashScreen : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
     private val handler = Handler()
     private var progressStatus = 0
+    private var loadingText = "LOADING"
+    private val dots = arrayOf(".", "..", "...","....") // Array to animate dots
+    private var currentDotIndex = 0
+    private val dotDelay = 500L // Delay to switch dots (in milliseconds)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +27,10 @@ class SplashScreen : AppCompatActivity() {
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // First, check if there is an internet connection before starting the loading
+        // Start rotating dots animation on "LOADING..." text
+        animateLoadingText()
+
+        // Check if there's an internet connection before starting the loading
         if (!isConnectedToInternet()) {
             // Show an alert if there's no internet connection
             showNoInternetAlert()
@@ -34,7 +40,26 @@ class SplashScreen : AppCompatActivity() {
         }
     }
 
-    private fun progressBar(){
+    private fun animateLoadingText() {
+        // Runnable to update the "LOADING..." text with dots
+        val runnable = object : Runnable {
+            override fun run() {
+                // Set the text with the current dots
+                binding.loadingText.text = "$loadingText${dots[currentDotIndex]}"
+
+                // Update the dot index to create the dot animation
+                currentDotIndex = (currentDotIndex + 1) % dots.size
+
+                // Re-run this method every 500 milliseconds
+                handler.postDelayed(this, dotDelay)
+            }
+        }
+
+        // Start the animation
+        handler.post(runnable)
+    }
+
+    private fun progressBar() {
         // Start the progress simulation
         Thread {
             // Now that we know there's internet, start the loading process
@@ -48,7 +73,7 @@ class SplashScreen : AppCompatActivity() {
                 }
 
                 // Wait for 50ms before updating the progress again
-                Thread.sleep(30)
+                Thread.sleep(50)
 
                 // If the progress reaches 100%, stop the loading process
                 if (progressStatus == 100) {
@@ -119,3 +144,5 @@ class SplashScreen : AppCompatActivity() {
         startActivity(intent)
     }
 }
+
+

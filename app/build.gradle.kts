@@ -54,10 +54,10 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.database)
-    implementation (libs.google.firebase.analytics)  // Add Firebase dependencies as needed
-    implementation (libs.firebase.database.v2005)  // Check for the latest version
-    implementation (libs.firebase.auth.v2108)      // Optional, if you want authentication
-
+    implementation (libs.google.firebase.analytics)
+    implementation (libs.firebase.database.v2005)
+    implementation (libs.firebase.auth.v2108)
+    implementation ("com.google.firebase:firebase-auth:21.0.1")
 
     // Google Play Services Auth for Google Sign-In
     implementation(libs.play.services.auth)

@@ -37,7 +37,7 @@ class Userdashboard : AppCompatActivity() {
         val user = auth.currentUser
         if (user != null) {
             val displayName = user.displayName
-            binding.welcomeTextView.text = "Hello Sir, $displayName!"
+            binding.welcomeTextView.text = "Hello , $displayName!"
         }
 
         // Set onClickListener for the logout button (floatingAddButton in XML)

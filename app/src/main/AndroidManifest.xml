@@ -19,47 +19,46 @@
             android:name=".Specs"
             android:exported="false" />
         <activity
-            android:name=".room7"
-            android:exported="false" />
-        <activity
             android:name=".Select_room"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".room14"
-            android:exported="false" />
-        <activity
-            android:name=".RoomsActivity"
-            android:exported="false" /> <!-- Sign In Activity (Main Entry Point) -->
-        <activity
-            android:name=".UserList"
-            android:exported="true">
+            android:name=".SplashScreen"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Userdashboard"
-            android:exported="true" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Sign_Up"
-            android:exported="true" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ForgotPasswordActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AdminDashboard"
-            android:exported="true" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Login"
-            android:exported="true" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Admin_User"
-            android:exported="true" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".SplashScreen"
-            android:exported="true" />
+            android:name=".UserList"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
