@@ -175,7 +175,7 @@ class UserList : AppCompatActivity() {
         passwordEditText.setText(item.password)
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Edit Item")
+            .setTitle("Edit User")
             .setView(dialogView)
             .setPositiveButton("Update") { _, _ ->
                 val name = nameEditText.text.toString()
