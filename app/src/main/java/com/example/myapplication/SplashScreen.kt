@@ -30,12 +30,10 @@ class SplashScreen : AppCompatActivity() {
         // Start rotating dots animation on "LOADING..." text
         animateLoadingText()
 
-        // Check if there's an internet connection before starting the loading
+
         if (!isConnectedToInternet()) {
-            // Show an alert if there's no internet connection
             showNoInternetAlert()
         } else {
-            // Continue loading if there is internet connection
             progressBar()
         }
     }

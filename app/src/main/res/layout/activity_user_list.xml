@@ -79,18 +79,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="1"
-                android:layout_margin="8dp">
+                android:layout_margin="10dp">
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="4"> <!-- Distribute the space equally -->
+                    android:weightSum="3"> <!-- Distribute the space equally -->
 
                     <!-- ID Column -->
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/idNumberTextView"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="ID"
                         android:textStyle="bold"
                         android:padding="8dp"
@@ -99,9 +99,10 @@
 
                     <!-- Name Column -->
                     <TextView
+                        android:id="@+id/nameTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:text="Name"
                         android:textStyle="bold"
                         android:padding="8dp"
@@ -110,31 +111,23 @@
 
                     <!-- Email Column -->
                     <TextView
+                        android:id="@+id/emailTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:text="Email"
                         android:textStyle="bold"
                         android:padding="8dp"
                         android:textColor="#FFFFFF"
                         android:maxWidth="100dp"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:gravity="center" /> <!-- Center the text -->
-
-                    <!-- Password Column -->
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Password"
-                        android:textStyle="bold"
-                        android:padding="8dp"
-                        android:textColor="#FFFFFF"
+                        android:ellipsize="end"
+                        android:singleLine="true"
                         android:gravity="center" /> <!-- Center the text -->
+
 
                     <!-- Action Column -->
                     <TextView
+                        android:id="@+id/actionTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Action"
