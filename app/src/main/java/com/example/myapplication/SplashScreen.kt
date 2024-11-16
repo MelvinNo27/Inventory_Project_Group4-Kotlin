@@ -1,9 +1,9 @@
 package com.example.myapplication
-
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.widget.Toast
 import android.os.Handler
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -122,8 +122,9 @@ class SplashScreen : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
     private fun showNoInternetAlert() {
+        // Display a toast message
+        Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
         // Show an alert dialog when there's no internet connection
         val alertDialog = AlertDialog.Builder(this)
             .setTitle("No Internet Connection")
