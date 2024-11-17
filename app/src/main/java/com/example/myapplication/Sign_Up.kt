@@ -19,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.AuthCredential
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.database.FirebaseDatabase
 
 class Sign_Up : AppCompatActivity() {
 
@@ -91,26 +92,30 @@ class Sign_Up : AppCompatActivity() {
 
     // Function to register the user using Firebase Auth (email/password)
     private fun registerUser(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
+        // Temporary store the user's information in the "pending_users" node
+        val userName = binding.UserName.text.toString()
+        val userEmail = binding.etSignInEmail.text.toString()
+
+        // Create a pending user object
+        val pendingUser = PendingUser(
+            email = userEmail,
+            name = userName,
+            password = password,
+            status = "pending" // Mark as pending for admin approval
+        )
+
+        // Get a reference to the "pending_users" node
+        val database = FirebaseDatabase.getInstance().getReference("pending_users")
+
+        // Add the user data under the "pending_users" node
+        val newUserRef = database.push() // Generate a unique key for the new user
+        newUserRef.setValue(pendingUser)
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Update the user's display name with full name input
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setDisplayName(binding.UserName.text.toString())
-                        .build()
-                    auth.currentUser?.updateProfile(profileUpdates)
-                        ?.addOnCompleteListener { profileTask ->
-                            if (profileTask.isSuccessful) {
-                                Toast.makeText(this, "Sign-up Successful!", Toast.LENGTH_SHORT).show()
-                                updateUI(auth.currentUser)
-                            } else {
-                                Toast.makeText(this, "Failed to set user name.", Toast.LENGTH_SHORT).show()
-                                updateUI(null)
-                            }
-                        }
+                    Toast.makeText(this, "Your sign-up request has been sent please wait for admin approval", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, Login::class.java))
                 } else {
-                    Toast.makeText(this, task.exception?.message ?: "Authentication failed.", Toast.LENGTH_SHORT).show()
-                    updateUI(null)
+                    Toast.makeText(this, "Failed to submit your request", Toast.LENGTH_SHORT).show()
                 }
             }
     }

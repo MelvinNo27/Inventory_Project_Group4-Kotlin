@@ -2,7 +2,6 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.EditText
@@ -38,6 +37,10 @@ class UserList : AppCompatActivity() {
 
         binding.backBtn.setOnClickListener {
             startActivity(Intent(this, AdminDashboard::class.java))
+            finish()
+        }
+        binding.viewUsers.setOnClickListener {
+            startActivity(Intent(this, AdminPendingUsers::class.java))
             finish()
         }
 
@@ -147,6 +150,8 @@ class UserList : AppCompatActivity() {
             }
     }
 
+
+
     private fun editItem(item: AdminUser) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_edit_item, null)
         val nameEditText: EditText = dialogView.findViewById(R.id.nameEdit)
@@ -169,8 +174,8 @@ class UserList : AppCompatActivity() {
                         currentUser.updateEmail(newEmail)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    val updatedItem = AdminUser(item.id, newName, newEmail)
-                                    val index = itemList.indexOfFirst { it.id == item.id }
+                                    val updatedItem = AdminUser(item.uid, newName, newEmail)
+                                    val index = itemList.indexOfFirst { it.uid == item.uid }
                                     if (index != -1) {
                                         itemList[index] = updatedItem
                                         updateTableRow(index, updatedItem)
@@ -197,7 +202,7 @@ class UserList : AppCompatActivity() {
         val itemIndex = itemList.indexOf(item)
         if (itemIndex != -1) {
             itemList.removeAt(itemIndex)
-            rootDatabaseRef.child(item.id).removeValue()
+            rootDatabaseRef.child(item.uid).removeValue()
             Toast.makeText(this, "Item deleted successfully", Toast.LENGTH_SHORT).show()
         }
     }
@@ -223,7 +228,7 @@ class UserList : AppCompatActivity() {
     }
 
     private fun addItemToFirebase(item: AdminUser) {
-        rootDatabaseRef.child(item.id).setValue(item)
+        rootDatabaseRef.child(item.uid).setValue(item)
             .addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     Toast.makeText(this, "Failed to add item", Toast.LENGTH_SHORT).show()
@@ -232,7 +237,7 @@ class UserList : AppCompatActivity() {
     }
 
     private fun updateItemInFirebase(item: AdminUser) {
-        rootDatabaseRef.child(item.id).setValue(item)
+        rootDatabaseRef.child(item.uid).setValue(item)
             .addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     Toast.makeText(this, "Failed to update item", Toast.LENGTH_SHORT).show()
@@ -259,4 +264,5 @@ class UserList : AppCompatActivity() {
     private fun truncateString(text: String, maxLength: Int): String {
         return if (text.length > maxLength) text.take(maxLength) + "..." else text
     }
+
 }
