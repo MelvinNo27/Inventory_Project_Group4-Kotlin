@@ -53,7 +53,7 @@ class AdminDashboard : AppCompatActivity() {
 
         }
 
-        binding.Reports.setOnClickListener {
+        binding.reports.setOnClickListener {
             // Handle Products button click
 
 
