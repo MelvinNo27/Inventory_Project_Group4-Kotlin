@@ -6,35 +6,36 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/bg">
 
     <ImageView
         android:id="@+id/addButton"
-        android:layout_width="95dp"
-        android:layout_height="95dp"
-        android:layout_marginBottom="580dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:src="@drawable/baseline_add_"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.909" />
+
+    <ImageView
+        android:id="@+id/buttonRoom14"
+        android:layout_width="140dp"
+        android:layout_height="194dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/room14"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/buttonRoom7"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/img_1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/buttonRoom14"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:src="@drawable/img"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="120dp"
+        android:layout_height="170dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="172dp"
+        android:src="@drawable/room07"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
