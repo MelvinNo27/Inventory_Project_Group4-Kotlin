@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:gravity="center_vertical">
+
+    <!-- User Name -->
+    <TextView
+        android:id="@+id/text_view_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Name"
+        android:textSize="16sp"/>
+
+    <!-- User Email -->
+    <TextView
+        android:id="@+id/text_view_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Email"
+        android:textSize="16sp"/>
+
+    <!-- Approve Button -->
+    <TextView
+        android:id="@+id/text_view_approve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Approve"
+        android:textColor="#4CAF50"
+        android:textSize="16sp"/>
+
+    <!-- Reject Button -->
+    <TextView
+        android:id="@+id/text_view_reject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Reject"
+        android:textColor="#F44336"
+        android:textSize="16sp"/>
+</LinearLayout>
