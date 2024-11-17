@@ -67,6 +67,7 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:id="@+id/Users"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:contentDescription="Instructors"
@@ -83,6 +84,7 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:id="@+id/Rooms"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:contentDescription="Rooms"
@@ -99,6 +101,7 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:id="@+id/reports"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:contentDescription="Message"
