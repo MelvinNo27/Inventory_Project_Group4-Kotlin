@@ -23,7 +23,7 @@
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".SplashScreen"
+            android:name=".UserList"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -56,9 +56,13 @@
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".UserList"
+            android:name=".SplashScreen"
             android:exported="false"
             android:screenOrientation="portrait"/>
+        <activity
+        android:name=".AdminPendingUsers"
+        android:exported="false"
+        android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
