@@ -48,13 +48,12 @@ class AdminDashboard : AppCompatActivity() {
 
 
         binding.Rooms.setOnClickListener {
-            // Handle Category button click
-
+            startActivity(Intent(this, SelectRooms::class.java))
+            finish()
 
         }
 
         binding.reports.setOnClickListener {
-            // Handle Products button click
 
 
         }
