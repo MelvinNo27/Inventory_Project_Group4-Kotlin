@@ -28,7 +28,7 @@ class UserList : AppCompatActivity() {
         binding = ActivityUserListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        rootDatabaseRef = FirebaseDatabase.getInstance().getReference("users")
+        rootDatabaseRef = FirebaseDatabase.getInstance().getReference("Users")
         auth = FirebaseAuth.getInstance()
 
         binding.addButton.setOnClickListener {
