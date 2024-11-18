@@ -107,7 +107,7 @@ class AdminPendingUsers : AppCompatActivity() {
                             if (profileTask.isSuccessful) {
                                 // Move the user to the "users" node in Firebase
                                 val newUser = User(uid = user?.uid ?: "", name = pendingUser.name, email = pendingUser.email)
-                                val usersDatabase = FirebaseDatabase.getInstance().getReference("Users")
+                                val usersDatabase = FirebaseDatabase.getInstance().getReference("users")
                                 usersDatabase.child(user?.uid ?: "").setValue(newUser).addOnCompleteListener { dbTask ->
                                     if (dbTask.isSuccessful) {
                                         // Delete the pending user record
