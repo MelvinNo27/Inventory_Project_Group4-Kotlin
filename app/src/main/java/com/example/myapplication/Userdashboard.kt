@@ -57,16 +57,22 @@ class Userdashboard : AppCompatActivity() {
     }
 
     private fun fetchUserNameFromDatabase(userId: String) {
-        rootDatabaseRef.child(userId).get().addOnSuccessListener { dataSnapshot ->
-            // Check if data exists for the user
-            val name = dataSnapshot.child("name").value.toString()
-            if (name.isNotEmpty()) {
-                binding.welcomeTextView.text = "Hello, $name!"
-            } else {
-                Toast.makeText(this, "User name not found", Toast.LENGTH_SHORT).show()
-            }
-        }.addOnFailureListener {
-            Toast.makeText(this, "Failed to retrieve user data", Toast.LENGTH_SHORT).show()
+        val user = auth.currentUser
+        if (user != null) {
+            val database = FirebaseDatabase.getInstance().reference
+            database.child("users").child(user.uid).get()
+                .addOnSuccessListener { snapshot ->
+                    if (snapshot.exists()) {
+                        val userName = snapshot.child("name").value.toString()
+                        // Display the user name
+                        binding.welcomeTextView.text = "Welcome, $userName"
+                    } else {
+                        Toast.makeText(this, "No user data found", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(this, "Failed to retrieve user data: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 
