@@ -15,48 +15,51 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-
+        <activity
+            android:name=".sadboi"
+            android:exported="false" />
         <activity
             android:name=".UserList"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Userdashboard"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Sign_Up"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AdminDashboard"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Login"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Admin_User"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SplashScreen"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-        android:name=".AdminPendingUsers"
-        android:exported="false"
-        android:screenOrientation="portrait"/>
+            android:name=".AdminPendingUsers"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Room7"
             android:exported="false" />
@@ -69,7 +72,7 @@
         <activity
             android:name=".SelectRooms"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
