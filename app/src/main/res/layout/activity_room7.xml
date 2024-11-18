@@ -66,17 +66,17 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <!-- Buttons for Units 1-15 -->
-                <Button android:id="@+id/button1" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 1" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button2" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 2" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button3" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 3" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button4" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 4" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button5" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 5" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button6" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 6" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button7" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 7" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button8" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 8" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button9" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 9" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button10" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 10" android:backgroundTint="@color/cardview_dark_background" />
+                <!-- Buttons for Units 1-10 -->
+                <Button android:id="@+id/button1" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 1" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button2" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 2" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button3" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 3" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button4" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 4" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button5" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 5" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button6" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 6" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button7" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 7" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button8" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 8" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button9" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 9" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button10" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 10" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
             </LinearLayout>
 
             <!-- Right Column -->
@@ -87,13 +87,13 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <!-- Buttons for Units 11-30 -->
-                <Button android:id="@+id/button11" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 11" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button12" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 12" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button13" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 13" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button14" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 14" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button15" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 15" android:backgroundTint="@color/cardview_dark_background" />
-                <Button android:id="@+id/button16" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 16" android:backgroundTint="@color/cardview_dark_background" />
+                <!-- Buttons for Units 11-16 -->
+                <Button android:id="@+id/button11" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 11" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button12" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 12" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button13" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 13" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button14" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 14" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button15" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 15" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
+                <Button android:id="@+id/button16" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginVertical="4dp" android:text="Unit 16" android:textColor="@color/white" android:backgroundTint="@color/cardview_dark_background" />
             </LinearLayout>
 
         </LinearLayout>
@@ -106,6 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="REPORT"
+        android:textColor="@color/white"
         android:backgroundTint="@color/cardview_dark_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
