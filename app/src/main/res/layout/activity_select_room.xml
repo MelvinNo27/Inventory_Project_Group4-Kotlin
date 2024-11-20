@@ -23,8 +23,8 @@
         android:id="@+id/buttonRoom14"
         android:layout_width="140dp"
         android:layout_height="194dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="52dp"
         android:src="@drawable/room14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,8 +33,8 @@
         android:id="@+id/buttonRoom7"
         android:layout_width="120dp"
         android:layout_height="170dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="172dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="248dp"
         android:src="@drawable/room07"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
