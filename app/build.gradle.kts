@@ -49,6 +49,10 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
+    // AndroidX ViewCard
+    implementation("androidx.cardview:cardview:1.0.0")
+
+
 
     // Firebase Libraries
     implementation(libs.firebase.firestore.ktx)
