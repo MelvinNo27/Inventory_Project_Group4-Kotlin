@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.myapplication"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.myapplication"
@@ -49,8 +49,6 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
-    // AndroidX ViewCard
-    implementation("androidx.cardview:cardview:1.0.0")
 
 
 
@@ -62,14 +60,8 @@ dependencies {
     implementation (libs.google.firebase.analytics)
     implementation (libs.firebase.database.v2005)
     implementation (libs.firebase.auth.v2108)
-    implementation ("com.google.firebase:firebase-auth:21.0.1")
-
     // Google Play Services Auth for Google Sign-In
     implementation(libs.play.services.auth)
-
-    // Firebase Authentication (specific versions)
-    implementation(libs.firebase.auth.v2108)
-    implementation(libs.firebase.auth.v2106)
 
     // Testing Libraries
     testImplementation(libs.junit)
