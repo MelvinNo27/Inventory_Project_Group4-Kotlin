@@ -135,7 +135,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:backgroundTint="#183749"
+            android:backgroundTint="#11218A"
             android:text="Sign up"
             android:textColor="@color/white" />
 
@@ -152,7 +152,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="Sign Up with Google"
-            android:backgroundTint="#183749"
+            android:backgroundTint="#11218A"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:paddingStart="16dp"
