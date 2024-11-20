@@ -74,7 +74,7 @@
 
 
                 <Button
-                    android:id="@+id/button33"
+                    android:id="@+id/btnInstructors"
                     android:layout_width="177dp"
                     android:layout_height="62dp"
                     android:layout_marginEnd="15dp"
@@ -90,7 +90,7 @@
 
                 <!-- Second Button -->
                 <Button
-                    android:id="@+id/button35"
+                    android:id="@+id/btnRooms"
                     android:layout_width="170dp"
                     android:layout_height="62dp"
                     android:layout_marginEnd="10dp"
@@ -115,7 +115,7 @@
 
                 <!-- button36 -->
                 <Button
-                    android:id="@+id/button36"
+                    android:id="@+id/btnReports"
                     android:layout_width="177dp"
                     android:layout_height="62dp"
                     android:layout_marginEnd="13dp"
@@ -143,6 +143,69 @@
 
 
     </LinearLayout>
+    <!-- Side Menu Layout -->
+    <LinearLayout
+        android:id="@+id/side_menu"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@drawable/background"
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- Date and Time -->
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Date"
+            android:textColor="#A6A6A6"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Time"
+            android:textColor="#A6A6A6"
+            android:textSize="14sp" />
+
+        <!-- Divider -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="----------------------------------------"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Menu Items -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Home"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="About"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/logOutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Logout"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

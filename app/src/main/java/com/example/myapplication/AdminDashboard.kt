@@ -39,7 +39,7 @@ class AdminDashboard : AppCompatActivity() {
             finish()
         }
 
-        binding.Users.setOnClickListener {
+        binding.btnInstructors.setOnClickListener {
             // Ensure that it is not triggering an unintended action
             startActivity(Intent(this, UserList::class.java))
             finish()
@@ -47,13 +47,13 @@ class AdminDashboard : AppCompatActivity() {
         }
 
 
-        binding.Rooms.setOnClickListener {
+        binding.btnRooms.setOnClickListener {
             startActivity(Intent(this, SelectRooms::class.java))
             finish()
 
         }
 
-        binding.reports.setOnClickListener {
+        binding.btnReports.setOnClickListener {
 
 
         }
