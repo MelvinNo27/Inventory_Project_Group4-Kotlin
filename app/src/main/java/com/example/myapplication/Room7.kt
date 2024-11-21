@@ -18,6 +18,12 @@ class Room7 : AppCompatActivity() {
         // Initialize ViewBinding
         binding = ActivityRoom7Binding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        binding.Room7back.setOnClickListener {
+            startActivity(Intent(this, SelectRooms::class.java))
+            finish()
+        }
     }
 
 }

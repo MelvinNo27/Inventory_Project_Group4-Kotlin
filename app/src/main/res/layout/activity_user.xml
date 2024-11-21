@@ -133,7 +133,7 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@drawable/background"
+        android:background="@drawable/backgroundd"
         android:orientation="vertical"
         android:padding="16dp">
 

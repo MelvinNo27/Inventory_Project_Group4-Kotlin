@@ -19,9 +19,12 @@ class Room14 : AppCompatActivity() {
         binding = ActivityRoom14Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        binding.Room14back.setOnClickListener {
+            startActivity(Intent(this, SelectRooms::class.java))
+            finish()
         }
     }
+}
 
 
 
