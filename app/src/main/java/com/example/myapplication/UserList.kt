@@ -2,14 +2,11 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.EditText
-import android.widget.TableRow
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityUserListBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -18,10 +15,10 @@ import com.google.firebase.database.FirebaseDatabase
 class UserList : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserListBinding
-    private val itemList = mutableListOf<AdminUser>()
-    private val ADD_ITEM_REQUEST_CODE = 1
     private lateinit var rootDatabaseRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
+    private lateinit var userAdapter: UserAdapter
+    private val itemList = mutableListOf<AdminUser>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +28,12 @@ class UserList : AppCompatActivity() {
         rootDatabaseRef = FirebaseDatabase.getInstance().getReference("users")
         auth = FirebaseAuth.getInstance()
 
-        binding.addButton.setOnClickListener {
-            showAddItemForm()
-        }
+        // Set up RecyclerView with UserAdapter
+        userAdapter = UserAdapter(itemList, this::editItem, this::deleteItem)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = userAdapter
 
+        binding.addButton.setOnClickListener { showAddItemForm() }
         binding.backBtn.setOnClickListener {
             startActivity(Intent(this, AdminDashboard::class.java))
             finish()
@@ -47,66 +46,16 @@ class UserList : AppCompatActivity() {
         loadItemsFromFirebase()
     }
 
-
-    private fun addItemToTable(item: AdminUser) {
-        val tableRow = TableRow(this).apply {
-            layoutParams = TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT
-            )
-        }
-
-        val idNumberTextView = TextView(this).apply {
-            text = (binding.tableLayout.childCount).toString()
-            gravity = Gravity.CENTER
-            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-        }
-
-        val nameTextView = TextView(this).apply {
-            text = truncateString(item.name, 7)
-            gravity = Gravity.CENTER
-            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1.5f)
-        }
-
-        val emailTextView = TextView(this).apply {
-            text = truncateString(item.email, 7)
-            gravity = Gravity.CENTER
-            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1.5f)
-        }
-
-        val editTextView = TextView(this).apply {
-            text = "Edit"
-            gravity = Gravity.CENTER
-            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-            setOnClickListener {
-                editItem(item)
+    private fun loadItemsFromFirebase() {
+        rootDatabaseRef.get().addOnSuccessListener { snapshot ->
+            itemList.clear()
+            snapshot.children.forEach { dataSnapshot ->
+                val item = dataSnapshot.getValue(AdminUser::class.java)
+                item?.let { itemList.add(it) }
             }
-        }
-
-        val deleteTextView = TextView(this).apply {
-            text = "Delete"
-            gravity = Gravity.CENTER
-            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-            setOnClickListener {
-                deleteItem(item)
-                binding.tableLayout.removeView(tableRow)
-                updateRowIds()
-            }
-        }
-
-        tableRow.addView(idNumberTextView)
-        tableRow.addView(nameTextView)
-        tableRow.addView(emailTextView)
-        tableRow.addView(editTextView)
-        tableRow.addView(deleteTextView)
-        binding.tableLayout.addView(tableRow)
-    }
-
-    private fun updateRowIds() {
-        for (i in 1 until binding.tableLayout.childCount) {
-            val row = binding.tableLayout.getChildAt(i) as TableRow
-            val idTextView = row.getChildAt(0) as TextView
-            idTextView.text = i.toString()
+            userAdapter.notifyDataSetChanged()
+        }.addOnFailureListener {
+            showDialog("Failed to load items")
         }
     }
 
@@ -117,7 +66,7 @@ class UserList : AppCompatActivity() {
         val passwordEditText: EditText = dialogView.findViewById(R.id.passwordEditText)
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Add New Item")
+            .setTitle("Add New User")
             .setView(dialogView)
             .setPositiveButton("Add") { _, _ ->
                 val nameText = nameEditText.text.toString()
@@ -125,144 +74,142 @@ class UserList : AppCompatActivity() {
                 val passwordText = passwordEditText.text.toString()
 
                 if (validateInput(nameText, emailText, passwordText)) {
-                    val newItemId = rootDatabaseRef.push().key ?: return@setPositiveButton
-
-                    val item = AdminUser(newItemId, nameText, emailText, passwordText)
-                    itemList.add(item)
-                    addItemToTable(item)
-                    addItemToFirebase(item)
-                    addUserToFirebaseAuth(emailText, passwordText)
+                    // Check if email exists before proceeding
+                    checkEmailExists(emailText) { exists ->
+                        if (exists) {
+                            // If email exists, notify the user
+                            showDialog("Email already exists. Please use a different email.")
+                        } else {
+                            // If email does not exist, add the user to the database
+                            val newItemId = rootDatabaseRef.push().key ?: return@checkEmailExists
+                            val item = AdminUser(newItemId, nameText, emailText, passwordText)
+                            addItemToFirebase(item)
+                        }
+                    }
                 }
             }
             .setNegativeButton("Cancel", null)
         dialog.show()
     }
-
-    private fun addUserToFirebaseAuth(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "User created successfully", Toast.LENGTH_SHORT).show()
-                } else {
-                    val errorMessage = task.exception?.localizedMessage ?: "Error occurred"
-                    Toast.makeText(this, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
-
-
 
     private fun editItem(item: AdminUser) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_edit_item, null)
         val nameEditText: EditText = dialogView.findViewById(R.id.nameEdit)
         val emailEditText: EditText = dialogView.findViewById(R.id.emailEdit)
 
+        // Populate fields with existing data
         nameEditText.setText(item.name)
         emailEditText.setText(item.email)
+
+        // Disable email field
+        emailEditText.isEnabled = false
 
         val dialog = AlertDialog.Builder(this)
             .setTitle("Edit User")
             .setView(dialogView)
             .setPositiveButton("Update") { _, _ ->
                 val newName = nameEditText.text.toString()
-                val newEmail = emailEditText.text.toString()
 
-                if (newName.isNotEmpty() && newEmail.isNotEmpty()) {
-                    val currentUser = auth.currentUser
-                    if (currentUser != null && currentUser.email == item.email) {
-                        // Update the email in Firebase Authentication
-                        currentUser.updateEmail(newEmail)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    val updatedItem = AdminUser(item.uid, newName, newEmail)
-                                    val index = itemList.indexOfFirst { it.uid == item.uid }
-                                    if (index != -1) {
-                                        itemList[index] = updatedItem
-                                        updateTableRow(index, updatedItem)
-                                        updateItemInFirebase(updatedItem)
-                                        Toast.makeText(this, "User updated successfully", Toast.LENGTH_SHORT).show()
-                                    }
-                                } else {
-                                    val errorMessage = task.exception?.localizedMessage ?: "Error occurred"
-                                    Toast.makeText(this, "Failed to update email: $errorMessage", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                    } else {
-                        Toast.makeText(this, "Unable to update email. User not authenticated.", Toast.LENGTH_SHORT).show()
+                if (newName.isNotEmpty()) {
+                    val updatedItem = AdminUser(item.uid, newName, item.email, item.password) // Email remains unchanged
+                    val index = itemList.indexOfFirst { it.uid == item.uid }
+                    if (index != -1) {
+                        itemList[index] = updatedItem
+                        userAdapter.notifyItemChanged(index)
+                        updateItemInFirebase(updatedItem)
+                        showDialog("User updated successfully")
                     }
                 } else {
-                    Toast.makeText(this, "Name and Email cannot be empty", Toast.LENGTH_SHORT).show()
+                    showDialog("Name cannot be empty")
                 }
             }
             .setNegativeButton("Cancel", null)
         dialog.show()
     }
 
-    private fun deleteItem(item: AdminUser) {
-        val itemIndex = itemList.indexOf(item)
-        if (itemIndex != -1) {
-            itemList.removeAt(itemIndex)
-            rootDatabaseRef.child(item.uid).removeValue()
-            Toast.makeText(this, "Item deleted successfully", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun updateTableRow(index: Int, updatedItem: AdminUser) {
-        val tableRow = binding.tableLayout.getChildAt(index + 1) as TableRow
-        (tableRow.getChildAt(1) as TextView).text = updatedItem.name
-        (tableRow.getChildAt(2) as TextView).text = updatedItem.email
-    }
-
-    private fun loadItemsFromFirebase() {
-        rootDatabaseRef.get().addOnSuccessListener { snapshot ->
-            snapshot.children.forEach { dataSnapshot ->
-                val item = dataSnapshot.getValue(AdminUser::class.java)
-                item?.let {
-                    itemList.add(it)
-                    addItemToTable(it)
+    private fun checkEmailExists(email: String, callback: (Boolean) -> Unit) {
+        auth.fetchSignInMethodsForEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val signInMethods = task.result?.signInMethods
+                    callback(!signInMethods.isNullOrEmpty()) // Email exists if signInMethods is not empty
+                } else {
+                    showDialog("Failed to check email: ${task.exception?.message}")
+                    callback(false)
                 }
             }
-        }.addOnFailureListener {
-            Toast.makeText(this, "Failed to load items", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener {
+                showDialog("Error checking email")
+                callback(false)
+            }
+    }
+
+    private fun deleteItem(item: AdminUser) {
+        val index = itemList.indexOf(item)
+        if (index != -1) {
+            itemList.removeAt(index)
+            userAdapter.notifyItemRemoved(index)
+            rootDatabaseRef.child(item.uid).removeValue()
         }
     }
 
     private fun addItemToFirebase(item: AdminUser) {
-        rootDatabaseRef.child(item.uid).setValue(item)
-            .addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Toast.makeText(this, "Failed to add item", Toast.LENGTH_SHORT).show()
+        rootDatabaseRef.orderByChild("email").equalTo(item.email)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot.exists()) {
+                    showDialog("Email already exists in the database.")
+                } else {
+                    // If no duplicate email found, add the item
+                    rootDatabaseRef.child(item.uid).setValue(item)
+                        .addOnSuccessListener {
+                            showDialog("User added successfully.")
+                        }
+                        .addOnFailureListener {
+                            showDialog("Failed to add item to database.")
+                        }
                 }
+            }
+            .addOnFailureListener {
+                showDialog("Email already exists. Please use a different email.")
             }
     }
 
     private fun updateItemInFirebase(item: AdminUser) {
         rootDatabaseRef.child(item.uid).setValue(item)
-            .addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Toast.makeText(this, "Failed to update item", Toast.LENGTH_SHORT).show()
-                }
+            .addOnFailureListener {
+                showDialog("Failed to update item")
+            }
+    }
+
+    private fun addUserToFirebaseAuth(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnFailureListener {
+                showDialog("Failed to create user")
             }
     }
 
     private fun validateInput(name: String, email: String, password: String): Boolean {
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
+            showDialog("All fields are required")
             return false
         }
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show()
+            showDialog("Invalid email format")
             return false
         }
         if (password.length < 6) {
-            Toast.makeText(this, "Password must be at least 6 characters long", Toast.LENGTH_SHORT).show()
+            showDialog("Password must be at least 6 characters long")
             return false
         }
         return true
     }
 
-    private fun truncateString(text: String, maxLength: Int): String {
-        return if (text.length > maxLength) text.take(maxLength) + "..." else text
+    // Helper function to show dialog messages
+    private fun showDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
     }
-
 }

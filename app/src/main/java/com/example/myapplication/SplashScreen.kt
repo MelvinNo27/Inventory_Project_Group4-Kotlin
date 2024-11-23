@@ -74,7 +74,7 @@ class SplashScreen : AppCompatActivity() {
             val currentUser = FirebaseAuth.getInstance().currentUser
             if (currentUser != null) {
                 // User is logged in; check their role
-                checkUserRoleFromDatabase(currentUser.uid)
+                checkAdmin(currentUser.uid)
             } else {
                 // No user is logged in; navigate to login
                 goToLogin()
@@ -84,7 +84,7 @@ class SplashScreen : AppCompatActivity() {
         }
     }
 
-    private fun checkUserRoleFromDatabase(userId: String) {
+    private fun checkAdmin(userId: String) {
         // Check first in the "admins" node
         val adminRef = database.child("admins").child(userId)
 
@@ -99,13 +99,10 @@ class SplashScreen : AppCompatActivity() {
                         // Navigate to the Admin Dashboard
                         goToAdminDashboard()
                     }
-                   // }else {
-                    //goToLogin()
-
 
                 } else {
                     // User not found in "admins", check the "users" node
-                    checkUserInUsersNode(userId)
+                    checkUser(userId)
                 }
             }
 
@@ -116,7 +113,7 @@ class SplashScreen : AppCompatActivity() {
         })
     }
 
-    private fun checkUserInUsersNode(userId: String) {
+    private fun checkUser(userId: String) {
         // Check in the "users" node if not found in "admins"
         val userRef = database.child("users").child(userId)
 
@@ -143,6 +140,7 @@ class SplashScreen : AppCompatActivity() {
             }
         })
     }
+
 
     private fun storeUserRoleLocally(role: String) {
         val sharedPreferences = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
