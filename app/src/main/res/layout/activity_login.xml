@@ -45,7 +45,7 @@
             android:id="@+id/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="85dp"
             android:text="TO STOCKIFY"
             android:fontFamily="@font/thelaker"
             android:textColor="@color/black"
@@ -55,10 +55,9 @@
         <!-- Confirm Password Field -->
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="80dp"
             android:layout_marginBottom="10dp"
             android:baselineAligned="false"
             android:text="Log In to your Account"
@@ -130,33 +129,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:backgroundTint="#183749"
-            android:padding="12dp"
+            android:backgroundTint="#11218A"
+            android:padding="13dp"
             android:text="Sign In"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
         <!-- Divider Line with Text -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="______________Or sign In with______________"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
-
-        <Button
-            android:id="@+id/googleSignInButton"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_margin="16dp"
-            android:backgroundTint="#183749"
-            android:gravity="center"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:text="Sign in with Google"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
 
 
         <!-- Sign Up Link -->

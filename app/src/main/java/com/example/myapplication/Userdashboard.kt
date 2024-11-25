@@ -45,7 +45,7 @@ class Userdashboard : AppCompatActivity() {
         }
 
         // Set onClickListener for the logout button (floatingAddButton in XML)
-        binding.floatingAddButton.setOnClickListener {
+        binding.UserlogOutButton.setOnClickListener {
             auth.signOut()
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
@@ -57,16 +57,22 @@ class Userdashboard : AppCompatActivity() {
     }
 
     private fun fetchUserNameFromDatabase(userId: String) {
-        rootDatabaseRef.child(userId).get().addOnSuccessListener { dataSnapshot ->
-            // Check if data exists for the user
-            val name = dataSnapshot.child("name").value.toString()
-            if (name.isNotEmpty()) {
-                binding.welcomeTextView.text = "Hello, $name!"
-            } else {
-                Toast.makeText(this, "User name not found", Toast.LENGTH_SHORT).show()
-            }
-        }.addOnFailureListener {
-            Toast.makeText(this, "Failed to retrieve user data", Toast.LENGTH_SHORT).show()
+        val user = auth.currentUser
+        if (user != null) {
+            val database = FirebaseDatabase.getInstance().reference
+            database.child("users").child(user.uid).get()
+                .addOnSuccessListener { snapshot ->
+                    if (snapshot.exists()) {
+                        val userName = snapshot.child("name").value.toString()
+                        // Display the user name
+                        binding.UserwelcomeTextView.text = "Welcome, $userName"
+                    } else {
+                        Toast.makeText(this, "No user data found", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(this, "Failed to retrieve user data: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 
@@ -76,8 +82,8 @@ class Userdashboard : AppCompatActivity() {
         val currentTime = SimpleDateFormat("hh:mm:ss a", Locale.getDefault()).format(Date())
 
         // Update the TextViews with current date and time
-        binding.dateTextView.text = currentDate
-        binding.timeTextView.text = currentTime
+        binding.UserdateTextView.text = currentDate
+        binding.usertimeTextView.text = currentTime
     }
 
     override fun onDestroy() {
@@ -87,6 +93,6 @@ class Userdashboard : AppCompatActivity() {
 
     // Method to open the navigation drawer
     fun openDrawer(view: View) {
-        binding.drawerLayout.openDrawer(GravityCompat.START)
+        binding.UserDrawer.openDrawer(GravityCompat.START)
     }
 }

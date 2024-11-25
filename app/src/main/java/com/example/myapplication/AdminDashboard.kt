@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.myapplication.databinding.ActivityAdminBinding
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -35,11 +36,10 @@ class AdminDashboard : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.logOutButton.setOnClickListener {
-            startActivity(Intent(this, Login::class.java))
-            finish()
+           logout()
         }
 
-        binding.Users.setOnClickListener {
+        binding.btnInstructors.setOnClickListener {
             // Ensure that it is not triggering an unintended action
             startActivity(Intent(this, UserList::class.java))
             finish()
@@ -47,20 +47,28 @@ class AdminDashboard : AppCompatActivity() {
         }
 
 
-        binding.Rooms.setOnClickListener {
-            // Handle Category button click
-
+        binding.btnRooms.setOnClickListener {
+            startActivity(Intent(this, SelectRooms::class.java))
+            finish()
 
         }
 
-        binding.reports.setOnClickListener {
-            // Handle Products button click
+        binding.btnReports.setOnClickListener {
 
 
         }
 
         // Start the update of date and time
         handler.post(updateDateTimeRunnable)
+    }
+    private fun logout() {
+        // Sign out the user
+        FirebaseAuth.getInstance().signOut()
+
+        // Redirect to the Login activity
+        val intent = Intent(this, Login::class.java)
+        startActivity(intent)
+        finish()  // Close the AdminDashboard activity
     }
 
     private fun updateDateTime() {

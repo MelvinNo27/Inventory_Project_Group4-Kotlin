@@ -91,52 +91,49 @@ class AdminPendingUsers : AppCompatActivity() {
     }
 
     // Function to approve a user
+    // Function to approve a user
     private fun approveUser(userId: String, pendingUser: PendingUser) {
-        val userRef = FirebaseDatabase.getInstance().getReference("pending_users").child(userId)
+        // Reference to the "pending_users" node
+        val pendingUserRef = FirebaseDatabase.getInstance().getReference("pending_users").child(userId)
 
-        // Update the user's status to "approved"
-        pendingUser.status = "approved"
-        userRef.setValue(pendingUser).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Create user in Firebase Authentication
-                auth.createUserWithEmailAndPassword(pendingUser.email, pendingUser.password).addOnCompleteListener { authTask ->
-                    if (authTask.isSuccessful) {
-                        val user = auth.currentUser
-                        val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(pendingUser.name).build()
-                        user?.updateProfile(profileUpdates)?.addOnCompleteListener { profileTask ->
-                            if (profileTask.isSuccessful) {
-                                // Move the user to the "users" node in Firebase
-                                val newUser = User(uid = user?.uid ?: "", name = pendingUser.name, email = pendingUser.email)
-                                val usersDatabase = FirebaseDatabase.getInstance().getReference("users")
-                                usersDatabase.child(user?.uid ?: "").setValue(newUser).addOnCompleteListener { dbTask ->
-                                    if (dbTask.isSuccessful) {
-                                        // Delete the pending user record
-                                        userRef.removeValue()
-                                        Toast.makeText(this@AdminPendingUsers, "User approved and added", Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        Toast.makeText(this@AdminPendingUsers, "Failed to save user data", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-                            } else {
-                                Toast.makeText(this@AdminPendingUsers, "Failed to set user name.", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+        // Reference to the "users" node
+        val usersRef = FirebaseDatabase.getInstance().getReference("users")
+
+        // Add the user to the "users" node with an approved status
+        val approvedUser = mapOf(
+            "id" to userId,
+            "name" to pendingUser.name,
+            "email" to pendingUser.email,
+            "status" to "approved"
+        )
+
+        usersRef.child(userId).setValue(approvedUser).addOnCompleteListener { userTask ->
+            if (userTask.isSuccessful) {
+                // Remove the user from the "pending_users" node
+                pendingUserRef.removeValue().addOnCompleteListener { removeTask ->
+                    if (removeTask.isSuccessful) {
+                        Toast.makeText(this@AdminPendingUsers, "User approved and added to database", Toast.LENGTH_SHORT).show()
+                        fetchPendingUsers() // Refresh the list
                     } else {
-                        Toast.makeText(this@AdminPendingUsers, "Authentication failed during approval.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@AdminPendingUsers, "Failed to remove user from pending list", Toast.LENGTH_SHORT).show()
                     }
                 }
+            } else {
+                Toast.makeText(this@AdminPendingUsers, "Failed to add user to approved list", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     // Function to reject a user
     private fun rejectUser(userId: String) {
-        val userRef = FirebaseDatabase.getInstance().getReference("pending_users").child(userId)
-        userRef.removeValue().addOnCompleteListener { task ->
+        // Reference to the "pending_users" node
+        val pendingUserRef = FirebaseDatabase.getInstance().getReference("pending_users").child(userId)
+
+        // Remove the user
+        pendingUserRef.removeValue().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // Refresh the table after rejecting the user
-                fetchPendingUsers()
                 Toast.makeText(this@AdminPendingUsers, "User rejected", Toast.LENGTH_SHORT).show()
+                fetchPendingUsers() // Refresh the list
             } else {
                 Toast.makeText(this@AdminPendingUsers, "Failed to reject user", Toast.LENGTH_SHORT).show()
             }

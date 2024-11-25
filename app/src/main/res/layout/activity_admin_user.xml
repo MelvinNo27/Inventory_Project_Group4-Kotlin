@@ -50,7 +50,7 @@
             android:textStyle="italic"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="80dp" />
 
         <Button
             android:id="@+id/btnUser"
