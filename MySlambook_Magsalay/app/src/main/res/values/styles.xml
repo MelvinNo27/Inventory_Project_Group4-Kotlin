@@ -1,7 +1,0 @@
-<resources>
-    <!-- Circular Image Style -->
-    <style name="CircularImage">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item> <!-- This makes it circular -->
-    </style>
-</resources>
