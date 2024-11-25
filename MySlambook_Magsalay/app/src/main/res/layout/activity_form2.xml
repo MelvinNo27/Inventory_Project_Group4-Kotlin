@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/backgroundform"
+    android:orientation="vertical"
+    android:textColor="@color/white"
+    android:gravity="center">
+
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="160dp"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/baseline_arrow_back_24" />
+
+    <!-- Profile Image -->
+    <ImageView
+        android:layout_width="129dp"
+        android:layout_height="131dp"
+        android:layout_marginTop="-65dp"
+        android:src="@drawable/logo" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:orientation="horizontal"
+                android:weightSum="12">
+
+                <EditText
+                    android:id="@+id/firstName"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginStart="8dp"
+                    android:textColorHint="#7C7B7B"
+                    android:hint="First Name" />
+
+                <EditText
+                    android:id="@+id/lastName"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:textColorHint="#7C7B7B"
+                    android:layout_marginStart="8dp"
+                    android:hint="Last Name" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textColorHint="#7C7B7B"
+                app:layout_constraintTop_toTopOf="parent"
+                android:orientation="horizontal"
+                android:weightSum="12">
+                <EditText
+                    android:id="@+id/nickname"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="#7C7B7B"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginStart="8dp"
+                    android:hint="Nickname" />
+
+                <EditText
+                    android:id="@+id/friendsCallYou"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:textColorHint="#7C7B7B"
+                    android:layout_marginStart="8dp"
+                    android:hint="Friends call you as" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:orientation="horizontal"
+                android:weightSum="12">
+
+                <EditText
+                    android:id="@+id/likeToCallMe"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:textColorHint="#7C7B7B"
+                    android:layout_marginStart="8dp"
+                    android:hint="Like to call me as" />
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="#7C7B7B"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginStart="8dp"
+                    android:hint="Email" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Birth Date"
+                android:textSize="16sp"
+                />
+            <!-- Birth Date Fields -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+
+                <EditText
+                    android:id="@+id/birthMonth"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="#7C7B7B"
+                    android:hint="Month" />
+
+                <EditText
+                    android:id="@+id/birthDay"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textColorHint="#7C7B7B"
+                    android:layout_height="wrap_content"
+                    android:hint="Day" />
+
+                <EditText
+                    android:id="@+id/birthYear"
+                    android:layout_width="0dp"
+                    android:textColorHint="#7C7B7B"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="Year" />
+            </LinearLayout>
+
+            <!-- Gender and Status -->
+            <EditText
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#7C7B7B"
+                android:layout_marginStart="8dp"
+                android:hint="Gender" />
+
+            <!-- Contact and Address -->
+            <EditText
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#7C7B7B"
+                android:layout_marginStart="8dp"
+                android:hint="Status" />
+
+            <EditText
+                android:id="@+id/contactNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColorHint="#7C7B7B"
+                android:hint="Contact #" />
+
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#7C7B7B"
+                android:layout_marginStart="8dp"
+                android:hint="Address" />
+
+            <!-- Favorite Color and Song -->
+            <EditText
+                android:id="@+id/favoriteColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#7C7B7B"
+                android:layout_marginStart="8dp"
+                android:hint="Favorite Color" />
+
+            <EditText
+                android:id="@+id/favoriteSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#7C7B7B"
+                android:layout_marginStart="8dp"
+                android:hint="Favorite Song" />
+
+            <!-- Favorite Movies and Place -->
+            <EditText
+                android:id="@+id/favoriteMovies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#7C7B7B"
+                android:layout_marginStart="8dp"
+                android:hint="Favorite Movies" />
+
+            <EditText
+                android:id="@+id/favoritePlace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#7C7B7B"
+                android:layout_marginStart="8dp"
+                android:hint="Favorite Place" />
+
+            <!-- Hobbies and Skills -->
+            <EditText
+                android:id="@+id/hobbies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColorHint="#7C7B7B"
+                android:hint="Hobbies" />
+
+            <EditText
+                android:id="@+id/skills"
+                android:layout_width="match_parent"
+                android:textColorHint="#7C7B7B"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="50dp"
+                android:hint="Skills" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
