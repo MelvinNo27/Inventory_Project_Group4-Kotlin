@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -69,8 +70,8 @@ class AdminPendingUsers : AppCompatActivity() {
         // Get references to the TextViews in the row layout
         val nameTextView = tableRowView.findViewById<TextView>(R.id.text_view_name)
         val emailTextView = tableRowView.findViewById<TextView>(R.id.text_view_email)
-        val approveTextView = tableRowView.findViewById<TextView>(R.id.text_view_approve)
-        val rejectTextView = tableRowView.findViewById<TextView>(R.id.text_view_reject)
+        val approveTextView = tableRowView.findViewById<ImageView>(R.id.text_view_approve)
+        val rejectTextView = tableRowView.findViewById<ImageView>(R.id.text_view_reject)
 
         // Set the user data to the TextViews
         nameTextView.text = item.name
@@ -99,30 +100,39 @@ class AdminPendingUsers : AppCompatActivity() {
         // Reference to the "users" node
         val usersRef = FirebaseDatabase.getInstance().getReference("users")
 
-        // Add the user to the "users" node with an approved status
-        val approvedUser = mapOf(
-            "id" to userId,
-            "name" to pendingUser.name,
-            "email" to pendingUser.email,
-            "status" to "approved"
-        )
+        // Create the Firebase Auth account and add the user to the "users" node
+        auth.createUserWithEmailAndPassword(pendingUser.email, "defaultPassword") // You can set a default password here or send an email with a reset link
+            .addOnCompleteListener { authTask ->
+                if (authTask.isSuccessful) {
+                    val approvedUser = mapOf(
+                        "id" to userId,
+                        "name" to pendingUser.name,
+                        "email" to pendingUser.email,
+                        "role" to "user",
+                        "status" to "approved"
+                    )
 
-        usersRef.child(userId).setValue(approvedUser).addOnCompleteListener { userTask ->
-            if (userTask.isSuccessful) {
-                // Remove the user from the "pending_users" node
-                pendingUserRef.removeValue().addOnCompleteListener { removeTask ->
-                    if (removeTask.isSuccessful) {
-                        Toast.makeText(this@AdminPendingUsers, "User approved and added to database", Toast.LENGTH_SHORT).show()
-                        fetchPendingUsers() // Refresh the list
-                    } else {
-                        Toast.makeText(this@AdminPendingUsers, "Failed to remove user from pending list", Toast.LENGTH_SHORT).show()
+                    usersRef.child(userId).setValue(approvedUser).addOnCompleteListener { dbTask ->
+                        if (dbTask.isSuccessful) {
+                            // Remove the user from the "pending_users" node
+                            pendingUserRef.removeValue().addOnCompleteListener { removeTask ->
+                                if (removeTask.isSuccessful) {
+                                    Toast.makeText(this@AdminPendingUsers, "User approved and moved to active users.", Toast.LENGTH_SHORT).show()
+                                    fetchPendingUsers() // Refresh the list
+                                } else {
+                                    Toast.makeText(this@AdminPendingUsers, "Failed to remove user from pending list", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        } else {
+                            Toast.makeText(this@AdminPendingUsers, "Failed to approve user.", Toast.LENGTH_SHORT).show()
+                        }
                     }
+                } else {
+                    Toast.makeText(this@AdminPendingUsers, "Failed to create user in Firebase Auth", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Toast.makeText(this@AdminPendingUsers, "Failed to add user to approved list", Toast.LENGTH_SHORT).show()
             }
-        }
     }
+
 
     // Function to reject a user
     private fun rejectUser(userId: String) {
@@ -140,4 +150,3 @@ class AdminPendingUsers : AppCompatActivity() {
         }
     }
 }
-

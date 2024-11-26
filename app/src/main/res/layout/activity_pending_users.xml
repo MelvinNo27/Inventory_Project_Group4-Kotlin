@@ -22,97 +22,119 @@
             android:layout_marginBottom="16dp"
             android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/backBtnUsers"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/baseline_arrow_black_back_24"
-            android:contentDescription="Back Button" />
+            <ImageView
+                android:id="@+id/backBtnUsers"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/baseline_arrow_black_back_24"
+                android:contentDescription="Back Button" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Pending Users"
-            android:textColor="#FF000000"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_gravity="center" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Pending Users"
+                android:textColor="#FF000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_gravity="center" />
+        </LinearLayout>
 
-    </LinearLayout>
-
-    <!-- Search Bar and Add Button -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-        <EditText
-            android:id="@+id/searchEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/edit_text_background"
-            android:hint="Search"
-            android:textColorHint="#BDBABA"
-            android:textColor="@color/white"
-            android:padding="8dp"
-            android:textSize="16sp"
-            android:drawableLeft="@drawable/baseline_search_24" />
-    </LinearLayout>
-
-    <!-- Scrollable Table -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TableLayout
-            android:id="@+id/tableLayoutPending"
+        <!-- Search Bar and Add Button -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="1"
-            android:layout_margin="10dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_background"
+                android:hint="Search"
+                android:textColorHint="#BDBABA"
+                android:textColor="@color/white"
+                android:padding="8dp"
+                android:textSize="16sp"
+                android:drawableLeft="@drawable/baseline_search_24" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="3">
 
-            <TextView
-                android:id="@+id/text_view_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Name"
-                android:textColor="@color/black"
-                android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/text_view_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
 
-            <!-- User Email -->
-            <TextView
-                android:id="@+id/text_view_email"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:text="Email"
-                android:textSize="16sp"/>
+        <!-- User Email -->
+        <TextView
+            android:id="@+id/text_view_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="Email"
+            android:textSize="16sp"/>
 
-            <!-- Approve Button -->
-            <TextView
-                android:id="@+id/text_view_approve"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="0.5"
-                android:textColor="@color/black"
-                android:text="Actions"
-                android:textSize="16sp"/>
-
+        <!-- Approve Button -->
+        <TextView
+            android:id="@+id/text_view_approve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="0.5"
+            android:textColor="@color/black"
+            android:text="Actions"
+            android:textSize="16sp"/>
 
             </TableRow>
-        </TableLayout>
-    </ScrollView>
+        </LinearLayout>
 
-</LinearLayout>
-    </androidx.drawerlayout.widget.DrawerLayout>
+        <!-- Scrollable Table -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TableLayout
+                    android:id="@+id/tableLayoutPending"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1"
+                    android:layout_margin="10dp">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="3">
+
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

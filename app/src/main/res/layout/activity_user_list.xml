@@ -128,9 +128,6 @@
                             android:textStyle="bold"
                             android:padding="8dp"
                             android:textColor="#FF000000"
-                            android:maxWidth="100dp"
-                            android:ellipsize="end"
-                            android:singleLine="true"
                             android:gravity="center" />
 
                         <!-- Action Column -->

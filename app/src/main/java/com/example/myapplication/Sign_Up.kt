@@ -108,39 +108,32 @@ class Sign_Up : AppCompatActivity() {
     }
 
     private fun registerPendingUser(userName: String, email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val userId = auth.currentUser!!.uid
-                    val database = FirebaseDatabase.getInstance().getReference("pending_users") // Save pending users in "pending_users" node
+        val userId = email.hashCode().toString() // Use a hash of the email for the user ID (avoid using Firebase UID here)
 
-                    // User data with status set to "pending" for admin approval
-                    val pendingUser = mapOf(
-                        "id" to userId,
-                        "name" to userName, // Save the username
-                        "email" to email,
-                        "role" to "user", // User role
-                        "status" to "pending" // Pending approval by admin
-                    )
+        val database = FirebaseDatabase.getInstance().getReference("pending_users") // Save pending users in "pending_users" node
 
-                    database.child(userId).setValue(pendingUser).addOnCompleteListener { dbTask ->
-                        if (dbTask.isSuccessful) {
-                            Toast.makeText(
-                                this,
-                                "Account created successfully! Awaiting admin approval.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            auth.signOut()
-                            startActivity(Intent(this, Login::class.java))
-                            finish()
-                        } else {
-                            Toast.makeText(this, "Failed to create account. Please try again.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } else {
-                    Toast.makeText(this, "Sign-Up Failed. ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                }
+        // User data with status set to "pending" for admin approval
+        val pendingUser = mapOf(
+            "id" to userId,
+            "name" to userName, // Save the username
+            "email" to email,
+            "role" to "user", // User role
+            "status" to "pending" // Pending approval by admin
+        )
+
+        database.child(userId).setValue(pendingUser).addOnCompleteListener { dbTask ->
+            if (dbTask.isSuccessful) {
+                Toast.makeText(
+                    this,
+                    "Account created successfully! Awaiting admin approval.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                startActivity(Intent(this, Login::class.java))
+                finish()
+            } else {
+                Toast.makeText(this, "Failed to create account. Please try again.", Toast.LENGTH_SHORT).show()
             }
+        }
     }
 
 
@@ -161,7 +154,7 @@ class Sign_Up : AppCompatActivity() {
                     database.child(userId).setValue(adminUser).addOnCompleteListener { dbTask ->
                         if (dbTask.isSuccessful) {
                             Toast.makeText(this, "Admin account created successfully.", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, AdminDashboard::class.java))
+                            startActivity(Intent(this, Login::class.java))
                             finish()
                         } else {
                             Toast.makeText(this, "Failed to create admin account.", Toast.LENGTH_SHORT).show()
