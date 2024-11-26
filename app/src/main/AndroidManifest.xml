@@ -59,10 +59,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Room7"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Room14"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SelectRooms"
             android:exported="false"
