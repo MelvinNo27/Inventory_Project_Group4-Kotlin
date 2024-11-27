@@ -9,7 +9,7 @@
 
     <!-- Back Icon -->
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/btnRoom7"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_margin="16dp"
@@ -23,14 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
         android:fontFamily="@font/roboto"
-        android:text="ROOM 7"
+        android:gravity="center"
+        android:text="@string/room_7"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@id/imageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Center Image -->
     <ImageView
@@ -108,7 +108,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="REPORT"
+        android:text="@string/report"
         android:textColor="#FFFFFFFF"
         android:backgroundTint="#22177A"
         app:layout_constraintBottom_toBottomOf="parent"

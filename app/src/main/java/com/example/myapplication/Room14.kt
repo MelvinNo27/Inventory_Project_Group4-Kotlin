@@ -14,11 +14,13 @@ class Room14 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-        // Initialize ViewBinding
         binding = ActivityRoom14Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btnRoom14.setOnClickListener{
+            val backtoselectroom = Intent (this, SelectRooms::class.java )
+            startActivity(backtoselectroom)
+        }
 
         }
     }
