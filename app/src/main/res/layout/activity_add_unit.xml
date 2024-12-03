@@ -90,7 +90,7 @@
 
 
         <EditText
-            android:id="@+id/MonitorID"
+            android:id="@+id/monitorID"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:background="@drawable/edit_text_background"
@@ -100,7 +100,7 @@
             android:textSize="13sp" />
 
         <EditText
-            android:id="@+id/MouseID"
+            android:id="@+id/mouseID"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:background="@drawable/edit_text_background"
@@ -110,7 +110,7 @@
             android:textSize="13sp" />
 
         <EditText
-            android:id="@+id/KeyboardID"
+            android:id="@+id/keyboardID"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:background="@drawable/edit_text_background"

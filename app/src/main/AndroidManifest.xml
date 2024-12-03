@@ -65,6 +65,10 @@
             android:name=".SelectRooms"
             android:exported="false"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".UnitDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
 
     </application>
