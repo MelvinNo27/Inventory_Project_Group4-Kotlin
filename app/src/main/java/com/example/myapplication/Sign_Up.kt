@@ -116,7 +116,8 @@ class Sign_Up : AppCompatActivity() {
         val pendingUser = mapOf(
             "id" to userId,
             "name" to userName, // Save the username
-            "email" to email,
+            "email" to email, // Save the email
+            "password" to password, // Save the email
             "role" to "user", // User role
             "status" to "pending" // Pending approval by admin
         )
@@ -135,7 +136,6 @@ class Sign_Up : AppCompatActivity() {
             }
         }
     }
-
 
     private fun createAdminAccount(userName: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)

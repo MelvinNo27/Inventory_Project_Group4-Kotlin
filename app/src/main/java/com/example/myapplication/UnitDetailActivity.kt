@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityUnitDetailBinding
@@ -14,6 +15,11 @@ class UnitDetailActivity : AppCompatActivity() {
         // Initialize the binding object
         binding = ActivityUnitDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)  // Set the root view of the binding
+
+        binding.Room14back.setOnClickListener {
+            startActivity(Intent(this, Room14::class.java))
+            finish()
+        }
 
         // Get the data from the Intent
         val monitorID = intent.getIntExtra("monitorID", 0)
