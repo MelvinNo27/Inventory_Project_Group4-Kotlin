@@ -4,16 +4,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_1"
-    >
+    android:background="@drawable/bg">
 
     <!-- Back Icon -->
     <ImageView
-        android:id="@+id/btnRoom7"
+        android:id="@+id/Room7back"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_margin="16dp"
-        android:src="@drawable/baseline_arrow_back_24"
+        android:src="@drawable/baseline_arrow_black_back_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,22 +22,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="170dp"
         android:fontFamily="@font/roboto"
-        android:gravity="center"
-        android:text="@string/room_7"
-        android:textColor="@color/white"
+        android:text="ROOM 7"
+        android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Center Image -->
     <ImageView
         android:id="@+id/imageview"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@drawable/monitor"
-        android:layout_marginTop="15dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/unite"
         app:layout_constraintTop_toBottomOf="@id/textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -59,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="30dp"
             android:padding="8dp">
 
             <!-- Left Column -->
@@ -108,7 +106,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="@string/report"
+        android:text="REPORT"
         android:textColor="#FFFFFFFF"
         android:backgroundTint="#22177A"
         app:layout_constraintBottom_toBottomOf="parent"

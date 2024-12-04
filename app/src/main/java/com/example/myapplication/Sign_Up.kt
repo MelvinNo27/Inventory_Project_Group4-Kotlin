@@ -3,32 +3,19 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.HtmlCompat
 import com.example.myapplication.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.AuthCredential
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 
 class Sign_Up : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var binding: ActivitySignUpBinding // ViewBinding instance
-    private lateinit var googleSignInClient: GoogleSignInClient
-
-    private var isPasswordVisible = false // Variable to toggle password visibility
-    private val RC_SIGN_IN = 9001
+    private lateinit var binding: ActivitySignUpBinding
+    private var isPasswordVisible = false
+    private var isAdminAvailable = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,164 +26,154 @@ class Sign_Up : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // Google Sign-In configuration
-        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.Client_ID)) // Your web client ID from Firebase Console
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
-
-        // Email Sign-Up button click
-            binding.signUpButton.setOnClickListener {
-            binding.UserName.text.toString()
-            binding.etSignInEmail.text.toString()
-            binding.etSignInPassword.text.toString()
-            binding.etConfirmPassword.text.toString()
-
-            if (binding.UserName.text.toString().isEmpty() || binding.etSignInEmail.text.toString().isEmpty() || binding.etSignInPassword.text.toString().isEmpty() || binding.etConfirmPassword.text.toString().isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            } else if (binding.etSignInPassword.text.toString() != binding.etConfirmPassword.text.toString()) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            } else {
-                // Proceed with Firebase email/password registration
-                registerUser(binding.etSignInEmail.text.toString(), binding.etSignInPassword.text.toString())
-            }
+        // Check if an admin account already exists
+        checkAdminExists { adminExists ->
+            isAdminAvailable = adminExists
+            setupRoleSpinner()
         }
 
-        // Google Sign-In button click
-        binding.googleSignUpButton.setOnClickListener {
-            // Force sign out to show account picker every time
-            googleSignInClient.signOut().addOnCompleteListener {
-                signInWithGoogle()
+        // Email Sign-Up button click
+        binding.signUpButton.setOnClickListener {
+            val userName = binding.UserName.text.toString()
+            val userEmail = binding.etSignInEmail.text.toString()
+            val password = binding.etSignInPassword.text.toString()
+            val confirmPassword = binding.etConfirmPassword.text.toString()
+
+            if (userName.isEmpty() || userEmail.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else if (password != confirmPassword) {
+                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Get selected user type from Spinner
+            val selectedUserType = binding.spinnerRole.selectedItem.toString()
+
+            if (selectedUserType == "Admin") {
+                // Create Admin account
+                if (isAdminAvailable) {
+                    Toast.makeText(this, "Admin account already exists.", Toast.LENGTH_SHORT).show()
+                } else {
+                    createAdminAccount(userName, userEmail, password)
+                }
+            } else if (selectedUserType == "User") {
+                // Register user and send for admin approval
+                registerPendingUser(userName, userEmail, password)
+            } else {
+                Toast.makeText(this, "Please select a valid user type", Toast.LENGTH_SHORT).show()
             }
         }
 
         // Login link
         binding.tvlogin.setOnClickListener {
-            binding.tvlogin.text = HtmlCompat.fromHtml("<u>Login</u>", HtmlCompat.FROM_HTML_MODE_LEGACY)
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
         }
 
         // Toggle password visibility
         binding.SignUpShowPassword.setOnClickListener {
-            PasswordVisibility()
+            togglePasswordVisibility(binding.etSignInPassword)
         }
         binding.ivShowConfirmPassword.setOnClickListener {
-            ConfirmPasswordVisibility()
+            togglePasswordVisibility(binding.etConfirmPassword)
         }
     }
 
-    // Function to register the user using Firebase Auth (email/password)
-    private fun registerUser(email: String, password: String) {
-        // Temporary store the user's information in the "pending_users" node
-        val userName = binding.UserName.text.toString()
-        val userEmail = binding.etSignInEmail.text.toString()
+    private fun setupRoleSpinner() {
+        // Setup spinner with or without Admin option based on availability
+        val userTypes = if (isAdminAvailable) {
+            arrayOf("Select Role", "User") // Only User is available
+        } else {
+            arrayOf("Select Role", "User", "Admin") // Both User and Admin are available
+        }
 
-        // Create a pending user object
-        val pendingUser = PendingUser(
-            email = userEmail,
-            name = userName,
-            password = password,
-            status = "pending" // Mark as pending for admin approval
+        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, userTypes)
+        binding.spinnerRole.adapter = spinnerAdapter
+    }
+
+    private fun checkAdminExists(callback: (Boolean) -> Unit) {
+        val database = FirebaseDatabase.getInstance().getReference("admins")
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // If there are any admins, return true
+                callback(snapshot.exists())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@Sign_Up, "Error checking admin status: ${error.message}", Toast.LENGTH_SHORT).show()
+                callback(false)
+            }
+        })
+    }
+
+    private fun registerPendingUser(userName: String, email: String, password: String) {
+        val userId = email.hashCode().toString() // Use a hash of the email for the user ID (avoid using Firebase UID here)
+
+        val database = FirebaseDatabase.getInstance().getReference("pending_users") // Save pending users in "pending_users" node
+
+        // User data with status set to "pending" for admin approval
+        val pendingUser = mapOf(
+            "id" to userId,
+            "name" to userName, // Save the username
+            "email" to email, // Save the email
+            "password" to password, // Save the email
+            "role" to "user", // User role
+            "status" to "pending" // Pending approval by admin
         )
 
-        // Get a reference to the "pending_users" node
-        val database = FirebaseDatabase.getInstance().getReference("pending_users")
-
-        // Add the user data under the "pending_users" node
-        val newUserRef = database.push() // Generate a unique key for the new user
-        newUserRef.setValue(pendingUser)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Your sign-up request has been sent please wait for admin approval", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, Login::class.java))
-                } else {
-                    Toast.makeText(this, "Failed to submit your request", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
-
-
-
-
-    // Google Sign-In
-    private fun signInWithGoogle() {
-        startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
-    }
-
-    // Handle Google Sign-In result
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            try {
-                firebaseAuthWithGoogle( GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException::class.java).idToken!!)
-            } catch (e: ApiException) {
-                Log.w("Google Sign-In", "Google sign in failed", e)
-                Toast.makeText(this, "Google Sign-In Failed", Toast.LENGTH_SHORT).show()
+        database.child(userId).setValue(pendingUser).addOnCompleteListener { dbTask ->
+            if (dbTask.isSuccessful) {
+                Toast.makeText(
+                    this,
+                    "Account created successfully! Awaiting admin approval.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                startActivity(Intent(this, Login::class.java))
+                finish()
+            } else {
+                Toast.makeText(this, "Failed to create account. Please try again.", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    // Firebase Authentication with Google Sign-In
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        auth.signInWithCredential(GoogleAuthProvider.getCredential(idToken, null))
+    private fun createAdminAccount(userName: String, email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    updateUI(auth.currentUser)
+                    val userId = auth.currentUser!!.uid
+                    val database = FirebaseDatabase.getInstance().getReference("admins")
+
+                    val adminUser = mapOf(
+                        "id" to userId,
+                        "name" to userName, // Save the admin username
+                        "email" to email,
+                        "role" to "admin"
+                    )
+
+                    database.child(userId).setValue(adminUser).addOnCompleteListener { dbTask ->
+                        if (dbTask.isSuccessful) {
+                            Toast.makeText(this, "Admin account created successfully.", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, Login::class.java))
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Failed to create admin account.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 } else {
-                    Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
-                    updateUI(null)
+                    Toast.makeText(this, "Sign-Up Failed. ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    // Function to update the UI based on registration status
-    private fun updateUI(user: FirebaseUser?) {
-        if (user != null) {
-            startActivity(Intent(this, Login::class.java))
-            finish()
-        } else {
-            Toast.makeText(this, "Please try again.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun PasswordVisibility() {
+    private fun togglePasswordVisibility(field: android.widget.EditText) {
         if (isPasswordVisible) {
-            // Hide Password
-            binding.etSignInPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            binding.SignUpShowPassword.setImageResource(R.drawable.offpass) // Use closed-eye icon
+            field.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             isPasswordVisible = false
         } else {
-            // Show Password
-            binding.etSignInPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            binding.SignUpShowPassword.setImageResource(R.drawable.baseline_remove_red_eye_24) // Use open-eye icon
+            field.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             isPasswordVisible = true
         }
-
-        // Move the cursor to the end of the text
-        binding.etSignInPassword.setSelection(binding.etSignInPassword.text.length)
+        field.setSelection(field.text.length)
     }
-
-    private fun ConfirmPasswordVisibility() {
-        if (isPasswordVisible) {
-            // Hide Password
-            binding.etConfirmPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            binding.ivShowConfirmPassword.setImageResource(R.drawable.offpass) // Use closed-eye icon
-            isPasswordVisible = false
-        } else {
-            // Show Password
-            binding.etConfirmPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            binding.ivShowConfirmPassword.setImageResource(R.drawable.baseline_remove_red_eye_24) // Use open-eye icon
-            isPasswordVisible = true
-        }
-
-        // Move the cursor to the end of the text
-        binding.etConfirmPassword.setSelection(binding.etConfirmPassword.text.length)
-    }
-
-    }
+}

@@ -8,19 +8,21 @@ import com.example.myapplication.databinding.ActivityRoom7Binding
 
 class Room7 : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRoom7Binding
+    private lateinit var binding: ActivityRoom7Binding // ViewBinding instance
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        // Initialize ViewBinding
         binding = ActivityRoom7Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnRoom7.setOnClickListener{
-            val backtoselectroom =Intent(this, SelectRooms::class.java)
-            startActivity(backtoselectroom)
 
+        binding.Room7back.setOnClickListener {
+            startActivity(Intent(this, SelectRooms::class.java))
+            finish()
         }
     }
 

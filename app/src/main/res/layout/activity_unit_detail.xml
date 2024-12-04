@@ -89,8 +89,8 @@
             tools:layout_editor_absoluteY="188dp" />
 
 
-        <EditText
-            android:id="@+id/MonitorID"
+        <TextView
+            android:id="@+id/ListMonitorID"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:background="@drawable/edit_text_background"
@@ -99,8 +99,8 @@
             android:textColorHint="#BDBABA"
             android:textSize="13sp" />
 
-        <EditText
-            android:id="@+id/MouseID"
+        <TextView
+            android:id="@+id/ListMouseID"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:background="@drawable/edit_text_background"
@@ -109,8 +109,8 @@
             android:textColorHint="#BDBABA"
             android:textSize="13sp" />
 
-        <EditText
-            android:id="@+id/KeyboardID"
+        <TextView
+            android:id="@+id/ListKeyboardID"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:background="@drawable/edit_text_background"
@@ -119,8 +119,8 @@
             android:textSize="13sp"
             android:layout_marginBottom="40dp" />
 
-        <EditText
-            android:id="@+id/mousePadID"
+        <TextView
+            android:id="@+id/ListMousePadID"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:background="@drawable/edit_text_background"
@@ -129,8 +129,8 @@
             android:layout_marginBottom="40dp"
             android:textSize="13sp" />
 
-        <EditText
-            android:id="@+id/unitID"
+        <TextView
+            android:id="@+id/ListUnitID"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:background="@drawable/edit_text_background"
@@ -155,7 +155,7 @@
             android:textColor="@color/black"
             android:layout_marginBottom="5dp" />
 
-        <EditText
+        <TextView
             android:id="@+id/MonitorQuantity"
             android:layout_width="60dp"
             android:layout_height="40dp"
@@ -165,7 +165,7 @@
             android:layout_marginBottom="40dp"
             android:textSize="13sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/MouseQuantity"
             android:layout_width="60dp"
             android:layout_height="40dp"
@@ -175,7 +175,7 @@
             android:textColorHint="#BDBABA"
             android:textSize="13sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/KeyboardQuantity"
             android:layout_width="60dp"
             android:layout_height="40dp"
@@ -185,7 +185,7 @@
             android:layout_marginBottom="40dp"
             android:textSize="13sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/mousePadQuantity"
             android:layout_width="60dp"
             android:layout_height="40dp"
@@ -195,7 +195,7 @@
             android:textSize="13sp"
             android:layout_marginBottom="40dp" />
 
-        <EditText
+        <TextView
             android:id="@+id/unitQuantity"
             android:layout_width="60dp"
             android:layout_height="40dp"
