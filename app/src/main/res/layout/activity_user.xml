@@ -29,17 +29,19 @@
                 android:src="@drawable/baseline_menu_24" />
 
             <!-- Title Text -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text=" Admin Dashboard"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Greeting Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="95dp"
+            android:text=" Admin Dashboard"
+            android:textColor="#41623D"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/UserwelcomeTextView"
             android:layout_width="wrap_content"
@@ -47,14 +49,6 @@
             android:layout_marginTop="16dp"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Have a nice day"
-            android:textColor="#A6A6A6"
-            android:textSize="14sp"
-            android:textStyle="bold" />
 
 
         <LinearLayout
