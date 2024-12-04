@@ -16,7 +16,7 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".AdminPendingUsers"
+            android:name=".SplashScreen"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -50,7 +50,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".AdminPendingUsers"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

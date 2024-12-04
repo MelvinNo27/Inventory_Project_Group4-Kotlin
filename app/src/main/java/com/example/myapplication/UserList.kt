@@ -34,6 +34,7 @@ class UserList : AppCompatActivity() {
         binding.recyclerView.adapter = userAdapter
 
         binding.addButton.setOnClickListener { showAddItemForm() }
+
         binding.backBtn.setOnClickListener {
             startActivity(Intent(this, AdminDashboard::class.java))
             finish()
@@ -74,23 +75,16 @@ class UserList : AppCompatActivity() {
                 val passwordText = passwordEditText.text.toString()
 
                 if (validateInput(nameText, emailText, passwordText)) {
-                    // Check if email exists before proceeding
-                    checkEmailExists(emailText) { exists ->
-                        if (exists) {
-                            // If email exists, notify the user
-                            showDialog("Email already exists. Please use a different email.")
-                        } else {
-                            // If email does not exist, add the user to the database
-                            val newItemId = rootDatabaseRef.push().key ?: return@checkEmailExists
-                            val item = AdminUser(newItemId, nameText, emailText, passwordText)
-                            addItemToFirebase(item)
-                        }
-                    }
+                    // Directly add the user to the database without checking email existence
+                    val newItemId = rootDatabaseRef.push().key ?: return@setPositiveButton
+                    val item = AdminUser(newItemId, nameText, emailText, passwordText)
+                    addItemToFirebase(item)
                 }
             }
             .setNegativeButton("Cancel", null)
         dialog.show()
     }
+
 
     private fun editItem(item: AdminUser) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_edit_item, null)
@@ -154,26 +148,35 @@ class UserList : AppCompatActivity() {
     }
 
     private fun addItemToFirebase(item: AdminUser) {
-        rootDatabaseRef.orderByChild("email").equalTo(item.email)
-            .get()
-            .addOnSuccessListener { snapshot ->
-                if (snapshot.exists()) {
-                    showDialog("Email already exists in the database.")
-                } else {
-                    // If no duplicate email found, add the item
-                    rootDatabaseRef.child(item.uid).setValue(item)
-                        .addOnSuccessListener {
-                            showDialog("User added successfully.")
+        // First, check if the email exists in Firebase Authentication
+        checkEmailExists(item.email) { existsInAuth ->
+            if (existsInAuth) {
+                showDialog("Email already exists in Firebase Authentication. Please use a different email.")
+            } else {
+                // If email does not exist in Firebase Authentication, check the Realtime Database
+                rootDatabaseRef.orderByChild("email").equalTo(item.email)
+                    .get()
+                    .addOnSuccessListener { snapshot ->
+                        if (snapshot.exists()) {
+                            showDialog("Email already exists in the database.")
+                        } else {
+                            // If no duplicate email found in either Firebase Auth or DB, add the user
+                            rootDatabaseRef.child(item.uid).setValue(item)
+                                .addOnSuccessListener {
+                                    showDialog("User added successfully.")
+                                }
+                                .addOnFailureListener {
+                                    showDialog("Failed to add item to database.")
+                                }
                         }
-                        .addOnFailureListener {
-                            showDialog("Failed to add item to database.")
-                        }
-                }
+                    }
+                    .addOnFailureListener {
+                        showDialog("Failed to check database for email.")
+                    }
             }
-            .addOnFailureListener {
-                showDialog("Email already exists. Please use a different email.")
-            }
+        }
     }
+
 
     private fun updateItemInFirebase(item: AdminUser) {
         rootDatabaseRef.child(item.uid).setValue(item)

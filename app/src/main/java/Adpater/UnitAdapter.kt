@@ -17,7 +17,7 @@ class UnitAdapter(private val unitList: MutableList<UnitClass>) : RecyclerView.A
     // Bind the unit data to the view elements
     override fun onBindViewHolder(holder: UnitViewHolder, position: Int) {
         val unit = unitList[position]
-        holder.bind(unit)
+        holder.bind(unit, position) // Pass position to calculate the "Unit X" label
     }
 
     // Return the size of the list
@@ -33,11 +33,12 @@ class UnitAdapter(private val unitList: MutableList<UnitClass>) : RecyclerView.A
     inner class UnitViewHolder(private val binding: ListItemUnitBinding) : RecyclerView.ViewHolder(binding.root) {
 
         // Bind the unit data to the view elements
-        fun bind(unit: UnitClass) {
-            binding.unitName.text = unit.monitorID.toString()
+        fun bind(unit: UnitClass, position: Int) {
+            // Dynamically generate the unit label like "Unit 1", "Unit 2", etc.
+            binding.unitName.text = "Unit ${position + 1}" // Position + 1 to make it 1-based index
 
             // Set the "View" button's click listener
-            binding.viewButton.setOnClickListener {
+            binding.unitName.setOnClickListener {
                 // When clicked, pass the unit details to the UnitDetailActivity
                 val context = binding.root.context
                 val intent = Intent(context, UnitDetailActivity::class.java).apply {
@@ -57,3 +58,4 @@ class UnitAdapter(private val unitList: MutableList<UnitClass>) : RecyclerView.A
         }
     }
 }
+

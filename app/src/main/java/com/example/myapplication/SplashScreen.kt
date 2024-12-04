@@ -15,7 +15,7 @@ import com.google.firebase.database.*
 class SplashScreen : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashScreenBinding
-    private val handler = Handler()
+    private val handler = Handler()    
     private var progressStatus = 0
     private var loadingText = "LOADING"
     private val dots = arrayOf(".", "..", "...", "....")
