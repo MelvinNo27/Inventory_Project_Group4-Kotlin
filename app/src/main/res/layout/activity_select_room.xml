@@ -1,64 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/SelectRoom"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroundd">
+    android:background="@drawable/img_3">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/selectRoomBack"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="35dp"
-        android:src="@drawable/baseline_arrow_black_back_24" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp">
+        android:layout_marginTop="20dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="null"
+        android:src="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/buttonRoom14"
-            android:layout_height="120dp"
-            android:layout_width="120dp"
-            android:layout_marginEnd="40dp"
-            android:src="@drawable/door14" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="350dp"
+        android:layout_height="500dp"
+        app:cardCornerRadius="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/RM7"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/gradient_button"
+            android:textColor="@color/white"
+            android:paddingEnd="120dp"
+            android:textSize="25sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="ROOM 7"/>
 
-        <ImageView
-            android:id="@+id/buttonRoom7"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/door7" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/RM13"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/gradient_button"
+            android:textColor="@color/white"
+            android:paddingEnd="120dp"
+            android:textSize="25sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="90dp"
+            android:text="ROOM 13"/>
 
-    </LinearLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/RM14"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/gradient_button"
+            android:textColor="@color/white"
+            android:paddingEnd="120dp"
+            android:textSize="25sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="160dp"
+            android:text="ROOM 14"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="-250dp"
-        android:layout_marginTop="250dp"
-        android:orientation="horizontal">
+</androidx.cardview.widget.CardView>
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Room 14"
-            android:layout_marginEnd="110dp"
-            android:textColor="#22177A"
-            android:textStyle="bold" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Room 7"
-            android:textColor="#22177A"
-            android:textStyle="bold" />
-    </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
