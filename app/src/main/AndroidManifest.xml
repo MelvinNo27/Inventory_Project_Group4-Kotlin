@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".Room13"
+            android:exported="false" />
+        <activity
             android:name=".SplashScreen"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -56,11 +59,11 @@
         <activity
             android:name=".Room7"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Room14"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SelectRooms"
             android:exported="false"
@@ -69,8 +72,6 @@
             android:name=".UnitDetailActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
-
     </application>
 
 </manifest>
