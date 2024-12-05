@@ -4,84 +4,74 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg">
+    android:background="@drawable/img_5"
+    android:orientation="horizontal"
+    android:gravity="center">
 
+    <!-- First LinearLayout containing images -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="130dp">
+        android:layout_marginStart="30dp"
+        android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageview"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/unite" />
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/monitor_1" />
 
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/mouse" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="20dp"
+            android:background="null"
+            android:src="@drawable/keyboard" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/mousepad" />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/unite" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginStart="-220dp"
-        android:layout_marginTop="160dp">
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/unite" />
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/unite"/>
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/unite" />
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/unite"/>
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/unite" />
-
-    </LinearLayout>
-
-
+    <!-- Second LinearLayout containing the ID and EditTexts -->
     <LinearLayout
         android:layout_width="172dp"
-        android:layout_height="400dp"
-        android:layout_marginTop="160dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ID"
-            android:textColor="@color/black"
+            android:textColor="#41623D"
             android:layout_marginBottom="5dp"
-            android:layout_gravity="center"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="170dp"
-            tools:layout_editor_absoluteY="188dp" />
-
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/monitorID"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="40dp"
             android:textColor="@color/white"
             android:textColorHint="#BDBABA"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:layout_marginBottom="40dp"
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/mouseID"
@@ -91,7 +81,8 @@
             android:textColor="@color/white"
             android:layout_marginBottom="40dp"
             android:textColorHint="#BDBABA"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/keyboardID"
@@ -101,7 +92,8 @@
             android:textColor="@color/white"
             android:textColorHint="#BDBABA"
             android:textSize="13sp"
-            android:layout_marginBottom="40dp" />
+            android:layout_marginBottom="40dp"
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/mousePadID"
@@ -110,8 +102,9 @@
             android:background="@drawable/edit_text_background"
             android:textColor="@color/white"
             android:textColorHint="#BDBABA"
+            android:textSize="13sp"
             android:layout_marginBottom="40dp"
-            android:textSize="13sp" />
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/unitID"
@@ -121,23 +114,24 @@
             android:textColor="@color/white"
             android:textColorHint="#BDBABA"
             android:textSize="13sp"
-            android:layout_marginBottom="10dp" />
-
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center" />
     </LinearLayout>
 
+    <!-- Third LinearLayout containing Quantity EditTexts -->
     <LinearLayout
         android:id="@+id/layout2"
         android:layout_width="90dp"
-        android:layout_height="400dp"
-        android:layout_marginTop="160dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quantity"
-            android:textColor="@color/black"
-            android:layout_marginBottom="5dp" />
+            android:textColor="#41623D"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/MonitorQuantity"
@@ -147,7 +141,8 @@
             android:textColor="@color/white"
             android:textColorHint="#BDBABA"
             android:layout_marginBottom="40dp"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/MouseQuantity"
@@ -157,7 +152,8 @@
             android:textColor="@color/white"
             android:layout_marginBottom="40dp"
             android:textColorHint="#BDBABA"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/KeyboardQuantity"
@@ -167,7 +163,8 @@
             android:textColor="@color/white"
             android:textColorHint="#BDBABA"
             android:layout_marginBottom="40dp"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/mousePadQuantity"
@@ -177,7 +174,8 @@
             android:textColor="@color/white"
             android:textColorHint="#BDBABA"
             android:textSize="13sp"
-            android:layout_marginBottom="40dp" />
+            android:layout_marginBottom="40dp"
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/unitQuantity"
@@ -186,7 +184,7 @@
             android:background="@drawable/edit_text_background"
             android:textColor="@color/white"
             android:textColorHint="#BDBABA"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:layout_gravity="center" />
     </LinearLayout>
-
 </LinearLayout>

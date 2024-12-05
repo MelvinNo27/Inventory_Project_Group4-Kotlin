@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/adminbackground"
+        android:background="@drawable/img_6"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -28,15 +28,6 @@
                 android:onClick="openDrawer"
                 android:src="@drawable/baseline_menu_24" />
 
-            <!-- Title Text -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text=" Admin Dashboard"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Greeting Text -->
@@ -52,39 +43,71 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:gravity="end"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="100dp">
-
+                android:layout_marginBottom="60dp">
 
                 <Button
                     android:id="@+id/btnInstructors"
-                    android:layout_width="177dp"
-                    android:layout_height="62dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:background="@drawable/activity_user_button"
-                    android:textColor="@android:color/black"
-                    android:textSize="17sp"
-                    android:text="Instructors"
                     android:drawableLeft="@drawable/instructors"
-                    android:textAllCaps="false"/>
-
-
-
+                    android:paddingStart="20dp"
+                    android:paddingEnd="130dp"
+                    android:text="Instructors"
+                    android:textAllCaps="false"
+                    android:textColor="#41623D"
+                    android:textSize="20sp" />
 
                 <!-- Second Button -->
                 <Button
                     android:id="@+id/btnRooms"
-                    android:layout_width="170dp"
+                    android:layout_width="350dp"
                     android:layout_height="62dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
                     android:background="@drawable/activity_user_button"
-                    android:textColor="@android:color/black"
+                    android:textColor="#41623D"
                     android:drawableLeft="@drawable/classroom"
-                    android:textSize="17sp"
+                    android:textSize="20sp"
+                    android:paddingEnd="130dp"
                     android:text="Classrooms"
+                    android:paddingStart="20dp"
                     android:textAllCaps="false"/>
+
+                <Button
+                    android:id="@+id/btnReports"
+                    android:layout_width="350dp"
+                    android:layout_height="62dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/activity_user_button"
+                    android:textColor="#41623D"
+                    android:textSize="20sp"
+                    android:paddingEnd="160dp"
+                    android:text="Reports"
+                    android:drawableLeft="@drawable/alert"
+                    android:paddingStart="20dp"
+                    android:textAllCaps="false"
+                    />
+
+                <Button
+                    android:id="@+id/button38"
+                    android:layout_width="350dp"
+                    android:layout_height="62dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/activity_user_button"
+                    android:drawableLeft="@drawable/update"
+                    android:paddingStart="30dp"
+                    android:text="Updates"
+                    android:paddingEnd="140dp"
+                    android:textColor="#41623D"
+                    android:textSize="20sp"
+                    android:textAllCaps="false"
+                    />
 
             </LinearLayout>
 
@@ -98,29 +121,6 @@
                 android:layout_marginTop="2dp">
 
 
-                <!-- button36 -->
-                <Button
-                    android:id="@+id/btnReports"
-                    android:layout_width="177dp"
-                    android:layout_height="62dp"
-                    android:layout_marginEnd="13dp"
-                    android:background="@drawable/activity_user_button"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:text="Reports"
-                    android:drawableLeft="@drawable/alert"
-                    android:textAllCaps="false"
-                    />
-
-
-                <Button
-                    android:id="@+id/button38"
-                    android:layout_width="176dp"
-                    android:layout_height="62dp"
-                    android:layout_marginEnd="6dp"
-                    android:background="@drawable/activity_user_button"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
             </LinearLayout>
 
         </LinearLayout>
