@@ -67,8 +67,7 @@ class Sign_Up : AppCompatActivity() {
 
         // Login link
         binding.tvlogin.setOnClickListener {
-            val intent = Intent(this, Login::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, Login::class.java))
         }
 
         // Toggle password visibility
@@ -108,18 +107,18 @@ class Sign_Up : AppCompatActivity() {
     }
 
     private fun registerPendingUser(userName: String, email: String, password: String) {
-        val userId = email.hashCode().toString() // Use a hash of the email for the user ID (avoid using Firebase UID here)
+        val userId = email.hashCode().toString()
 
-        val database = FirebaseDatabase.getInstance().getReference("pending_users") // Save pending users in "pending_users" node
+        val database = FirebaseDatabase.getInstance().getReference("pending_users")
 
         // User data with status set to "pending" for admin approval
         val pendingUser = mapOf(
             "id" to userId,
-            "name" to userName, // Save the username
-            "email" to email, // Save the email
-            "password" to password, // Save the email
-            "role" to "user", // User role
-            "status" to "pending" // Pending approval by admin
+            "name" to userName,
+            "email" to email,
+            "password" to password,
+            "role" to "user",
+            "status" to "pending"
         )
 
         database.child(userId).setValue(pendingUser).addOnCompleteListener { dbTask ->
@@ -146,7 +145,7 @@ class Sign_Up : AppCompatActivity() {
 
                     val adminUser = mapOf(
                         "id" to userId,
-                        "name" to userName, // Save the admin username
+                        "name" to userName,
                         "email" to email,
                         "role" to "admin"
                     )

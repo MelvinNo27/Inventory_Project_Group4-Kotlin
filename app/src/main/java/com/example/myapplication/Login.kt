@@ -97,11 +97,8 @@ class Login : AppCompatActivity() {
     }
 
     private fun checkUserRole(userId: String) {
-        val database = FirebaseDatabase.getInstance()
 
-        // Check if the user is an admin
-        val adminRef = database.reference.child("admins").child(userId)
-        adminRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        FirebaseDatabase.getInstance().reference.child("admins").child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     // User is an admin
@@ -109,82 +106,59 @@ class Login : AppCompatActivity() {
                     startActivity(Intent(this@Login, AdminDashboard::class.java))
                     finish()
                 } else {
-                    // Check if the user is in pending_users
-                    val pendingUserRef = database.reference.child("pending_users").child(userId)
-                    pendingUserRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(pendingSnapshot: DataSnapshot) {
-                            if (pendingSnapshot.exists()) {
-                                // User is pending approval
-                                Toast.makeText(
-                                    this@Login,
-                                    "Your account is pending approval.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                auth.signOut()
-                            } else {
-                                // Check in the users node for approved users
-                                val userRef = database.reference.child("users").child(userId)
-                                userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                                    override fun onDataChange(userSnapshot: DataSnapshot) {
-                                        if (userSnapshot.exists()) {
-                                            // User is a regular user
-                                            val status = userSnapshot.child("status").getValue(String::class.java)
-                                            if (status == "approved") {
-                                                Toast.makeText(
-                                                    this@Login,
-                                                    "Welcome User!",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                startActivity(Intent(this@Login, Userdashboard::class.java))
-                                                finish()
-                                            } else {
-                                                Toast.makeText(
-                                                    this@Login,
-                                                    "Your account is pending approval.",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                auth.signOut()
-                                            }
-                                        } else {
-                                            // No role information found
-                                            Toast.makeText(
-                                                this@Login,
-                                                "No role information found.",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            auth.signOut()
-                                        }
-                                    }
-
-                                    override fun onCancelled(error: DatabaseError) {
-                                        Toast.makeText(
-                                            this@Login,
-                                            "Error fetching user data: ${error.message}",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                })
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            Toast.makeText(
-                                this@Login,
-                                "Error fetching pending user data: ${error.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    })
+                    // If user is not an admin, check in the "users" node
+                    checkUserInUsersNode(userId)
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(
-                    this@Login,
-                    "Error fetching admin data: ${error.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this@Login, "Error fetching admin data: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
+    // Helper method to check user status in "users" node
+    private fun checkUserInUsersNode(userId: String) {
+        val userRef =  FirebaseDatabase.getInstance().reference.child("users").child(userId)
+
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val role = snapshot.child("role").getValue(String::class.java)
+                    val status = snapshot.child("status").getValue(String::class.java)
+
+                    when {
+                        role == "User" -> {
+                            // Approved user logged in
+                            Toast.makeText(this@Login, "Welcome User!", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@Login, Userdashboard::class.java))
+                            finish()
+                        }
+                        status == "pending" -> {
+                            // User account is pending approval
+                            Toast.makeText(this@Login, "Your account is pending approval.", Toast.LENGTH_SHORT).show()
+                            auth.signOut()
+                        }
+                        else -> {
+                            // Invalid status or role
+                            Toast.makeText(this@Login, "Invalid user status or role", Toast.LENGTH_SHORT).show()
+                            auth.signOut()
+                        }
+                    }
+                } else {
+                    // User not found in the database
+                    Toast.makeText(this@Login, "User not found.", Toast.LENGTH_SHORT).show()
+                    auth.signOut()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@Login, "Error fetching user data: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+
+
 }
+

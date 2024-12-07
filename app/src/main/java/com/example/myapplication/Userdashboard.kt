@@ -34,6 +34,12 @@ class Userdashboard : AppCompatActivity() {
         binding = ActivityUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        binding.btnUserRooms.setOnClickListener {
+            startActivity(Intent(this, SelectRooms::class.java))
+            finish()
+        }
+
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
         rootDatabaseRef = FirebaseDatabase.getInstance().getReference("users")
@@ -47,8 +53,7 @@ class Userdashboard : AppCompatActivity() {
         // Set onClickListener for the logout button (floatingAddButton in XML)
         binding.UserlogOutButton.setOnClickListener {
             auth.signOut()
-            val intent = Intent(this, Login::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, Login::class.java))
             finish()
         }
 

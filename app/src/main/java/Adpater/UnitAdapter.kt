@@ -17,7 +17,7 @@ class UnitAdapter(private val unitList: MutableList<UnitClass>) : RecyclerView.A
     // Bind the unit data to the view elements
     override fun onBindViewHolder(holder: UnitViewHolder, position: Int) {
         val unit = unitList[position]
-        holder.bind(unit, position) // Pass position to calculate the "Unit X" label
+        holder.bind(unit, position)
     }
 
     // Return the size of the list

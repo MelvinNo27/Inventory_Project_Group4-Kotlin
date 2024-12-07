@@ -1,43 +1,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:layout_height="150dp"
+    android:background="@drawable/round_border"
+    android:orientation="vertical"
+    android:layout_marginBottom="10dp"
     android:padding="16dp">
 
     <!-- Name Column -->
     <TextView
         android:id="@+id/text_view_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:text="Name" />
+        android:layout_height="30dp"
+        android:textColor="@color/black" />
 
     <!-- Email Column -->
     <TextView
         android:id="@+id/text_view_email"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:text="Email" />
+        android:layout_height="30dp"
+        android:textColor="@color/black"/>
 
-    <!-- Edit Icon -->
-    <ImageView
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="150dp">
+
+
+    <TextView
         android:id="@+id/text_view_approve"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/baseline_check_24"
-        android:layout_marginEnd="15dp"
-        android:contentDescription="Approve" />
+        android:layout_height="match_parent"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/green"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:text="Approved"/>
 
     <!-- Delete Icon -->
-    <ImageView
+    <TextView
         android:id="@+id/text_view_reject"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/baseline_delete_forever_24"
-        android:contentDescription="Reject" />
+        android:layout_height="match_parent"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="#FF0000"
+        android:text="Reject" />
+
+</LinearLayout>
 </LinearLayout>

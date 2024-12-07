@@ -67,7 +67,6 @@ class UserList : AppCompatActivity() {
         val passwordEditText: EditText = dialogView.findViewById(R.id.passwordEditText)
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Add New User")
             .setView(dialogView)
             .setPositiveButton("Add") { _, _ ->
                 val nameText = nameEditText.text.toString()
@@ -101,7 +100,7 @@ class UserList : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
             .setTitle("Edit User")
             .setView(dialogView)
-            .setPositiveButton("Update") { _, _ ->
+            .setPositiveButton("Save") { _, _ ->
                 val newName = nameEditText.text.toString()
 
                 if (newName.isNotEmpty()) {
@@ -139,56 +138,74 @@ class UserList : AppCompatActivity() {
     }
 
     private fun deleteItem(item: AdminUser) {
-        val index = itemList.indexOf(item)
-        if (index != -1) {
-            itemList.removeAt(index)
-            userAdapter.notifyItemRemoved(index)
-            rootDatabaseRef.child(item.uid).removeValue()
-        }
+        // Show a confirmation dialog before deleting
+        AlertDialog.Builder(this)
+            .setTitle("Confirm Deletion")
+            .setMessage("Are you sure you want to delete this user?")
+            .setPositiveButton("Yes") { _, _ ->
+                val index = itemList.indexOf(item)
+                if (index != -1) {
+                    itemList.removeAt(index) // Remove from the list
+                    userAdapter.notifyItemRemoved(index) // Notify adapter of item removal
+                    rootDatabaseRef.child(item.uid).removeValue() // Remove from Firebase Database
+                }
+            }
+            .setNegativeButton("No", null) // Do nothing on "No"
+            .show()
     }
 
+
     private fun addItemToFirebase(item: AdminUser) {
-        // First, check if the email exists in Firebase Authentication
+
         checkEmailExists(item.email) { existsInAuth ->
             if (existsInAuth) {
                 showDialog("Email already exists in Firebase Authentication. Please use a different email.")
             } else {
-                // If email does not exist in Firebase Authentication, check the Realtime Database
-                rootDatabaseRef.orderByChild("email").equalTo(item.email)
-                    .get()
-                    .addOnSuccessListener { snapshot ->
-                        if (snapshot.exists()) {
-                            showDialog("Email already exists in the database.")
-                        } else {
-                            // If no duplicate email found in either Firebase Auth or DB, add the user
-                            rootDatabaseRef.child(item.uid).setValue(item)
+
+                auth.createUserWithEmailAndPassword(item.email, item.password)
+                    .addOnSuccessListener { authResult ->
+                        val user = authResult.user // Firebase Auth user
+
+                        val newUser = user?.let {
+                            AdminUser(
+                                it.uid,  // Firebase user UID
+                                item.name,
+                                item.email,
+                                item.password
+                            )
+                        }
+
+                        if (user != null) {
+                            // Add the new user to Firebase
+                            rootDatabaseRef.child(user.uid).setValue(newUser)
                                 .addOnSuccessListener {
+                                    // Show success dialog
                                     showDialog("User added successfully.")
+
+                                    // Add the new user to the beginning (top) of the list
+                                    if (newUser != null) {
+                                        itemList.add(0, newUser)
+                                    } // Add the new item to the top of the list
+                                    userAdapter.notifyItemInserted(0) // Notify the adapter that a new item is inserted at the top
                                 }
                                 .addOnFailureListener {
-                                    showDialog("Failed to add item to database.")
+                                    showDialog("Failed to add user to database.")
                                 }
                         }
                     }
-                    .addOnFailureListener {
-                        showDialog("Failed to check database for email.")
+                    .addOnFailureListener { exception ->
+                        showDialog("Failed to create user in Firebase Authentication: ${exception.message}")
                     }
             }
         }
     }
+
 
 
     private fun updateItemInFirebase(item: AdminUser) {
         rootDatabaseRef.child(item.uid).setValue(item)
             .addOnFailureListener {
                 showDialog("Failed to update item")
-            }
-    }
-
-    private fun addUserToFirebaseAuth(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnFailureListener {
-                showDialog("Failed to create user")
             }
     }
 

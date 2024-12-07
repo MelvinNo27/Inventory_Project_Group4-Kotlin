@@ -12,6 +12,7 @@ import com.example.myapplication.databinding.ActivityAddUnitBinding
 import com.example.myapplication.databinding.ActivityRoom14Binding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.selects.select
 
 class Room14 : AppCompatActivity() {
 
@@ -28,10 +29,16 @@ class Room14 : AppCompatActivity() {
         database = FirebaseDatabase.getInstance()
         unitsRef = database.reference.child("units") // Save units under "units" node in Firebase
 
+
         binding = ActivityRoom14Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize RecyclerView and Adapter
+
+        val type = "Room #"+ intent.getStringExtra("roomNo");
+
+        binding.textViewRoom.setText(type)
+
+                // Initialize RecyclerView and Adapter
         unitAdapter = UnitAdapter(unitList)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = unitAdapter
@@ -50,12 +57,11 @@ class Room14 : AppCompatActivity() {
         // Load items from Firebase
         loadItemsFromFirebase()
     }
-
     private fun showAddUnitDialog() {
         // Inflate the dialog layout using ViewBinding
         val dialogBinding = ActivityAddUnitBinding.inflate(LayoutInflater.from(this))
 
-        // Get references to input fields using ViewBinding
+        // Get references to input fields and buttons using ViewBinding
         val monitorId = dialogBinding.monitorID
         val mouseId = dialogBinding.mouseID
         val keyboardId = dialogBinding.keyboardID
@@ -66,11 +72,27 @@ class Room14 : AppCompatActivity() {
         val keyboardQuan = dialogBinding.KeyboardQuantity
         val mousePadQuan = dialogBinding.mousePadQuantity
         val unitQuan = dialogBinding.unitQuantity
+        val btnAddUnit = dialogBinding.btnAddUnit
+        val btnCancelUnit = dialogBinding.btnCancel
 
         // Create the dialog using the ViewBinding layout
         val dialog = AlertDialog.Builder(this)
             .setView(dialogBinding.root)
-            .setPositiveButton("Add") { _, _ ->
+            .create()
+
+        // Set up the "Add" button click listener
+        btnAddUnit.setOnClickListener {
+            // Validate fields before adding the unit
+            if (monitorId.text.isNullOrEmpty() || mouseId.text.isNullOrEmpty() ||
+                keyboardId.text.isNullOrEmpty() || mousePadId.text.isNullOrEmpty() ||
+                unitId.text.isNullOrEmpty() || monitorQuan.text.isNullOrEmpty() ||
+                mouseQuan.text.isNullOrEmpty() || keyboardQuan.text.isNullOrEmpty() ||
+                mousePadQuan.text.isNullOrEmpty() || unitQuan.text.isNullOrEmpty()) {
+
+                // Show toast if any field is empty
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+
+            } else {
                 // Get user input and create Unit object
                 val monitorID = monitorId.text.toString().toIntOrNull() ?: 0
                 val mouseID = mouseId.text.toString().toIntOrNull() ?: 0
@@ -97,20 +119,23 @@ class Room14 : AppCompatActivity() {
                     unitQuantity
                 )
 
-                // Add the unit to the list and update RecyclerView
                 unitAdapter.addUnit(unit)
-
-                // Save the unit to Firebase Realtime Database
                 saveUnitToFirebase(unit)
+                dialog.dismiss()
             }
-            .setNegativeButton("Cancel") { dialogInterface, _ ->
-                dialogInterface.dismiss()
-            }
-            .create()
+        }
+
+
+        btnCancelUnit.setOnClickListener {
+
+            dialog.dismiss()
+        }
 
         // Show the dialog
         dialog.show()
     }
+
+
 
     // Save unit to Firebase
     private fun saveUnitToFirebase(unit: UnitClass) {

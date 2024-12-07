@@ -15,7 +15,7 @@ import com.google.firebase.database.*
 class SplashScreen : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashScreenBinding
-    private val handler = Handler()    
+    private val handler = Handler()
     private var progressStatus = 0
     private var loadingText = "LOADING"
     private val dots = arrayOf(".", "..", "...", "....")
@@ -141,10 +141,8 @@ class SplashScreen : AppCompatActivity() {
         })
     }
 
-
     private fun storeUserRoleLocally(role: String) {
-        val sharedPreferences = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
+        val editor = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE).edit()
         editor.putString("userRole", role)
         editor.apply()
     }
@@ -156,20 +154,20 @@ class SplashScreen : AppCompatActivity() {
     }
 
     private fun goToAdminDashboard() {
-        val intent = Intent(this, AdminDashboard::class.java)
-        startActivity(intent)
+
+        startActivity(Intent(this, AdminDashboard::class.java))
         finish()
     }
 
     private fun goToUserDashboard() {
-        val intent = Intent(this, Userdashboard::class.java)
-        startActivity(intent)
+
+        startActivity(Intent(this, Userdashboard::class.java))
         finish()
     }
 
     private fun goToLogin() {
-        val intent = Intent(this, Login::class.java)
-        startActivity(intent)
+
+        startActivity(Intent(this, Login::class.java))
         finish()
     }
 
@@ -191,3 +189,4 @@ class SplashScreen : AppCompatActivity() {
         startActivity(intent)
     }
 }
+

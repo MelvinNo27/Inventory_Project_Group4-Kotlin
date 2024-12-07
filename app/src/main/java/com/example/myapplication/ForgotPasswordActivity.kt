@@ -1,25 +1,29 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.databinding.ActivityForgotPasswordBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class ForgotPasswordActivity : AppCompatActivity() {
+
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivityForgotPasswordBinding  // ViewBinding instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forgot_password)
 
+        // Initialize ViewBinding
+        binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Initialize Firebase Authentication
         auth = FirebaseAuth.getInstance()
-        val emailEditText = findViewById<EditText>(R.id.etEmailReset)
-        val sendResetLinkButton = findViewById<Button>(R.id.btnSendResetLink)
 
-        sendResetLinkButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim()
+        // Set OnClickListener on the Send Reset Link button
+        binding.btnSendResetLink.setOnClickListener {
+            val email = binding.etEmailReset.text.toString().trim()
 
             if (email.isEmpty()) {
                 Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
@@ -31,7 +35,6 @@ class ForgotPasswordActivity : AppCompatActivity() {
                             finish()  // Close the activity after sending the link
                         } else {
                             Toast.makeText(this, "Failed to send reset email", Toast.LENGTH_SHORT).show()
-                            return@addOnCompleteListener
                         }
                     }
             }

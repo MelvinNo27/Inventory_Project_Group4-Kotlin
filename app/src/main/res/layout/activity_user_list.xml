@@ -62,15 +62,15 @@
                 android:drawableLeft="@drawable/baseline_search_24" />
 
             <Button
-                android:id="@+id/addButton"
+                android:id="@+id/viewUsers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ADD"
+                android:background="@drawable/edit_text_background"
+                android:text="Pending Users"
                 android:textSize="14sp"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 
-        <!-- Scrollable Table Section -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -82,86 +82,25 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp">
 
-                <!-- Table Header -->
-                <TableLayout
-                    android:id="@+id/tableLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="1"
-                    android:layout_margin="10dp">
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:weightSum="3">
-
-                        <!-- ID Column -->
-                        <TextView
-                            android:id="@+id/idNumberTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ID"
-                            android:textStyle="bold"
-                            android:padding="8dp"
-                            android:textColor="#FF000000"
-                            android:gravity="center" />
-
-                        <!-- Name Column -->
-                        <TextView
-                            android:id="@+id/nameTextView"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="Name"
-                            android:textStyle="bold"
-                            android:padding="8dp"
-                            android:textColor="#FF000000"
-                            android:gravity="center" />
-
-                        <!-- Email Column -->
-                        <TextView
-                            android:id="@+id/emailTextView"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="Email"
-                            android:textStyle="bold"
-                            android:padding="8dp"
-                            android:textColor="#FF000000"
-                            android:gravity="center" />
-
-                        <!-- Action Column -->
-                        <TextView
-                            android:id="@+id/actionTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Action"
-                            android:textStyle="bold"
-                            android:padding="8dp"
-                            android:textColor="#FF000000"
-                            android:gravity="center" />
-                    </TableRow>
-                </TableLayout>
 
                 <!-- RecyclerView for user data (optional, can replace TableLayout if desired) -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="457dp"
-                    android:layout_marginTop="16dp" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
         </ScrollView>
 
-        <!-- View Pending Users Button -->
-        <Button
-            android:id="@+id/viewUsers"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="78dp"
-            android:text="View Pending Users"
-            android:textSize="15sp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-150dp"
+            android:layout_marginStart="250dp"
+            app:backgroundTint="@color/blue"
+            android:src="@drawable/baseline_add_24" />
     </LinearLayout>
 
 
