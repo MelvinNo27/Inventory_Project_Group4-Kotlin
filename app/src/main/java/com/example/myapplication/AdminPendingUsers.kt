@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -33,9 +34,26 @@ class AdminPendingUsers : AppCompatActivity() {
             finish()
         }
 
+        // Set up search filter
+        binding.searchText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (!newText.isNullOrEmpty()) {
+                    filterPendingUsers(newText)
+                } else {
+                    fetchPendingUsers() // Reload all users when search is cleared
+                }
+                return true
+            }
+        })
+
         // Fetch pending users when the activity is created
         fetchPendingUsers()
     }
+
 
     // Function to fetch pending users from Firebase
     private fun fetchPendingUsers() {
@@ -63,34 +81,25 @@ class AdminPendingUsers : AppCompatActivity() {
         })
     }
 
-    // Function to add a pending user to the table
-    private fun addItemToTable(item: PendingUser, userId: String) {
-        // Inflate the table row layout using View Binding
-        val tableRowBinding = TableRowPendingUserBinding.inflate(layoutInflater)
 
-        // Get references to the views from the ViewBinding class
+    private fun addItemToTable(item: PendingUser, userId: String) {
+        val tableRowBinding = TableRowPendingUserBinding.inflate(layoutInflater)
         val nameTextView = tableRowBinding.textViewName
         val emailTextView = tableRowBinding.textViewEmail
+        val signUpTimeTextView = tableRowBinding.textViewDate
         val approveTextView = tableRowBinding.textViewApprove
-        val rejectTextView = tableRowBinding.textViewReject
 
-        // Set the user data to the TextViews
         nameTextView.text = item.name
         emailTextView.text = item.email
+        signUpTimeTextView.text = "Sign-Up Time: ${item.signUpTime ?: "N/A"}"
 
         approveTextView.setOnClickListener {
             approveUser(userId, item)
         }
 
-        rejectTextView.setOnClickListener {
-            rejectUser(userId)
-            // Remove the row from the TableLayout
-            binding.tableLayoutPending.removeView(tableRowBinding.root)
-        }
-
-        // Add the row to the table layout
         binding.tableLayoutPending.addView(tableRowBinding.root)
     }
+
 
 
     // Function to approve a user
@@ -150,23 +159,30 @@ class AdminPendingUsers : AppCompatActivity() {
             }
         }
     }
+    private fun filterPendingUsers(query: String) {
+        binding.tableLayoutPending.removeAllViews() // Clear previous rows
 
-
-
-
-
-
-    // Function to reject a user
-    private fun rejectUser(userId: String) {
-
-        // Remove the user
-        FirebaseDatabase.getInstance().getReference("pending_users").child(userId).removeValue().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(this@AdminPendingUsers, "User rejected", Toast.LENGTH_SHORT).show()
-                fetchPendingUsers() // Refresh the list
-            } else {
-                Toast.makeText(this@AdminPendingUsers, "Failed to reject user", Toast.LENGTH_SHORT).show()
+        // Fetch and filter pending users
+        database.orderByChild("status").equalTo("pending").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (userSnapshot in snapshot.children) {
+                        val pendingUser = userSnapshot.getValue(PendingUser::class.java)
+                        pendingUser?.let {
+                            if (it.name.contains(query, ignoreCase = true) || it.email.contains(query, ignoreCase = true)) {
+                                addItemToTable(it, userSnapshot.key ?: "")
+                            }
+                        }
+                    }
+                } else {
+                    Toast.makeText(this@AdminPendingUsers, "No pending users found", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@AdminPendingUsers, "Failed to filter users", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
+
 }

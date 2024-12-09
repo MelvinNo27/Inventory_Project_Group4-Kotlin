@@ -2,131 +2,110 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivitySelectRoomBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 class SelectRooms : AppCompatActivity() {
 
     private lateinit var binding: ActivitySelectRoomBinding
+    private lateinit var database: DatabaseReference
+    private val roomList = mutableListOf<Rooms>()
+    private lateinit var adapter: RoomAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize ViewBinding
         binding = ActivitySelectRoomBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Handle button clicks for room selection
-        binding.buttonRoom7.setOnClickListener {
-            showRoom(7)
+        database = FirebaseDatabase.getInstance().getReference("rooms")
+
+        setupRecyclerView()
+        setupAddRoomButton()
+        loadRoomsFromFirebase()
+    }
+
+    private fun setupRecyclerView() {
+        adapter = RoomAdapter(roomList) { room ->
+            navigateToRoomLayout(room)
         }
+        binding.roomRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.roomRecyclerView.adapter = adapter
+    }
 
-        binding.buttonRoom14.setOnClickListener {
-            showRoom(14)
+    private fun setupAddRoomButton() {
+        binding.addRoomButton.setOnClickListener {
+            showAddRoomDialog()
         }
+    }
 
+    private fun showAddRoomDialog() {
+        val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(this)
+        dialogBuilder.setTitle("Add Room")
 
-        // Handle back button click
-        binding.selectRoomBack.setOnClickListener {
-            // Retrieve the current user's ID using Firebase Authentication
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val input = android.widget.EditText(this).apply {
+            hint = "Enter Room Number"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        }
+        dialogBuilder.setView(input)
 
-            if (userId != null) {
-                // Check user role and navigate
-                checkUserRoleAndNavigate(userId)
+        dialogBuilder.setPositiveButton("Add") { dialog, _ ->
+            val roomNumber = input.text.toString()
+            if (roomNumber.isNotBlank()) {
+                saveRoomToFirebase(roomNumber)
             } else {
-                // If no user is logged in, redirect to login screen
-                Toast.makeText(this, "No user logged in", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, Login::class.java))
-                finish()
+                showToast("Room number cannot be empty")
             }
+            dialog.dismiss()
+        }
+
+        dialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        dialogBuilder.show()
+    }
+
+    private fun saveRoomToFirebase(roomNumber: String) {
+        val roomId = database.push().key ?: return
+        val roomName = "Room $roomNumber"
+        val room = Rooms(id = roomId, name = roomName)
+
+        database.child(roomId).setValue(room).addOnSuccessListener {
+            showToast("Room added successfully")
+        }.addOnFailureListener {
+            showToast("Failed to add room")
         }
     }
 
-    private fun showRoom(roomNo: Int){
-
-        val i = Intent(this, Room14::class.java);
-        i.putExtra("roomNo", roomNo)
-        startActivity(i)
-
-
-    }
-
-    private fun checkUserRoleAndNavigate(userId: String) {
-        // First, check in the 'admins' node for the user
-        val adminRef = FirebaseDatabase.getInstance().reference.child("admins").child(userId)
-
-        adminRef.addListenerForSingleValueEvent(object : ValueEventListener {
+    private fun loadRoomsFromFirebase() {
+        database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    // User is an admin, navigate to the Admin Dashboard
-                    startActivity(Intent(this@SelectRooms, AdminDashboard::class.java))
-                    finish()
-                } else {
-                    // If the user is not found in the 'admins' node, check in the 'users' node
-                    val userRef =
-                        FirebaseDatabase.getInstance().reference.child("users").child(userId)
-
-                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(userSnapshot: DataSnapshot) {
-                            if (userSnapshot.exists()) {
-                                val role = userSnapshot.child("role").getValue(String::class.java)
-
-                                if (role.isNullOrEmpty()) {
-                                    Toast.makeText(
-                                        this@SelectRooms,
-                                        "Role is missing or invalid",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    return
-                                }
-
-                                when (role) {
-                                    "User" -> { startActivity(Intent(this@SelectRooms, Userdashboard::class.java))
-                                        finish()
-                                    }
-
-                                    else -> {
-                                        Toast.makeText(
-                                            this@SelectRooms,
-                                            "Unknown user role",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                }
-                            } else {
-                                Toast.makeText(
-                                    this@SelectRooms,
-                                    "User not found",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            Toast.makeText(
-                                this@SelectRooms,
-                                "Error fetching user data: ${error.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    })
+                roomList.clear()
+                for (roomSnapshot in snapshot.children) {
+                    val room = roomSnapshot.getValue(Rooms::class.java)
+                    room?.let { roomList.add(it) }
                 }
+                adapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(
-                    this@SelectRooms,
-                    "Error fetching admin data: ${error.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast("Error loading rooms: ${error.message}")
             }
         })
+    }
+
+    private fun navigateToRoomLayout(room: Rooms) {
+        val intent = Intent(this, RoomLayout::class.java).apply {
+            putExtra("ROOM_ID", room.id)
+            putExtra("ROOM_NAME", room.name)
+        }
+        startActivity(intent)
+    }
+
+    private fun showToast(message: String) {
+        android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()
     }
 }

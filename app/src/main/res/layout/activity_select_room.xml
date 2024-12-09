@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SelectRooms"
     android:background="@drawable/backgroundd">
 
+    <!-- Back Button -->
     <ImageView
         android:id="@+id/selectRoomBack"
         android:layout_width="30dp"
@@ -16,50 +16,24 @@
         android:layout_marginTop="35dp"
         android:src="@drawable/baseline_arrow_black_back_24" />
 
+    <!-- Existing Rooms -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp">
+        android:layout_width="400dp"
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/buttonRoom14"
-            android:layout_height="120dp"
-            android:layout_width="120dp"
-            android:layout_marginEnd="40dp"
-            android:src="@drawable/door14" />
-
-
-        <ImageView
-            android:id="@+id/buttonRoom7"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/door7" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/roomRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <!-- Add Room Button -->
+    <Button
+        android:id="@+id/addRoomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="-250dp"
-        android:layout_marginTop="250dp"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Room 14"
-            android:layout_marginEnd="110dp"
-            android:textColor="#22177A"
-            android:textStyle="bold" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Room 7"
-            android:textColor="#22177A"
-            android:textStyle="bold" />
-    </LinearLayout>
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Add Room" />
 </LinearLayout>

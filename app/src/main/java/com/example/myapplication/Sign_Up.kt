@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.text.InputType
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -79,6 +82,11 @@ class Sign_Up : AppCompatActivity() {
         }
     }
 
+    private fun getCurrentDateTime(): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        return sdf.format(Date())
+    }
+
     private fun setupRoleSpinner() {
         // Setup spinner with or without Admin option based on availability
         val userTypes = if (isAdminAvailable) {
@@ -108,26 +116,22 @@ class Sign_Up : AppCompatActivity() {
 
     private fun registerPendingUser(userName: String, email: String, password: String) {
         val userId = email.hashCode().toString()
-
         val database = FirebaseDatabase.getInstance().getReference("pending_users")
+        val dateTime = getCurrentDateTime()
 
-        // User data with status set to "pending" for admin approval
         val pendingUser = mapOf(
             "id" to userId,
             "name" to userName,
             "email" to email,
             "password" to password,
             "role" to "user",
-            "status" to "pending"
+            "status" to "pending",
+            "signUpTime" to dateTime
         )
 
         database.child(userId).setValue(pendingUser).addOnCompleteListener { dbTask ->
             if (dbTask.isSuccessful) {
-                Toast.makeText(
-                    this,
-                    "Account created successfully! Awaiting admin approval.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Account created successfully! Awaiting admin approval.", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, Login::class.java))
                 finish()
             } else {
@@ -142,12 +146,14 @@ class Sign_Up : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val userId = auth.currentUser!!.uid
                     val database = FirebaseDatabase.getInstance().getReference("admins")
+                    val dateTime = getCurrentDateTime()
 
                     val adminUser = mapOf(
                         "id" to userId,
                         "name" to userName,
                         "email" to email,
-                        "role" to "admin"
+                        "role" to "admin",
+                        "signUpTime" to dateTime
                     )
 
                     database.child(userId).setValue(adminUser).addOnCompleteListener { dbTask ->

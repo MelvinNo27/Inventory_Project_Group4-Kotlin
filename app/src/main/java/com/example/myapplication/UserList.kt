@@ -4,13 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.EditText
+import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityUserListBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class UserList : AppCompatActivity() {
 
@@ -44,21 +48,74 @@ class UserList : AppCompatActivity() {
             finish()
         }
 
+
+        binding.searchEditText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (!newText.isNullOrEmpty()) {
+                    filterItemsFromFirebase(newText)
+                } else {
+                    loadItemsFromFirebase()
+                }
+                return true
+            }
+        })
+
+
         loadItemsFromFirebase()
     }
 
-    private fun loadItemsFromFirebase() {
-        rootDatabaseRef.get().addOnSuccessListener { snapshot ->
-            itemList.clear()
-            snapshot.children.forEach { dataSnapshot ->
-                val item = dataSnapshot.getValue(AdminUser::class.java)
-                item?.let { itemList.add(it) }
-            }
-            userAdapter.notifyDataSetChanged()
-        }.addOnFailureListener {
-            showDialog("Failed to load items")
-        }
+    private fun filterItemsFromFirebase(query: String) {
+        val formattedQuery = query.lowercase() // Convert the query to lowercase
+
+        rootDatabaseRef.orderByChild("name") // Assuming "name" is the child you're filtering
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    itemList.clear() // Clear the previous list
+
+                    snapshot.children.forEach { dataSnapshot ->
+                        val item = dataSnapshot.getValue(AdminUser::class.java)
+                        item?.let {
+                            if (it.name.lowercase().contains(formattedQuery)) {
+                                // Check if the query is contained in the name (case-insensitive)
+                                itemList.add(it)
+                            }
+                        }
+                    }
+
+                    userAdapter.notifyDataSetChanged() // Notify adapter about the updated data
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    showDialog("Failed to load filtered items: ${databaseError.message}")
+                }
+            })
     }
+
+    private fun loadItemsFromFirebase() {
+        // Reference to the Firebase database node
+        rootDatabaseRef.orderByChild("name").limitToFirst(10)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    itemList.clear() // Clear the previous list
+                    snapshot.children.forEach { dataSnapshot ->
+                        val item = dataSnapshot.getValue(AdminUser::class.java)
+                        item?.let { itemList.add(it) }
+                    }
+                    userAdapter.notifyDataSetChanged() // Notify adapter about the updated data
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle the error, e.g., show a dialog
+                    showDialog("Failed to load items: ${databaseError.message}")
+                }
+            })
+    }
+
+
 
     private fun showAddItemForm() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_add_item, null)

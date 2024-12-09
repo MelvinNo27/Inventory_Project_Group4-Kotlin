@@ -1,12 +1,15 @@
 package com.example.myapplication
 
-import android.content.Intent
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ListItemUnitBinding
 
-class UnitAdapter(private val unitList: MutableList<UnitClass>) : RecyclerView.Adapter<UnitAdapter.UnitViewHolder>() {
+class UnitAdapter(
+    private val unitList: MutableList<UnitClass>,
+    private val context: Context // Pass the context to show the dialog
+) : RecyclerView.Adapter<UnitAdapter.UnitViewHolder>() {
 
     // Inflate the item layout and return the ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnitViewHolder {
@@ -37,23 +40,20 @@ class UnitAdapter(private val unitList: MutableList<UnitClass>) : RecyclerView.A
             // Dynamically generate the unit label like "Unit 1", "Unit 2", etc.
             binding.unitName.text = "Unit ${position + 1}" // Position + 1 to make it 1-based index
 
-            // Set the "View" button's click listener
+            // Set the "View" button's click listener to show unit details
             binding.unitName.setOnClickListener {
-                // When clicked, pass the unit details to the UnitDetailActivity
-                val context = binding.root.context
-                val intent = Intent(context, UnitDetailActivity::class.java).apply {
-                    putExtra("monitorID", unit.monitorID)
-                    putExtra("mouseID", unit.mouseID)
-                    putExtra("keyboardID", unit.keyboardID)
-                    putExtra("mousePadID", unit.mousePadID)
-                    putExtra("unitID", unit.unitID)
-                    putExtra("monitor_quantity", unit.monitorQuantity)
-                    putExtra("mouse_quantity", unit.mouseQuantity)
-                    putExtra("keyboard_quantity", unit.keyboardQuantity)
-                    putExtra("mousePad_quantity", unit.mousePadQuantity)
-                    putExtra("unit_quantity", unit.unitQuantity)
+                // Show unit details in a dialog instead of navigating to a new activity
+                if (context is RoomLayout) {
+                    context.showUnitDetailsDialog(unit) // Calling the dialog method from RoomLayout
                 }
-                context.startActivity(intent)
+            }
+
+            // Set the "Edit" button's click listener
+            binding.btnEdit.setOnClickListener {
+                // Show the edit dialog for the selected unit
+                if (context is RoomLayout) {
+                    context.showEditUnitDialog(unit) // Call the method to show the edit dialog
+                }
             }
         }
     }

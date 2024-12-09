@@ -44,67 +44,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-            <EditText
-                android:id="@+id/searchEditText"
+            android:orientation="horizontal">
+
+            <SearchView
+                android:id="@+id/searchText"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_background"
                 android:hint="Search"
-                android:textColorHint="#BDBABA"
+                android:textColorHint="#434343"
                 android:textColor="@color/white"
                 android:padding="8dp"
                 android:textSize="16sp"
                 android:drawableLeft="@drawable/baseline_search_24" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="3">
-
-        <TextView
-            android:id="@+id/text_view_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Name"
-            android:textColor="@color/black"
-            android:textSize="16sp"/>
-
-        <!-- User Email -->
-        <TextView
-            android:id="@+id/text_view_email"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:text="Email"
-            android:textSize="16sp"/>
-
-        <!-- Approve Button -->
-        <TextView
-            android:id="@+id/text_view_approve"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="0.5"
-            android:textColor="@color/black"
-            android:text="Actions"
-            android:textSize="16sp"/>
-
-            </TableRow>
-        </LinearLayout>
 
         <!-- Scrollable Table -->
         <ScrollView
@@ -121,16 +77,8 @@
                 <TableLayout
                     android:id="@+id/tableLayoutPending"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="1"
-                    android:layout_margin="10dp">
+                    android:layout_height="wrap_content">
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:weightSum="3">
-
-                    </TableRow>
                 </TableLayout>
             </LinearLayout>
         </ScrollView>

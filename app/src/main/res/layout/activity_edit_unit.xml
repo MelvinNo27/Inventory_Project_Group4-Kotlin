@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editMonitorID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Monitor ID"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editMouseID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mouse ID"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editKeyboardID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Keyboard ID"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editMousePadID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mouse Pad ID"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editUnitID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Unit ID"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editMonitorQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Monitor Quantity"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editMouseQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mouse Quantity"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editKeyboardQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Keyboard Quantity"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editMousePadQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mouse Pad Quantity"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editUnitQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Unit Quantity"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel" />
+</LinearLayout>

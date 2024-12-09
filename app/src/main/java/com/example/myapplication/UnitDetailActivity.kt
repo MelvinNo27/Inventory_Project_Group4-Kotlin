@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityUnitDetailBinding
@@ -16,11 +15,6 @@ class UnitDetailActivity : AppCompatActivity() {
         binding = ActivityUnitDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)  // Set the root view of the binding
 
-        binding.Room14back.setOnClickListener {
-            startActivity(Intent(this, Room14::class.java))
-            finish()
-        }
-
         // Get the data from the Intent
         val monitorID = intent.getIntExtra("monitorID", 0)
         val mouseID = intent.getIntExtra("mouseID", 0)
@@ -33,7 +27,7 @@ class UnitDetailActivity : AppCompatActivity() {
         val mousePadQuantity = intent.getIntExtra("mousePad_quantity", 0)
         val unitQuantity = intent.getIntExtra("unit_quantity", 0)
 
-        // Use the binding object to display the details in the TextViews
+        // Use view binding to set the data to the TextViews
         binding.ListMonitorID.text = monitorID.toString()
         binding.ListMouseID.text = mouseID.toString()
         binding.ListKeyboardID.text = keyboardID.toString()

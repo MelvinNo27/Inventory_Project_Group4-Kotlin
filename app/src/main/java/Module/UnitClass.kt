@@ -10,5 +10,5 @@ data class UnitClass(
     val mouseQuantity: Int = 0,
     val keyboardQuantity: Int = 0,
     val mousePadQuantity: Int = 0,
-    val unitQuantity: Int = 0
+    val unitQuantity: Int = 0,
 )
