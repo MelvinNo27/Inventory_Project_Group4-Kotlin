@@ -1,88 +1,286 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg">
 
-    <EditText
-        android:id="@+id/editMonitorID"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Monitor ID"
-        android:inputType="number" />
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/editMouseID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mouse ID"
-        android:inputType="number" />
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="100dp"
+            android:src="@drawable/unite" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/editKeyboardID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Keyboard ID"
-        android:inputType="number" />
+    <LinearLayout
+        android:layout_width="410dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editMousePadID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mouse Pad ID"
-        android:inputType="number" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/editUnitID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Unit ID"
-        android:inputType="number" />
 
-    <EditText
-        android:id="@+id/editMonitorQuantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Monitor Quantity"
-        android:inputType="number" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/editMouseQuantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mouse Quantity"
-        android:inputType="number" />
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/monitor_1" />
+            </LinearLayout>
 
-    <EditText
-        android:id="@+id/editKeyboardQuantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Keyboard Quantity"
-        android:inputType="number" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editMousePadQuantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mouse Pad Quantity"
-        android:inputType="number" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="ID"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
 
-    <EditText
-        android:id="@+id/editUnitQuantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Unit Quantity"
-        android:inputType="number" />
+                <EditText
+                    android:id="@+id/editMonitorID"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/white"
+                    android:layout_marginEnd="10dp"
+                    android:textColorHint="#BDBABA"
+                    android:textSize="13sp" />
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSave"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Quantity"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8sp"
+                    android:textSize="15sp"/>
+
+                <EditText
+                    android:id="@+id/editMonitorQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_text_background"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="1dp"
+                    android:textColorHint="#BDBABA"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/mouse" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editMouseID"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:textColorHint="#BDBABA"
+                android:textSize="13sp" />
+
+
+
+            <EditText
+                android:id="@+id/editMouseQuantity"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:textColorHint="#BDBABA"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/keyboard" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editKeyboardID"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:textColorHint="#BDBABA"
+                android:textSize="13sp" />
+
+
+
+            <EditText
+                android:id="@+id/editKeyboardQuantity"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:textColorHint="#BDBABA"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/mousepad" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editMousePadID"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:textColorHint="#BDBABA"
+                android:textSize="13sp" />
+
+
+
+            <EditText
+                android:id="@+id/editMousePadQuantity"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:textColorHint="#BDBABA"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/unit" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editUnitID"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:textColorHint="#BDBABA"
+                android:textSize="13sp" />
+
+
+
+            <EditText
+                android:id="@+id/editUnitQuantity"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:textColorHint="#BDBABA"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save" />
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="20dp">
 
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel" />
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:text="CANCEL"
+            android:layout_marginEnd="40dp"
+            android:layout_gravity="center"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:text="SAVE"
+            android:layout_gravity="center"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+
 </LinearLayout>

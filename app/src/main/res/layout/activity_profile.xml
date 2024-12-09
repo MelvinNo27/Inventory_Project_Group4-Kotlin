@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!-- Avatar ImageView -->
+    <ImageView
+        android:id="@+id/profileAvatar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/avatar"
+        android:layout_gravity="center"
+        android:contentDescription="User Avatar"
+        android:layout_marginBottom="20dp"
+        android:scaleType="centerCrop"/>
+
+    <!-- Name TextView -->
+    <TextView
+        android:id="@+id/profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name: "
+        android:textSize="16sp" />
+
+    <!-- Email TextView -->
+    <TextView
+        android:id="@+id/profileEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email: "
+        android:textSize="16sp" />
+
+    <!-- UID TextView -->
+    <TextView
+        android:id="@+id/profileUid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UID: "
+        android:textSize="16sp" />
+
+    <!-- Edit Avatar Button -->
+    <Button
+        android:id="@+id/editAvatarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Avatar"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
+
+    <!-- Forgot Password TextView -->
+    <TextView
+        android:id="@+id/forgotPasswordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password?"
+        android:textSize="14sp"
+        android:textColor="@android:color/holo_blue_light"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
+
+</LinearLayout>

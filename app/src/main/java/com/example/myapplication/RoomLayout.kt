@@ -11,6 +11,7 @@ import com.example.myapplication.databinding.ActivityAddUnitBinding
 import com.example.myapplication.databinding.ActivityEditUnitBinding
 import com.example.myapplication.databinding.ActivityRoomLayoutBinding
 import com.example.myapplication.databinding.ActivityUnitDetailBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class RoomLayout : AppCompatActivity() {
@@ -26,22 +27,55 @@ class RoomLayout : AppCompatActivity() {
         binding = ActivityRoomLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Get the room ID from the Intent
+        // Get the room ID and name from the Intent
         val roomId = intent.getStringExtra("ROOM_ID") ?: ""
         val roomName = intent.getStringExtra("ROOM_NAME") ?: "Unknown Room"
 
         // Display the room name
         binding.textViewRoom.text = roomName
 
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (currentUser != null) {
+            checkIfUserIsAdmin(currentUser.uid)
+        } else {
+            binding.addBtn.visibility = android.view.View.VISIBLE
+        }
+
         database = FirebaseDatabase.getInstance()
         unitsRef = database.reference.child("units").child(roomId)
 
+        binding.RoomBack.setOnClickListener {
+            setResult(RESULT_OK)  // Set the result to OK when navigating back
+            finish()  // Close the activity and return to SelectRooms
+        }
 
         setupRecyclerView()
-        setupBackButton()
         setupAddUnitButton()
         loadUnitsFromFirebase()
     }
+
+
+    private fun checkIfUserIsAdmin(userId: String) {
+        val database = FirebaseDatabase.getInstance().reference
+
+        // Check if the user is an admin by querying the "admins" node
+        database.child("admins").child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    binding.addBtn.visibility = android.view.View.VISIBLE
+                } else {
+
+                    binding.addBtn.visibility = android.view.View.GONE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                showToast("Error checking admin status: ${error.message}")
+            }
+        })
+    }
+
 
     private fun setupRecyclerView() {
         unitAdapter = UnitAdapter(unitList, this) // Pass 'this' (RoomLayout) as context
@@ -49,12 +83,6 @@ class RoomLayout : AppCompatActivity() {
         binding.recyclerView.adapter = unitAdapter
     }
 
-    private fun setupBackButton() {
-        binding.Room14back.setOnClickListener {
-            startActivity(Intent(this, SelectRooms::class.java))
-            finish()
-        }
-    }
 
     private fun setupAddUnitButton() {
         binding.addBtn.setOnClickListener {
@@ -187,6 +215,11 @@ class RoomLayout : AppCompatActivity() {
             .setView(dialogBinding.root)
             .create()
 
+        dialogBinding.btnEdit.setOnClickListener {
+            showEditUnitDialog(unit)
+            dialog.dismiss()
+        }
+
         dialogBinding.RoomBack.setOnClickListener {
             dialog.dismiss()
         }
@@ -196,7 +229,7 @@ class RoomLayout : AppCompatActivity() {
 
 
 
-    fun showEditUnitDialog(unit: UnitClass) {
+        fun showEditUnitDialog(unit: UnitClass) {
         val dialogBinding = ActivityEditUnitBinding.inflate(LayoutInflater.from(this))
 
         // Pre-fill the fields with the existing unit data

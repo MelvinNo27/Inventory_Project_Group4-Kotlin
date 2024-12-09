@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +41,10 @@ class AdminDashboard : AppCompatActivity() {
         // Log out button click
         binding.logOutButton.setOnClickListener {
             showLogoutConfirmationDialog()
+        }
+
+        binding.profile.setOnClickListener {
+            showUserProfileDialog()
         }
 
         // Instructors button click
@@ -112,6 +117,38 @@ class AdminDashboard : AppCompatActivity() {
         binding.timeTextView.text = currentTime
     }
 
+    private fun showUserProfileDialog() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (currentUser != null) {
+            val userName = currentUser.displayName ?: "Unknown"
+            val userEmail = currentUser.email ?: "No email"
+            val userUid = currentUser.uid
+
+
+            val dialogBinding = com.example.myapplication.databinding.ActivityProfileBinding.inflate(layoutInflater)
+
+
+            val dialog = AlertDialog.Builder(this)
+                .setTitle("User Profile")
+                .setView(dialogBinding.root)
+                .setPositiveButton("Close") { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
+                .create()
+
+
+            dialogBinding.profileName.text = "Name: $userName"
+            dialogBinding.profileEmail.text = "Email: $userEmail"
+            dialogBinding.profileUid.text = "UID: $userUid"
+
+            dialog.show()
+        } else {
+            Toast.makeText(this, "No user is logged in", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(updateDateTimeRunnable) // Stop updating when the activity is destroyed
@@ -128,3 +165,4 @@ class AdminDashboard : AppCompatActivity() {
         finishAffinity() // Close all activities and exit the app
     }
 }
+

@@ -165,20 +165,12 @@
             android:textSize="18sp"
             android:layout_marginVertical="16dp" />
 
-        <!-- Menu Items -->
         <TextView
+            android:id="@+id/profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Home"
-            android:textColor="#000000"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="About"
+            android:text="Profile"
             android:textColor="#000000"
             android:textSize="18sp" />
 

@@ -48,14 +48,9 @@ class UnitAdapter(
                 }
             }
 
-            // Set the "Edit" button's click listener
-            binding.btnEdit.setOnClickListener {
-                // Show the edit dialog for the selected unit
-                if (context is RoomLayout) {
-                    context.showEditUnitDialog(unit) // Call the method to show the edit dialog
-                }
+
             }
         }
     }
-}
+
 

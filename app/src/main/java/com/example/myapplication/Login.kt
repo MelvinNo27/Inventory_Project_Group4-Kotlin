@@ -44,8 +44,7 @@ class Login : AppCompatActivity() {
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             // Retrieve the user ID of the logged-in user
-                            val userId = auth.currentUser!!.uid
-                            checkUserRole(userId)
+                            checkUserRole(auth.currentUser!!.uid)
                         } else {
                             // Login failed
                             Toast.makeText(

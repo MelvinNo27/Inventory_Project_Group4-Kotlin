@@ -36,7 +36,9 @@ class Userdashboard : AppCompatActivity() {
 
 
         binding.btnUserRooms.setOnClickListener {
-            startActivity(Intent(this, SelectRooms::class.java))
+            val intent = Intent(this, SelectRooms::class.java)
+            intent.putExtra("showAddRoomButton", false)  // Passing flag as false
+            startActivity(intent)
             finish()
         }
 
