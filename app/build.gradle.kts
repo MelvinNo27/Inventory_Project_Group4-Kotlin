@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
 
 
 
@@ -60,7 +61,7 @@ dependencies {
     implementation (libs.google.firebase.analytics)
     implementation (libs.firebase.database.v2005)
     implementation (libs.firebase.auth.v2108)
-    // Google Play Services Auth for Google Sign-In
+    implementation ("com.google.firebase:firebase-storage:20.0.0")
     implementation(libs.play.services.auth)
 
     // Testing Libraries

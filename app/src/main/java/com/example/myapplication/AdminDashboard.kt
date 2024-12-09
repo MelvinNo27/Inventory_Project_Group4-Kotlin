@@ -1,20 +1,24 @@
 package com.example.myapplication
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ActivityAdminBinding
+import com.example.myapplication.databinding.ActivityProfileBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 
 class AdminDashboard : AppCompatActivity() {
 
@@ -28,6 +32,8 @@ class AdminDashboard : AppCompatActivity() {
             handler.postDelayed(this, 1000) // Update every second
         }
     }
+
+    private val imagePickerRequestCode = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,11 +93,6 @@ class AdminDashboard : AppCompatActivity() {
         // Sign out from Firebase Authentication
         FirebaseAuth.getInstance().signOut()
 
-        // Close the navigation drawer if it's open
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }
-
         // Optionally, clear SharedPreferences or any other user data
         val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -125,9 +126,13 @@ class AdminDashboard : AppCompatActivity() {
             val userEmail = currentUser.email ?: "No email"
             val userUid = currentUser.uid
 
+            val dialogBinding = ActivityProfileBinding.inflate(layoutInflater)
 
-            val dialogBinding = com.example.myapplication.databinding.ActivityProfileBinding.inflate(layoutInflater)
-
+            // Load avatar from Firebase storage or local storage (if available)
+            val avatarUrl = currentUser.photoUrl?.toString()
+            if (avatarUrl != null) {
+                Glide.with(this).load(avatarUrl).into(dialogBinding.profileAvatar) // Use Glide to load the image
+            }
 
             val dialog = AlertDialog.Builder(this)
                 .setTitle("User Profile")
@@ -137,6 +142,10 @@ class AdminDashboard : AppCompatActivity() {
                 }
                 .create()
 
+            // Button to edit avatar
+            dialogBinding.editAvatarButton.setOnClickListener {
+                selectAvatarImage()
+            }
 
             dialogBinding.profileName.text = "Name: $userName"
             dialogBinding.profileEmail.text = "Email: $userEmail"
@@ -145,6 +154,66 @@ class AdminDashboard : AppCompatActivity() {
             dialog.show()
         } else {
             Toast.makeText(this, "No user is logged in", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun selectAvatarImage() {
+        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, imagePickerRequestCode)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == imagePickerRequestCode && resultCode == RESULT_OK && data != null) {
+            val imageUri = data.data
+            uploadAvatarToFirebase(imageUri)
+        }
+    }
+
+    private fun uploadAvatarToFirebase(imageUri: Uri?) {
+        if (imageUri != null) {
+            val user = FirebaseAuth.getInstance().currentUser
+            val storageRef = FirebaseStorage.getInstance().reference.child("avatars/${user?.uid}.jpg")
+            val uploadTask = storageRef.putFile(imageUri)
+
+            uploadTask.addOnSuccessListener { taskSnapshot ->
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    // Update the user's avatar URL in Firebase
+                    updateUserProfileWithAvatar(uri.toString())
+                }
+            }.addOnFailureListener { exception ->
+                Toast.makeText(this, "Avatar upload failed: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun updateUserProfileWithAvatar(avatarUrl: String) {
+        val user = FirebaseAuth.getInstance().currentUser
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setPhotoUri(Uri.parse(avatarUrl))
+            .build()
+
+        user?.updateProfile(profileUpdates)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Get dialogBinding after inflating the profile layout
+                val dialogBinding = ActivityProfileBinding.inflate(layoutInflater)
+
+                // Update the avatar ImageView in the profile dialog
+                Glide.with(this).load(avatarUrl).into(dialogBinding.profileAvatar)
+
+                Toast.makeText(this, "Avatar updated successfully", Toast.LENGTH_SHORT).show()
+
+                // Create and show the dialog with updated avatar
+                val dialog = AlertDialog.Builder(this)
+                    .setTitle("User Profile")
+                    .setView(dialogBinding.root)
+                    .setPositiveButton("Close") { dialogInterface, _ -> dialogInterface.dismiss() }
+                    .create()
+
+                dialog.show()
+            } else {
+                Toast.makeText(this, "Error updating avatar", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -165,4 +234,3 @@ class AdminDashboard : AppCompatActivity() {
         finishAffinity() // Close all activities and exit the app
     }
 }
-
