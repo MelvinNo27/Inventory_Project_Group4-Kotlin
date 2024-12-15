@@ -25,7 +25,8 @@
         android:layout_marginTop="150dp"
         android:orientation="vertical">
 
-    <LinearLayout
+        <LinearLayout
+            android:id="@+id/unit1Container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -92,10 +93,13 @@
             android:textColorHint="#BDBABA"
             android:textSize="13sp" />
 
+
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/unit2Container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -136,6 +140,7 @@
     </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/unit3Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -176,6 +181,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/unit4Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -216,6 +222,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/unit5Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

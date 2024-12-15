@@ -26,6 +26,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/editUnit1Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -60,6 +61,7 @@
                     android:id="@+id/editMonitorID"
                     android:layout_width="150dp"
                     android:layout_height="40dp"
+                    android:inputType="number"
                     android:background="@drawable/edit_text_background"
                     android:textColor="@color/white"
                     android:layout_marginEnd="10dp"
@@ -89,6 +91,7 @@
                     android:background="@drawable/edit_text_background"
                     android:textColor="@color/white"
                     android:layout_marginTop="1dp"
+                    android:inputType="number"
                     android:textColorHint="#BDBABA"
                     android:textSize="13sp" />
 
@@ -96,6 +99,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/editUnit2Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -136,6 +140,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/editUnit3Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -176,6 +181,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/editUnit4Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -216,6 +222,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/editUnit5Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
