@@ -11,6 +11,10 @@ class Reports : AppCompatActivity() {
 
     private lateinit var binding: ReportAdminItemsBinding
 
+    // List to store the reports fetched from Firebase
+    private lateinit var reportList: MutableList<Report>
+    private lateinit var reportAdapter: ReportAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -18,32 +22,38 @@ class Reports : AppCompatActivity() {
         binding = ReportAdminItemsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize the list and adapter
+        reportList = mutableListOf()
+        reportAdapter = ReportAdapter(reportList, this)
+
         // Setup RecyclerView
         setupRecyclerView()
+
+        // Load data from Firebase
+        loadReportsFromFirebase()
     }
 
     private fun setupRecyclerView() {
-        val reportList = mutableListOf<Report>() // Create a list to hold report data
-        val adapter = ReportAdapter(reportList, this) // Adapter for RecyclerView
-
         binding.recyclerViewReports.layoutManager = LinearLayoutManager(this)
-        binding.recyclerViewReports.adapter = adapter
-
-        // Load data from Firebase
-        loadReportsFromFirebase(reportList, adapter)
+        binding.recyclerViewReports.adapter = reportAdapter
     }
 
-    private fun loadReportsFromFirebase(reportList: MutableList<Report>, adapter: ReportAdapter) {
+    private fun loadReportsFromFirebase() {
         val reportsRef = FirebaseDatabase.getInstance().reference.child("reportedUnits")
 
+        // Using Firebase's ValueEventListener to listen for real-time changes
         reportsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 reportList.clear() // Clear the list to avoid duplication
+
+                // Iterate through the snapshots and populate the list
                 for (child in snapshot.children) {
                     val report = child.getValue(Report::class.java)
                     report?.let { reportList.add(it) }
                 }
-                adapter.notifyDataSetChanged()
+
+                // Notify the adapter to refresh the RecyclerView
+                reportAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {

@@ -163,7 +163,12 @@ class RoomLayout : AppCompatActivity() {
         if (roomId.isNotEmpty()) {
             val unitsRefForRoom = database.reference.child("units").child(roomId)
             val newUnitRef = unitsRefForRoom.push()
-            val unitWithTimestamp = unit.copy(timestamp = ServerValue.TIMESTAMP) // Add timestamp
+
+            // Add a timestamp
+            val currentTimestamp = System.currentTimeMillis()
+
+            val unitWithTimestamp = unit.copy(timestamp = currentTimestamp) // Assuming UnitClass has a 'timestamp' field
+
             newUnitRef.setValue(unitWithTimestamp).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     showToast("Unit added successfully")
@@ -178,6 +183,8 @@ class RoomLayout : AppCompatActivity() {
             showToast("Room ID is missing")
         }
     }
+
+
 
     private fun loadUnitsFromFirebase() {
         val roomId = intent.getStringExtra("ROOM_ID") ?: ""
@@ -424,7 +431,7 @@ class RoomLayout : AppCompatActivity() {
     private fun saveReportToFirebase(unit: UnitClass, reason: String) {
         val reportsRef = FirebaseDatabase.getInstance().reference.child("reportedUnits")
 
-        val reportId = reportsRef.push().key ?: return
+        val reportId = reportsRef.push().key ?: return // Ensure the key is not null
         val report = Report(
             unit.unitID,
             unit.monitorID,
@@ -435,6 +442,10 @@ class RoomLayout : AppCompatActivity() {
             reason,
             timestamp = ServerValue.TIMESTAMP
         )
+
+        reportsRef.child(reportId).setValue(report)
+
+
 
         reportsRef.child(reportId).setValue(report).addOnCompleteListener { task ->
             if (task.isSuccessful) {

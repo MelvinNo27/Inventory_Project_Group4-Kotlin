@@ -7,19 +7,32 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemReportBinding
 import com.example.myapplication.databinding.ReportAdminBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ReportAdapter(
     private val reportList: List<Report>,
     private val context: Context
 ) : RecyclerView.Adapter<ReportAdapter.ReportViewHolder>() {
 
-    // Inflates the layout using View Binding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val binding = ItemReportBinding.inflate(LayoutInflater.from(context), parent, false)
         return ReportViewHolder(binding)
     }
 
-    // Binds data to the view and handles click events
+    private fun formatTimestamp(timestamp: Any?): String {
+        if (timestamp is Map<*, *>) {
+            // Firebase returns ServerValue.TIMESTAMP as a Map<String, Long>
+            val timestampLong = timestamp["timestamp"] as? Long
+            timestampLong?.let {
+                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                return sdf.format(Date(it))
+            }
+        }
+        return "Unknown Date"
+    }
+
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
         val report = reportList[position]
 
@@ -27,37 +40,39 @@ class ReportAdapter(
         holder.binding.apply {
             reportUnitId.text = "Unit ID: ${report.unitID}"
             reportSummary.text = "Reason: ${report.description}"
-            reportDate.text = "Date: ${report.date}" // Date binding
-            reportTime.text = "Time: ${report.time}" // Time binding
-        }
 
-        // Handle item click to show dialog with detailed reason
-        holder.binding.root.setOnClickListener {
-            // Use binding for the dialog layout as well
-            val dialogBinding = ReportAdminBinding.inflate(LayoutInflater.from(context))
-            val dialog = AlertDialog.Builder(context)
-                .setView(dialogBinding.root)
-                .create()
-
-            // Bind data to dialog views
-            dialogBinding.apply {
-                dialogUnitId.text = "Unit ID: ${report.unitID}"
-                dialogReason.text = "Reason: ${report.description}"
-                dialogDate.text = "Date: ${report.date}" // Dialog Date binding
-                dialogTime.text = "Time: ${report.time}" // Dialog Time binding
-
-                // Handle close button click
-                btnClose.setOnClickListener {
-                    dialog.dismiss()
-                }
+            // Format and display the timestamp as a readable date
+            report.timestamp?.let {
+                reportDate.text = "Date: ${formatTimestamp(it)}"
             }
 
-            dialog.show()
+            // Other report fields
+            reportTime.text = "Time: ${report.timestamp?.let { formatTimestamp(it).split(" ")[1] }}"
+
+            // Handle clicks on the item
+            root.setOnClickListener {
+                val dialogBinding = ReportAdminBinding.inflate(LayoutInflater.from(context))
+                val dialog = AlertDialog.Builder(context)
+                    .setView(dialogBinding.root)
+                    .create()
+
+                dialogBinding.apply {
+                    dialogUnitId.text = "Unit ID: ${report.unitID}"
+                    dialogReason.text = "Reason: ${report.description}"
+                    report.timestamp?.let {
+                        dialogDate.text = "Date: ${formatTimestamp(it)}"
+                        dialogTime.text = "Time: ${formatTimestamp(it).split(" ")[1]}"
+                    }
+                    btnClose.setOnClickListener { dialog.dismiss() }
+                }
+                dialog.show()
+            }
         }
     }
 
     override fun getItemCount(): Int = reportList.size
 
-    // ViewHolder with View Binding
     class ReportViewHolder(val binding: ItemReportBinding) : RecyclerView.ViewHolder(binding.root)
 }
+
+
