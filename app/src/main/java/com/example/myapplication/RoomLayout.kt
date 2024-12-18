@@ -76,8 +76,6 @@ class RoomLayout : AppCompatActivity() {
             }
         })
     }
-
-
     private fun setupRecyclerView() {
         unitAdapter = UnitAdapter(unitList, this) // Pass 'this' (RoomLayout) as context
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -184,8 +182,6 @@ class RoomLayout : AppCompatActivity() {
         }
     }
 
-
-
     private fun loadUnitsFromFirebase() {
         val roomId = intent.getStringExtra("ROOM_ID") ?: ""
         if (roomId.isNotEmpty()) {
@@ -250,8 +246,6 @@ class RoomLayout : AppCompatActivity() {
 
         dialog.show()
     }
-
-
 
     fun showEditUnitDialog(unit: UnitClass) {
         val dialogBinding = ActivityEditUnitBinding.inflate(LayoutInflater.from(this))
@@ -356,6 +350,7 @@ class RoomLayout : AppCompatActivity() {
         // Optionally, you can display other unit details or handle visibility of fields
         setFieldVisibility(reportDialogBinding, unit)
 
+        // Handle the submit report button click
         reportDialogBinding.btnSubmitReport.setOnClickListener {
             val reason = reportDialogBinding.editTextReportReason.text.toString()
             if (reason.isNotEmpty()) {
@@ -366,14 +361,13 @@ class RoomLayout : AppCompatActivity() {
                 showToast("Please enter a reason for the report")
             }
         }
-        // Handle cancel report button
+
         reportDialogBinding.btnCancelReport.setOnClickListener {
             reportDialog.dismiss()
         }
 
         reportDialog.show()
     }
-
 
     // Helper function to set visibility of fields based on their values
     private fun setFieldVisibility(reportDialogBinding: DialogReportBinding, unit: UnitClass) {
@@ -390,7 +384,6 @@ class RoomLayout : AppCompatActivity() {
             reportDialogBinding.textViewMouseID.text = "${unit.mouseID}"
             reportDialogBinding.textViewMouseID.visibility = View.VISIBLE
         } else {
-
             reportDialogBinding.textViewMouseID.visibility = View.GONE
         }
 
@@ -399,13 +392,11 @@ class RoomLayout : AppCompatActivity() {
             reportDialogBinding.textViewKeyboardID.text = "${unit.keyboardID}"
             reportDialogBinding.textViewKeyboardID.visibility = View.VISIBLE
         } else {
-
             reportDialogBinding.textViewKeyboardID.visibility = View.GONE
         }
 
         // MousePad ID
         if (unit.mousePadQuantity == null || unit.mousePadQuantity == 0) {
-
             reportDialogBinding.textViewMousePadID.text = "${unit.mousePadID}"
             reportDialogBinding.textViewMousePadID.visibility = View.VISIBLE
         } else {
@@ -420,33 +411,29 @@ class RoomLayout : AppCompatActivity() {
             reportDialogBinding.textViewUnitID.visibility = View.GONE
         }
     }
-
-
-
     private fun saveReportToFirebase(unit: UnitClass, reason: String) {
-        val reportsRef = FirebaseDatabase.getInstance().reference.child("reportedUnits")
+        val reportsRef = FirebaseDatabase.getInstance().reference.child("reports") // Correct path
 
         // Generate a unique report ID
         val reportId = reportsRef.push().key ?: return // Ensure the key is not null
 
-        // Create the report object
         val report = Report(
-            unit.unitID,
-            unit.monitorID,
-            unit.mouseID,
-            unit.keyboardID,
-            unit.mousePadID,
-            unit.unitQuantity,
-            reason,
-            timestamp = ServerValue.TIMESTAMP  // Use Firebase's server timestamp
+            unitID = unit.unitID,
+            monitorID = unit.monitorID,
+            mouseID = unit.mouseID,
+            keyboardID = unit.keyboardID,
+            mousePadID = unit.mousePadID,
+            unitQuantity = unit.unitQuantity,
+            reason = reason,
+            timestamp = ServerValue.TIMESTAMP
         )
 
-        // Push the report to the database
+        // Push the report object to Firebase Database
         reportsRef.child(reportId).setValue(report).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                showToast("Report submitted successfully")
+                Toast.makeText(this, "Report submitted successfully", Toast.LENGTH_SHORT).show()
             } else {
-                showToast("Failed to submit report: ${task.exception?.message}")
+                Toast.makeText(this, "Failed to submit report", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -464,8 +451,6 @@ class RoomLayout : AppCompatActivity() {
             }
         })
     }
-
-
     private fun createUnitFromInputs(dialogBinding: ActivityEditUnitBinding, existingUnit: UnitClass): UnitClass {
         return dialogBinding.run {
             UnitClass(
@@ -482,10 +467,6 @@ class RoomLayout : AppCompatActivity() {
             )
         }
     }
-
-
-
-
     private fun validateInputs(dialogBinding: ActivityEditUnitBinding): Boolean {
         return dialogBinding.run {
             // Check if all fields are filled

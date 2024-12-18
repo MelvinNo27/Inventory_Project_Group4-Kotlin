@@ -17,16 +17,6 @@
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
 
-    <!-- Summary of the Report -->
-    <TextView
-        android:id="@+id/reportSummary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_marginBottom="8dp" />
-
     <!-- Date of the Report -->
     <TextView
         android:id="@+id/reportDate"
@@ -43,4 +33,14 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:textColor="#757575" />
+
+    <!-- Summary of the Report -->
+    <TextView
+        android:id="@+id/reportSummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginBottom="8dp" />
 </LinearLayout>

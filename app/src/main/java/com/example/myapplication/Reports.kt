@@ -1,7 +1,7 @@
 package com.example.myapplication
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,63 +11,48 @@ import com.google.firebase.database.*
 class Reports : AppCompatActivity() {
 
     private lateinit var binding: ReportAdminItemsBinding
-
-
     private lateinit var reportList: MutableList<Report>
-    private lateinit var reportAdapter: ReportAdapter
+    private lateinit var adapter: ReportAdapter
+    private lateinit var databaseReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Initialize View Binding
         binding = ReportAdminItemsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize the list and adapter
+        // Initialize RecyclerView and Report List
         reportList = mutableListOf()
-        reportAdapter = ReportAdapter(reportList, this)
+        adapter = ReportAdapter(reportList, this)
 
-        binding.ItemReportBack.setOnClickListener {
-            startActivity(Intent(this, AdminDashboard::class.java))
-        }
-
-        // Setup RecyclerView
-        setupRecyclerView()
-
-        // Load data from Firebase
-        loadReportsFromFirebase()
-    }
-
-    private fun setupRecyclerView() {
         binding.recyclerViewReports.layoutManager = LinearLayoutManager(this)
-        binding.recyclerViewReports.adapter = reportAdapter
+        binding.recyclerViewReports.adapter = adapter
+
+        // Firebase Database Reference
+        databaseReference = FirebaseDatabase.getInstance().reference.child("reports")
+
+        // Fetch and display reports
+        fetchReportedUnits()
     }
 
-    private fun loadReportsFromFirebase() {
-        val reportsRef = FirebaseDatabase.getInstance().reference.child("reportedUnits")
-
-        // Using Firebase's ValueEventListener to listen for real-time changes
-        reportsRef.addValueEventListener(object : ValueEventListener {
+    private fun fetchReportedUnits() {
+        databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                reportList.clear() // Clear the list to avoid duplication
-
-                // Iterate through the snapshots and populate the list
-                for (child in snapshot.children) {
-                    val report = child.getValue(Report::class.java)
-                    report?.let { reportList.add(it) }
+                if (snapshot.exists()) {
+                    reportList.clear() // Clear old data
+                    for (reportSnapshot in snapshot.children) {
+                        val report = reportSnapshot.getValue(Report::class.java)
+                        report?.let { reportList.add(it) }
+                    }
+                    adapter.notifyDataSetChanged() // Notify adapter of changes
+                } else {
+                    Toast.makeText(this@Reports, "No reports found.", Toast.LENGTH_SHORT).show()
                 }
-
-                // Notify the adapter to refresh the RecyclerView
-                reportAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                showToast("Failed to load reports: ${error.message}")
+                Log.e("Reports", "Error fetching data: ${error.message}")
+                Toast.makeText(this@Reports, "Failed to fetch reports.", Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

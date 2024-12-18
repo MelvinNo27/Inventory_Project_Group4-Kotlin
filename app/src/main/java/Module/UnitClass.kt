@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+
 data class UnitClass(
     val monitorID: Int = 0,
     val mouseID: Int = 0,
@@ -11,7 +12,8 @@ data class UnitClass(
     val keyboardQuantity: Int = 0,
     val mousePadQuantity: Int = 0,
     val unitQuantity: Int = 0,
-    val roomName: String? = null, // Room Number (nullable)
-    val unitNumber: String? = null, // Unit Number (nullable)
-    val timestamp: Any? = null // Add timestamp
+    val reason: String? = null,
+    val roomName: String? = null,
+    val unitNumber: String? = null,
+    val timestamp: Any? = null
 )
