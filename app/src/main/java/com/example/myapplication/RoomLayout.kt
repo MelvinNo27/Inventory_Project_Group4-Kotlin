@@ -340,8 +340,6 @@ class RoomLayout : AppCompatActivity() {
     }
 
 
-
-
     private fun showReportDialog(unit: UnitClass) {
         val reportDialogBinding = DialogReportBinding.inflate(LayoutInflater.from(this))
         val reportDialog = AlertDialog.Builder(this)
@@ -358,19 +356,16 @@ class RoomLayout : AppCompatActivity() {
         // Optionally, you can display other unit details or handle visibility of fields
         setFieldVisibility(reportDialogBinding, unit)
 
-        // Handle submit report button
         reportDialogBinding.btnSubmitReport.setOnClickListener {
             val reason = reportDialogBinding.editTextReportReason.text.toString()
             if (reason.isNotEmpty()) {
-                // Save the report to Firebase or handle it as necessary
+                // Save the report to Firebase
                 saveReportToFirebase(unit, reason)
-                showToast("Report submitted successfully")
-                reportDialog.dismiss()
+                reportDialog.dismiss()  // Close the report dialog after submission
             } else {
                 showToast("Please enter a reason for the report")
             }
         }
-
         // Handle cancel report button
         reportDialogBinding.btnCancelReport.setOnClickListener {
             reportDialog.dismiss()
@@ -431,7 +426,10 @@ class RoomLayout : AppCompatActivity() {
     private fun saveReportToFirebase(unit: UnitClass, reason: String) {
         val reportsRef = FirebaseDatabase.getInstance().reference.child("reportedUnits")
 
+        // Generate a unique report ID
         val reportId = reportsRef.push().key ?: return // Ensure the key is not null
+
+        // Create the report object
         val report = Report(
             unit.unitID,
             unit.monitorID,
@@ -440,27 +438,18 @@ class RoomLayout : AppCompatActivity() {
             unit.mousePadID,
             unit.unitQuantity,
             reason,
-            timestamp = ServerValue.TIMESTAMP
+            timestamp = ServerValue.TIMESTAMP  // Use Firebase's server timestamp
         )
 
-        reportsRef.child(reportId).setValue(report)
-
-
-
+        // Push the report to the database
         reportsRef.child(reportId).setValue(report).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 showToast("Report submitted successfully")
             } else {
-                showToast("Failed to submit report")
+                showToast("Failed to submit report: ${task.exception?.message}")
             }
         }
     }
-
-
-
-
-
-
     // Function to check if the user is an admin and call the callback with the result
     private fun checkIfUserIsAdmin(userId: String, callback: (Boolean) -> Unit) {
         val database = FirebaseDatabase.getInstance().reference

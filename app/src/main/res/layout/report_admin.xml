@@ -27,7 +27,6 @@
         android:id="@+id/dialogUnitId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Unit ID: 123"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp"/>
@@ -36,14 +35,45 @@
         android:id="@+id/dialogReason"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reason: Low stock for monitors"
         android:textSize="14sp"
         android:layout_marginBottom="16dp"/>
 
+    <!-- RadioGroup for selecting 'Complete' or 'Repair in Process' -->
+    <RadioGroup
+        android:id="@+id/dialogRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+        <!-- RadioButton for 'Repair in Process' -->
+        <RadioButton
+            android:id="@+id/dialogIssueNoted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Issue Noted"
+            android:textSize="14sp" />
+
+        <!-- RadioButton for 'Repair in Process' -->
+        <RadioButton
+            android:id="@+id/dialogRepairInProcess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repair in Process"
+            android:textSize="14sp" />
+
+        <!-- RadioButton for 'Complete' -->
+        <RadioButton
+            android:id="@+id/dialogComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Complete"
+            android:textSize="14sp" />
+    </RadioGroup>
+
     <Button
-        android:id="@+id/btnClose"
+        android:id="@+id/btnUpdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Close"
+        android:text="Update"
         android:background="?android:attr/selectableItemBackground" />
 </LinearLayout>

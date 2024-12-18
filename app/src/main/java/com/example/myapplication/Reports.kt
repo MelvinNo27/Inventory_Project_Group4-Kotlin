@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +12,7 @@ class Reports : AppCompatActivity() {
 
     private lateinit var binding: ReportAdminItemsBinding
 
-    // List to store the reports fetched from Firebase
+
     private lateinit var reportList: MutableList<Report>
     private lateinit var reportAdapter: ReportAdapter
 
@@ -25,6 +26,10 @@ class Reports : AppCompatActivity() {
         // Initialize the list and adapter
         reportList = mutableListOf()
         reportAdapter = ReportAdapter(reportList, this)
+
+        binding.ItemReportBack.setOnClickListener {
+            startActivity(Intent(this, AdminDashboard::class.java))
+        }
 
         // Setup RecyclerView
         setupRecyclerView()

@@ -9,7 +9,9 @@ data class Report(
     val unitQuantity: Int = 0,
     val id: String? = null,
     val timestamp: Any? = null,
-    val description: String? = null
+    val description: String? = null,
+    var isComplete: Boolean = false,  // New field for "Complete" checkbox
+    var isRepairInProcess: Boolean = false  // New field for "Repair in Process" checkbox
 )
 
 
