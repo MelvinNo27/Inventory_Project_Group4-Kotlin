@@ -53,6 +53,11 @@ class AdminDashboard : AppCompatActivity() {
             showUserProfileDialog()
         }
 
+        binding.btnReports.setOnClickListener {
+            startActivity(Intent(this, RoomLayouts::class.java))
+            finish()
+        }
+
         // Instructors button click
         binding.btnInstructors.setOnClickListener {
             startActivity(Intent(this, UserList::class.java))
@@ -63,11 +68,6 @@ class AdminDashboard : AppCompatActivity() {
         binding.btnRooms.setOnClickListener {
             startActivity(Intent(this, SelectRooms::class.java))
             finish()
-        }
-
-        // Reports button click (you can add the functionality here if needed)
-        binding.btnReports.setOnClickListener {
-            // Add functionality for Reports here if needed
         }
 
         // Start the update of date and time every second

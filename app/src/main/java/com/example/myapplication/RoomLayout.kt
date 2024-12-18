@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -421,7 +420,6 @@ class RoomLayout : AppCompatActivity() {
 
 
 
-    // Function to save the report to Firebase
     private fun saveReportToFirebase(unit: UnitClass, reason: String) {
         val reportsRef = FirebaseDatabase.getInstance().reference.child("reportedUnits")
 
@@ -444,6 +442,7 @@ class RoomLayout : AppCompatActivity() {
             }
         }
     }
+
 
 
 

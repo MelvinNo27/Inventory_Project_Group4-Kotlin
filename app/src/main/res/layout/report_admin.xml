@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="start|center_horizontal"
+    android:scrollbars="vertical">
+
+    <!-- Report title -->
+    <TextView
+        android:id="@+id/textViewReportTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report Unit"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:gravity="center"/>
+
+    <!-- Room number display -->
+    <TextView
+        android:id="@+id/textViewRoomNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Room: Unknown Room"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Monitor ID field -->
+    <TextView
+        android:id="@+id/textViewMonitorID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monitor ID: 12345"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Mouse ID field -->
+    <TextView
+        android:id="@+id/textViewMouseID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mouse ID: 67890"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Keyboard ID field -->
+    <TextView
+        android:id="@+id/textViewKeyboardID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Keyboard ID: 11223"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"/>
+
+    <!-- MousePad ID field -->
+    <TextView
+        android:id="@+id/textViewMousePadID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MousePad ID: 44556"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Unit ID field -->
+    <TextView
+        android:id="@+id/textViewUnitID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unit ID: 78901"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Report reason input field -->
+    <TextView
+        android:id="@+id/editTextReportReason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter reason for reporting"
+        android:inputType="textMultiLine"
+        android:lines="4"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Checkboxes for statuses -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Status:"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
+
+        <CheckBox
+            android:id="@+id/checkBoxProcessing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Processing"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxUnderMaintenance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Under Maintenance"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxSuccessfully"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Successfully"/>
+
+    </LinearLayout>
+
+    <!-- Buttons (Submit and Cancel) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/btnSubmitReport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit Report"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnCancelReport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"/>
+
+    </LinearLayout>
+
+</LinearLayout>
