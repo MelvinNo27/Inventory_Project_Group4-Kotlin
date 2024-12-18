@@ -163,7 +163,8 @@ class RoomLayout : AppCompatActivity() {
         if (roomId.isNotEmpty()) {
             val unitsRefForRoom = database.reference.child("units").child(roomId)
             val newUnitRef = unitsRefForRoom.push()
-            newUnitRef.setValue(unit).addOnCompleteListener { task ->
+            val unitWithTimestamp = unit.copy(timestamp = ServerValue.TIMESTAMP) // Add timestamp
+            newUnitRef.setValue(unitWithTimestamp).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     showToast("Unit added successfully")
                     loadUnitsFromFirebase()
@@ -431,7 +432,8 @@ class RoomLayout : AppCompatActivity() {
             unit.keyboardID,
             unit.mousePadID,
             unit.unitQuantity,
-            reason
+            reason,
+            timestamp = ServerValue.TIMESTAMP
         )
 
         reportsRef.child(reportId).setValue(report).addOnCompleteListener { task ->

@@ -1,37 +1,63 @@
 package com.example.myapplication
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.databinding.ItemReportBinding
 import com.example.myapplication.databinding.ReportAdminBinding
 
 class ReportAdapter(
-    private val reports: List<Report>,
-    private val onClick: (Report) -> Unit
+    private val reportList: List<Report>,
+    private val context: Context
 ) : RecyclerView.Adapter<ReportAdapter.ReportViewHolder>() {
 
-    class ReportViewHolder(val binding: ReportAdminBinding) : RecyclerView.ViewHolder(binding.root)
-
+    // Inflates the layout using View Binding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
-        val binding = ReportAdminBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+        val binding = ItemReportBinding.inflate(LayoutInflater.from(context), parent, false)
         return ReportViewHolder(binding)
     }
 
+    // Binds data to the view and handles click events
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
-        val report = reports[position]
-        holder.binding.textViewUnitID.text = "Unit ID: ${report.unitID}"
-        holder.binding.editTextReportReason.text = "Reason: ${report.reason}"
-        holder.binding.textViewRoomNumber.text = "Room: ${report.roomName}"
+        val report = reportList[position]
 
-        holder.itemView.setOnClickListener {
-            onClick(report)
+        // Bind the data to the views
+        holder.binding.apply {
+            reportUnitId.text = "Unit ID: ${report.unitID}"
+            reportSummary.text = "Reason: ${report.description}"
+            reportDate.text = "Date: ${report.date}" // Date binding
+            reportTime.text = "Time: ${report.time}" // Time binding
+        }
+
+        // Handle item click to show dialog with detailed reason
+        holder.binding.root.setOnClickListener {
+            // Use binding for the dialog layout as well
+            val dialogBinding = ReportAdminBinding.inflate(LayoutInflater.from(context))
+            val dialog = AlertDialog.Builder(context)
+                .setView(dialogBinding.root)
+                .create()
+
+            // Bind data to dialog views
+            dialogBinding.apply {
+                dialogUnitId.text = "Unit ID: ${report.unitID}"
+                dialogReason.text = "Reason: ${report.description}"
+                dialogDate.text = "Date: ${report.date}" // Dialog Date binding
+                dialogTime.text = "Time: ${report.time}" // Dialog Time binding
+
+                // Handle close button click
+                btnClose.setOnClickListener {
+                    dialog.dismiss()
+                }
+            }
+
+            dialog.show()
         }
     }
 
-    override fun getItemCount(): Int = reports.size
-}
+    override fun getItemCount(): Int = reportList.size
 
+    // ViewHolder with View Binding
+    class ReportViewHolder(val binding: ItemReportBinding) : RecyclerView.ViewHolder(binding.root)
+}

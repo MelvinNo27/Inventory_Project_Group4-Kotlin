@@ -12,5 +12,6 @@ data class UnitClass(
     val mousePadQuantity: Int = 0,
     val unitQuantity: Int = 0,
     val roomName: String? = null, // Room Number (nullable)
-    val unitNumber: String? = null  // Unit Number (nullable)
+    val unitNumber: String? = null, // Unit Number (nullable)
+    val timestamp: Any? = null // Add timestamp
 )

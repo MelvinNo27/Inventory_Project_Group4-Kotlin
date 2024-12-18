@@ -7,9 +7,9 @@ data class Report(
     val keyboardID: Int = 0,
     val mousePadID: Int = 0,
     val unitQuantity: Int = 0,
-    val reason: String = "",
-    val roomName: String = "",
-    val timestamp: Long? = null
+    val id: String? = null,
+    val timestamp: Any? = null,
+    val description: String? = null
 )
 
 

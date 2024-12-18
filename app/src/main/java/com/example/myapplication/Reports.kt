@@ -5,11 +5,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ReportAdminItemsBinding
+import com.google.firebase.database.*
 
 class Reports : AppCompatActivity() {
+
     private lateinit var binding: ReportAdminItemsBinding
-    private lateinit var reportList: MutableList<Report> // List of reports
-    private lateinit var reportAdapter: ReportAdapter // Adapter for the RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,29 +18,38 @@ class Reports : AppCompatActivity() {
         binding = ReportAdminItemsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize the list and adapter
-        reportList = mutableListOf()
-        reportAdapter = ReportAdapter(reportList) { report ->
-            // Handle item click if needed
-            // Example: Show a Toast with the clicked report's reason
-            showToast("Clicked on: ${report.reason}")
-        }
-
-        // Set up RecyclerView
-        binding.recyclerViewReports.layoutManager = LinearLayoutManager(this)
-        binding.recyclerViewReports.adapter = reportAdapter
-
-        // Load reports (dummy or fetched data)
-        loadReports()
+        // Setup RecyclerView
+        setupRecyclerView()
     }
 
-    private fun loadReports() {
-        // Simulate loading reports (replace this with Firebase or database fetch logic)
-        reportList.add(Report(1, 101, 201, 301, 401, 10, "Broken monitor", "Room 101"))
-        reportList.add(Report(2, 102, 202, 302, 402, 5, "Missing keyboard", "Room 202"))
+    private fun setupRecyclerView() {
+        val reportList = mutableListOf<Report>() // Create a list to hold report data
+        val adapter = ReportAdapter(reportList, this) // Adapter for RecyclerView
 
-        // Notify the adapter of the data change
-        reportAdapter.notifyDataSetChanged()
+        binding.recyclerViewReports.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewReports.adapter = adapter
+
+        // Load data from Firebase
+        loadReportsFromFirebase(reportList, adapter)
+    }
+
+    private fun loadReportsFromFirebase(reportList: MutableList<Report>, adapter: ReportAdapter) {
+        val reportsRef = FirebaseDatabase.getInstance().reference.child("reportedUnits")
+
+        reportsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                reportList.clear() // Clear the list to avoid duplication
+                for (child in snapshot.children) {
+                    val report = child.getValue(Report::class.java)
+                    report?.let { reportList.add(it) }
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                showToast("Failed to load reports: ${error.message}")
+            }
+        })
     }
 
     private fun showToast(message: String) {

@@ -54,7 +54,7 @@ class AdminDashboard : AppCompatActivity() {
         }
 
         binding.btnReports.setOnClickListener {
-            startActivity(Intent(this, RoomLayouts::class.java))
+            startActivity(Intent(this, Reports::class.java))
             finish()
         }
 
