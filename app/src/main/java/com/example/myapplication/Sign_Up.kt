@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import java.text.SimpleDateFormat
@@ -48,10 +49,17 @@ class Sign_Up : AppCompatActivity() {
             } else if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
+            } else if (!isValidEmail(userEmail)) {
+                Toast.makeText(this, "Please enter a valid Gmail address", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
-            // Get selected user type from Spinner
-            val selectedUserType = binding.spinnerRole.selectedItem.toString()
+            // Get selected user type from Spinner, default to "User" if the spinner is hidden
+            val selectedUserType = if (binding.spinnerRole.visibility == View.VISIBLE) {
+                binding.spinnerRole.selectedItem.toString()
+            } else {
+                "User" // Default to "User" if the spinner is not visible
+            }
 
             if (selectedUserType == "Admin") {
                 // Create Admin account
@@ -88,15 +96,17 @@ class Sign_Up : AppCompatActivity() {
     }
 
     private fun setupRoleSpinner() {
-        // Setup spinner with or without Admin option based on availability
-        val userTypes = if (isAdminAvailable) {
-            arrayOf("Select Role", "User") // Only User is available
+        // Check if the admin exists
+        if (isAdminAvailable) {
+            binding.tvRole.visibility = View.GONE
+            binding.spinnerRole.visibility = View.GONE
         } else {
-            arrayOf("Select Role", "User", "Admin") // Both User and Admin are available
+            // Show the spinner and allow selecting "User" or "Admin"
+            binding.spinnerRole.visibility = View.VISIBLE
+            val userTypes = arrayOf("Select Role", "User", "Admin")
+            val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, userTypes)
+            binding.spinnerRole.adapter = spinnerAdapter
         }
-
-        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, userTypes)
-        binding.spinnerRole.adapter = spinnerAdapter
     }
 
     private fun checkAdminExists(callback: (Boolean) -> Unit) {
@@ -181,4 +191,10 @@ class Sign_Up : AppCompatActivity() {
         }
         field.setSelection(field.text.length)
     }
+
+    private fun isValidEmail(email: String): Boolean {
+        return email.endsWith("@gmail.com")
+    }
 }
+
+

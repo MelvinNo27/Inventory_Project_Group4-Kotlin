@@ -10,12 +10,20 @@
 
     <!-- Unit ID -->
     <TextView
-        android:id="@+id/reportUnitId"
+        android:id="@+id/reportRoomNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/reportUnitNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp" />
 
     <!-- Date of the Report -->
     <TextView
@@ -23,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
+        android:textStyle="bold"
         android:textColor="#757575"
         android:layout_marginBottom="4dp" />
 
@@ -32,15 +41,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:textColor="#757575" />
+        android:textStyle="bold"
+        android:textColor="#757575"
+        android:layout_marginBottom="4dp"/>
 
     <!-- Summary of the Report -->
     <TextView
-        android:id="@+id/reportSummary"
+        android:id="@+id/reportReason"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_marginBottom="8dp" />
+        android:textStyle="bold"
+        android:ellipsize="end" />
 </LinearLayout>

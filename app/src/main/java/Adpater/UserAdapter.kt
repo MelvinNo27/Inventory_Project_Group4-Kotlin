@@ -4,8 +4,6 @@ import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ActivityTableListBinding
 import com.example.myapplication.databinding.ActivityViewItemBinding
@@ -53,7 +51,7 @@ class UserAdapter(
             AlertDialog.Builder(context)
                 .setTitle("User Details")
                 .setView(binding.root)  // Use the root view directly from ViewBinding
-                .setPositiveButton("Update") { _, _ -> showUpdateDialog(user) }
+                .setPositiveButton("Edit") { _, _ -> showUpdateDialog(user) }
                 .setNegativeButton("Delete") { _, _ -> deleteItem(user) }
                 .setNeutralButton("Close", null)
                 .show()
@@ -72,13 +70,15 @@ class UserAdapter(
             emailEditText.setText(user.email)
 
             emailEditText.isEnabled = false
+            nameEditText.isEnabled = false
 
             AlertDialog.Builder(context)
                 .setTitle("Update User")
                 .setView(dialogView)
-                .setPositiveButton("Save") { _, _ ->
+                .setPositiveButton("Update") { _, _ ->
                     val updatedName = nameEditText.text.toString().trim()
                     val updatedEmail = emailEditText.text.toString().trim()
+
 
                     if (updatedName.isNotEmpty()) {
                         val updatedUser = user.copy(name = updatedName, email = updatedEmail)

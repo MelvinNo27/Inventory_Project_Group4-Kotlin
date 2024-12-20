@@ -132,6 +132,7 @@
 
         <!-- Role Selection Spinner (Admin or Instructor) -->
         <TextView
+            android:id="@+id/tvRole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select Role:"

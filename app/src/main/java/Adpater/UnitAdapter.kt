@@ -32,25 +32,34 @@ class UnitAdapter(
         notifyItemInserted(unitList.size - 1) // Notify that a new item was inserted
     }
 
-    // ViewHolder class to bind the data to each item in the RecyclerView
     inner class UnitViewHolder(private val binding: ListItemUnitBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        // Bind the unit data to the view elements
         fun bind(unit: UnitClass, position: Int) {
-            // Dynamically generate the unit label like "Unit 1", "Unit 2", etc.
-            binding.unitName.text = "Unit ${position + 1}" // Position + 1 to make it 1-based index
+            val unitLabel = "Unit ${position + 1}"
+            binding.unitName.text = unitLabel
 
-            // Set the "View" button's click listener to show unit details
-            binding.unitName.setOnClickListener {
-                // Show unit details in a dialog instead of navigating to a new activity
+            // Check if any quantity is zero or null
+            val hasEmptyQuantity = unit.monitorQuantity == 0 ||
+                    unit.mouseQuantity == 0 ||
+                    unit.keyboardQuantity == 0 ||
+                    unit.mousePadQuantity == 0 ||
+                    unit.unitQuantity == 0
+
+            // Set the unit name with error sign if needed
+            binding.unitName.text = if (hasEmptyQuantity) {
+                "Unit ${position + 1} ⚠️"  // Add warning emoji for error
+                // Or alternatively: "Unit ${position + 1} ❌" // Red X mark
+                // Or: "⚠️ Unit ${position + 1}"  // Warning at start
+            } else {
+                "Unit ${position + 1}"
+            }
+
+            binding.root.setOnClickListener {
                 if (context is RoomLayout) {
-                    context.showUnitDetailsDialog(unit) // Calling the dialog method from RoomLayout
+                    context.showUnitDetailsDialog(unit, position)
                 }
             }
-
-
-            }
         }
+    }
     }
 
 

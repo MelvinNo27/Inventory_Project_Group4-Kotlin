@@ -72,7 +72,7 @@
             android:background="@drawable/edit_text_background"
             android:drawableStart="@drawable/baseline_email_24"
             android:drawablePadding="12dp"
-            android:hint="Email"
+            android:hint="Email/UserName"
             android:inputType="textEmailAddress"
             android:padding="14dp"
             android:textColor="@color/white"

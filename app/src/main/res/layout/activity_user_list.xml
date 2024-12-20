@@ -54,8 +54,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_background"
-                android:hint="Search"
-                android:textColorHint="#BDBABA"
                 android:textColor="@color/white"
                 android:padding="8dp"
                 android:textSize="16sp"
@@ -68,6 +66,7 @@
                 android:background="@drawable/edit_text_background"
                 android:text="Pending Users"
                 android:textSize="14sp"
+                android:textColor="@color/white"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 

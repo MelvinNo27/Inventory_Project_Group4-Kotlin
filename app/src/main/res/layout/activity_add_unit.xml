@@ -93,6 +93,7 @@
             android:textColor="@color/white"
             android:layout_marginTop="1dp"
             android:textColorHint="#BDBABA"
+            android:inputType="number"
             android:textSize="13sp" />
 
 
@@ -140,6 +141,7 @@
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
                 android:textColorHint="#BDBABA"
+                android:inputType="number"
                 android:textSize="13sp" />
     </LinearLayout>
 
@@ -183,6 +185,7 @@
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
                 android:textColorHint="#BDBABA"
+                android:inputType="number"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -226,6 +229,7 @@
                 android:textAlignment="center"
                 android:layout_marginTop="20dp"
                 android:textColorHint="#BDBABA"
+                android:inputType="number"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -269,6 +273,7 @@
                 android:layout_marginTop="20dp"
                 android:textAlignment="center"
                 android:textColorHint="#BDBABA"
+                android:inputType="number"
                 android:textSize="13sp" />
         </LinearLayout>
 

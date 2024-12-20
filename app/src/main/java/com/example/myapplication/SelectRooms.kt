@@ -74,7 +74,7 @@ class SelectRooms : AppCompatActivity() {
             if (roomNumber.isNotBlank()) {
                 saveRoomToFirebase(roomNumber)
             } else {
-                showToast("Room number cannot be empty")
+                showDialog("Error", "Room number cannot be empty.")
             }
             dialog.dismiss()
         }
@@ -84,15 +84,28 @@ class SelectRooms : AppCompatActivity() {
     }
 
     private fun saveRoomToFirebase(roomNumber: String) {
-        val roomId = database.push().key ?: return
-        val roomName = "Room $roomNumber"
-        val room = Rooms(id = roomId, name = roomName)
+        database.orderByChild("name").equalTo("Room $roomNumber")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        showDialog("Error", "Room number already exists. Please enter a different number.")
+                    } else {
+                        val roomId = database.push().key ?: return
+                        val roomName = "Room $roomNumber"
+                        val room = Rooms(id = roomId, name = roomName)
 
-        database.child(roomId).setValue(room).addOnSuccessListener {
-            showToast("Room added successfully")
-        }.addOnFailureListener {
-            showToast("Failed to add room")
-        }
+                        database.child(roomId).setValue(room).addOnSuccessListener {
+                            showDialog("Success", "Room added successfully.")
+                        }.addOnFailureListener {
+                            showDialog("Error", "Failed to add room.")
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    showDialog("Error", "Error checking room number: ${error.message}")
+                }
+            })
     }
 
     private fun loadRoomsFromFirebase() {
@@ -107,7 +120,7 @@ class SelectRooms : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                showToast("Error loading rooms: ${error.message}")
+                showDialog("Error", "Error loading rooms: ${error.message}")
             }
         })
     }
@@ -117,21 +130,18 @@ class SelectRooms : AppCompatActivity() {
             putExtra("ROOM_ID", room.id)
             putExtra("ROOM_NAME", room.name)
         }
-        startActivityForResult(intent, ROOM_LAYOUT_REQUEST_CODE)  // Use startActivityForResult
+        startActivityForResult(intent, ROOM_LAYOUT_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ROOM_LAYOUT_REQUEST_CODE && resultCode == RESULT_OK) {
-            // Reload rooms from Firebase when coming back from RoomLayout
             loadRoomsFromFirebase()
         }
     }
 
     private fun checkUserRole(userId: String) {
         val database = FirebaseDatabase.getInstance().reference
-
-        // Check if the user is an admin first
         database.child("admins").child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -143,7 +153,7 @@ class SelectRooms : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                showToast("Error checking admin status: ${error.message}")
+                showDialog("Error", "Error checking admin status: ${error.message}")
             }
         })
     }
@@ -157,25 +167,28 @@ class SelectRooms : AppCompatActivity() {
                 if (snapshot.exists()) {
                     val role = snapshot.child("role").getValue(String::class.java)
 
-                    if (role == "User") {
+                    if (role == "user") {
                         startActivity(Intent(this@SelectRooms, Userdashboard::class.java))
                         finish()
                     } else {
-                        showToast("Role not recognized.")
+                        showDialog("Error", "Role not recognized.")
                     }
                 } else {
-                    showToast("User not found.")
+                    showDialog("Error", "User not found.")
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                showToast("Error fetching user data: ${error.message}")
+                showDialog("Error", "Error fetching user data: ${error.message}")
             }
         })
     }
 
-    private fun showToast(message: String) {
-        android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()
+    private fun showDialog(title: String, message: String) {
+        val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(this)
+        dialogBuilder.setTitle(title)
+        dialogBuilder.setMessage(message)
+        dialogBuilder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+        dialogBuilder.show()
     }
 }
-

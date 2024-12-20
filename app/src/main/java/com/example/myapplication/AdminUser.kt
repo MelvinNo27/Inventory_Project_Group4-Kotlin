@@ -5,4 +5,5 @@ data class AdminUser
          val name: String = "",
          val email: String = "",
          val password: String = "",
-         val role: String = "User")
+         val role: String = "user"
+                )
