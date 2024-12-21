@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
@@ -45,8 +46,7 @@ class Login : AppCompatActivity() {
                 // The input is an email, so perform email/password login
                 performLoginWithEmail(emailOrName, password)
             } else {
-                // The input is a username (name), search for the email in the database
-                searchUserByName(emailOrName, password)
+                searchAdminByName(emailOrName, password)
             }
         }
 
@@ -119,7 +119,7 @@ class Login : AppCompatActivity() {
                         }
                     } else {
                         // User with that name not found
-                        Toast.makeText(this@Login, "User not found with name: $userName", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@Login, "Admin/User not found with name: $userName", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -128,6 +128,57 @@ class Login : AppCompatActivity() {
                 }
             })
     }
+    private fun searchAdminByName(userName: String, password: String) {
+        val userRef = FirebaseDatabase.getInstance().reference.child("admins")
+
+        // Query the database to find an admin with the given name
+        userRef.orderByChild("name").equalTo(userName)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        var loginAttempted = false
+
+                        for (userSnapshot in snapshot.children) {
+                            val email = userSnapshot.child("email").getValue(String::class.java)
+
+                            if (!email.isNullOrEmpty()) {
+                                loginAttempted = true
+                                performLoginWithEmail(email, password)
+                            } else {
+                                // Notify that email is missing for the user
+                                Toast.makeText(
+                                    this@Login,
+                                    "No email found for admin: $userName",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+                        // Notify if no valid email login was attempted
+                        if (!loginAttempted) {
+                            Toast.makeText(
+                                this@Login,
+                                "No valid email found for admin: $userName",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        searchUserByName(userName, password)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle database query cancellation
+                    Toast.makeText(
+                        this@Login,
+                        "Error fetching user data: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.e("DatabaseError", "Query failed: ${error.message}")
+                }
+            })
+    }
+
 
     private fun checkUserRole(userId: String) {
         FirebaseDatabase.getInstance().reference.child("admins").child(userId)

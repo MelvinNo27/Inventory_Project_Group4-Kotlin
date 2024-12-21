@@ -10,7 +10,7 @@
         android:id="@+id/profileAvatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/avatar"
+        android:src="@drawable/avatar1"
         android:layout_gravity="center"
         android:contentDescription="User Avatar"
         android:layout_marginBottom="20dp"

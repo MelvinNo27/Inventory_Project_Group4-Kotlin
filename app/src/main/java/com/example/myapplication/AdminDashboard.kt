@@ -123,7 +123,6 @@ class AdminDashboard : AppCompatActivity() {
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         if (currentUser != null) {
-            val userName = currentUser.displayName ?: "Unknown"
             val userEmail = currentUser.email ?: "No email"
             val userUid = currentUser.uid
 
@@ -143,20 +142,32 @@ class AdminDashboard : AppCompatActivity() {
                 }
                 .create()
 
+            // Fetch the admin's name from the database
+            rootDatabaseRef.child(userUid).child("name").get()
+                .addOnSuccessListener { snapshot ->
+                    val adminName = snapshot.value as? String ?: "Unknown"
+                    dialogBinding.profileName.text = "Name: $adminName"
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(this, "Failed to fetch user name: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    dialogBinding.profileName.text = "Name: Error"
+                }
+
+            // Set other profile details
+            dialogBinding.profileEmail.text = "Email: $userEmail"
+            dialogBinding.profileUid.text = "UID: $userUid"
+
             // Button to edit avatar
             dialogBinding.editAvatarButton.setOnClickListener {
                 selectAvatarImage()
             }
-
-            dialogBinding.profileName.text = "Name: $userName"
-            dialogBinding.profileEmail.text = "Email: $userEmail"
-            dialogBinding.profileUid.text = "UID: $userUid"
 
             dialog.show()
         } else {
             Toast.makeText(this, "No user is logged in", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun selectAvatarImage() {
         val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
