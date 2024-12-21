@@ -29,13 +29,14 @@
 
             <LinearLayout
                 android:layout_width="410dp"
-                android:layout_height="400dp"
+                android:layout_height="500dp"
                 android:layout_marginTop="40dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:orientation="horizontal">
 
 
@@ -97,6 +98,7 @@
                             android:background="@drawable/edit_text_background"
                             android:textColor="@color/white"
                             android:layout_marginTop="1dp"
+                            android:inputType="number"
                             android:textColorHint="#BDBABA"
                             android:textSize="13sp" />
 
@@ -106,6 +108,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -139,6 +142,7 @@
                         android:background="@drawable/edit_text_background"
                         android:textColor="@color/white"
                         android:layout_marginTop="20dp"
+                        android:inputType="number"
                         android:textColorHint="#BDBABA"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -146,6 +150,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -179,6 +184,7 @@
                         android:background="@drawable/edit_text_background"
                         android:textColor="@color/white"
                         android:layout_marginTop="20dp"
+                        android:inputType="number"
                         android:textColorHint="#BDBABA"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -186,6 +192,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -219,6 +226,7 @@
                         android:background="@drawable/edit_text_background"
                         android:textColor="@color/white"
                         android:layout_marginTop="20dp"
+                        android:inputType="number"
                         android:textColorHint="#BDBABA"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -226,6 +234,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -258,6 +267,49 @@
                         android:layout_height="40dp"
                         android:background="@drawable/edit_text_background"
                         android:textColor="@color/white"
+                        android:layout_marginTop="20dp"
+                        android:inputType="number"
+                        android:textColorHint="#BDBABA"
+                        android:textSize="13sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:padding="10dp"
+                            android:src="@drawable/avr" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/ListAVRID"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/edit_text_background"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:textColorHint="#BDBABA"
+                        android:textSize="13sp" />
+
+
+
+                    <TextView
+                        android:id="@+id/ListAVRQuantity"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/edit_text_background"
+                        android:textColor="@color/white"
+                        android:inputType="number"
                         android:layout_marginTop="20dp"
                         android:textColorHint="#BDBABA"
                         android:textSize="13sp" />

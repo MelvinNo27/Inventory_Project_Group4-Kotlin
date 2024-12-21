@@ -26,7 +26,7 @@ class Reports : AppCompatActivity(), ReportAdapter.OnReportClickListener {
 
         // Initialize RecyclerView and Report List
         reportList = mutableListOf()
-        adapter = ReportAdapter(reportList, this, this) // Pass the activity as click listener
+        adapter = ReportAdapter(reportList, this, this)
 
         binding.recyclerViewReports.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewReports.adapter = adapter
@@ -48,9 +48,11 @@ class Reports : AppCompatActivity(), ReportAdapter.OnReportClickListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 reportList.clear()
                 for (data in snapshot.children) {
+                    // Get the report data and set the reportId from the Firebase key
                     val report = data.getValue(Report::class.java)
-                    if (report != null) {
-                        reportList.add(report)
+                    report?.let {
+                        it.reportId = data.key  // Set the reportId to Firebase's unique key
+                        reportList.add(it)
                     }
                 }
                 adapter.notifyDataSetChanged()
@@ -89,7 +91,7 @@ class Reports : AppCompatActivity(), ReportAdapter.OnReportClickListener {
             }
 
             // Mouse
-            if (report.mouseQuantity != null  && report.mouseQuantity == 0) {
+            if (report.mouseQuantity != null && report.mouseQuantity == 0) {
                 textViewMouseID.text = "${report.mouseID} (Quantity: ${report.mouseQuantity})"
                 textViewMouseID.visibility = android.view.View.VISIBLE
                 textViewMouse.visibility = android.view.View.VISIBLE
@@ -127,11 +129,50 @@ class Reports : AppCompatActivity(), ReportAdapter.OnReportClickListener {
                 textViewUnitID.visibility = android.view.View.GONE
                 textViewUnit.visibility = android.view.View.GONE
             }
+            if (report.AVRQuantity != null && report.AVRQuantity == 0) {
+                textViewAVRID.text = "${report.unitID} (Quantity: ${report.unitQuantity})"
+                textViewAVRID.visibility = android.view.View.VISIBLE
+                textViewUnit.visibility = android.view.View.VISIBLE
+            } else {
+                textViewUnitID.visibility = android.view.View.GONE
+                textViewAVR.visibility = android.view.View.GONE
+            }
 
             textViewReason.text = "Reason: ${report.reason}"
 
-            btnClose.setOnClickListener {
-                dialog.dismiss()
+            // Set the current status if it exists
+            when (report.status) {
+                "Issue Noted" -> dialogIssueNoted.isChecked = true
+                "Repair in Process" -> dialogRepairInProcess.isChecked = true
+                "Complete" -> dialogComplete.isChecked = true
+            }
+
+            btnUpdate.setOnClickListener {
+                // Get the selected status
+                val selectedStatus = when {
+                    dialogIssueNoted.isChecked -> "Issue Noted"
+                    dialogRepairInProcess.isChecked -> "Repair in Process"
+                    dialogComplete.isChecked -> "Complete"
+                    else -> null
+                }
+
+                if (selectedStatus != null) {
+                    // Update the status in Firebase
+                    report.reportId?.let { reportId ->
+                        databaseReference.child(reportId).child("status").setValue(selectedStatus)
+                            .addOnSuccessListener {
+                                Toast.makeText(this@Reports, "Status updated successfully", Toast.LENGTH_SHORT).show()
+                                dialog.dismiss()
+                            }
+                            .addOnFailureListener { e ->
+                                Toast.makeText(this@Reports, "Failed to update status: ${e.message}", Toast.LENGTH_SHORT).show()
+                            }
+                    } ?: run {
+                        Toast.makeText(this@Reports, "Report ID not found", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@Reports, "Please select a status", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

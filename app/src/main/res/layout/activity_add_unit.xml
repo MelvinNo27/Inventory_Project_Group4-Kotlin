@@ -20,15 +20,16 @@
 
     <LinearLayout
         android:layout_width="410dp"
-        android:layout_height="400dp"
+        android:layout_height="500dp"
         android:layout_marginStart="-220dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/unit1Container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
         android:orientation="horizontal">
 
 
@@ -40,6 +41,7 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:padding="10dp"
             android:src="@drawable/monitor_1" />
         </LinearLayout>
 
@@ -55,7 +57,7 @@
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
         <EditText
             android:id="@+id/monitorID"
@@ -81,7 +83,7 @@
                 android:textStyle="bold"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:layout_marginBottom="8sp"
+                android:layout_marginBottom="5dp"
                 android:textSize="15sp"/>
 
         <EditText
@@ -91,7 +93,6 @@
             android:textAlignment="center"
             android:background="@drawable/edit_text_background"
             android:textColor="@color/white"
-            android:layout_marginTop="1dp"
             android:textColorHint="#BDBABA"
             android:inputType="number"
             android:textSize="13sp" />
@@ -105,6 +106,7 @@
         android:id="@+id/unit2Container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -149,6 +151,7 @@
             android:id="@+id/unit3Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -159,6 +162,7 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:padding="7dp"
                     android:src="@drawable/keyboard" />
             </LinearLayout>
 
@@ -193,6 +197,7 @@
             android:id="@+id/unit4Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -237,6 +242,7 @@
             android:id="@+id/unit5Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -247,6 +253,7 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:padding="7dp"
                     android:src="@drawable/unit" />
             </LinearLayout>
 
@@ -276,6 +283,50 @@
                 android:inputType="number"
                 android:textSize="13sp" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/unit6Container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:padding="10dp"
+                    android:src="@drawable/avr" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/AVRID"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:textAlignment="center"
+                android:textColorHint="#BDBABA"
+                android:textSize="13sp" />
+
+
+            <EditText
+                android:id="@+id/AVRQuantity"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
+                android:textColorHint="#BDBABA"
+                android:inputType="number"
+                android:textSize="13sp" />
+        </LinearLayout>
 
 </LinearLayout>
 
@@ -285,7 +336,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="600dp"
         android:background="@drawable/edit_text_background"
-       android:layout_marginStart="-350dp"
+       android:layout_marginStart="-300dp"
         android:layout_marginEnd="20dp"
         android:text="CANCEL"
         android:textColor="@color/white"

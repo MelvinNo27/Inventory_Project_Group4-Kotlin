@@ -128,11 +128,36 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:visibility="gone" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textViewAVR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unit ID:"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textViewAVRID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:visibility="gone" />
+
+
     </LinearLayout>
 
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
     app:cardBackgroundColor="#D3D0D0">
 
     <TextView
@@ -144,13 +169,46 @@
         android:textStyle="bold" />
 </androidx.cardview.widget.CardView>
 
+    <RadioGroup
+        android:id="@+id/dialogRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+        <!-- RadioButton for 'Repair in Process' -->
+        <RadioButton
+            android:id="@+id/dialogIssueNoted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Issue Noted"
+            android:textSize="14sp" />
+
+        <!-- RadioButton for 'Repair in Process' -->
+        <RadioButton
+            android:id="@+id/dialogRepairInProcess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repair in Process"
+            android:layout_marginBottom="10dp"
+            android:textSize="14sp" />
+
+        <!-- RadioButton for 'Complete' -->
+        <RadioButton
+            android:id="@+id/dialogComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Complete"
+            android:textSize="14sp" />
+    </RadioGroup>
+
 
     <Button
-        android:id="@+id/btnClose"
+        android:id="@+id/btnUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginStart="130dp"
-        android:text="Close" />
+        android:text="Update" />
 
 </LinearLayout>

@@ -29,7 +29,7 @@ class UnitAdapter(
     // Function to add a unit to the list and update the RecyclerView
     fun addUnit(unit: UnitClass) {
         unitList.add(unit)
-        notifyItemInserted(unitList.size - 1) // Notify that a new item was inserted
+        notifyItemInserted(unitList.size - 1)
     }
 
     inner class UnitViewHolder(private val binding: ListItemUnitBinding) : RecyclerView.ViewHolder(binding.root) {

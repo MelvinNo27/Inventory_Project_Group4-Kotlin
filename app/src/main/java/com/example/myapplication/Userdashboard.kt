@@ -60,6 +60,10 @@ class Userdashboard : AppCompatActivity() {
             logoutUser()
         }
 
+        binding.btnUserReports.setOnClickListener {
+            startActivity(Intent(this , UserReports::class.java))
+        }
+
         binding.profile.setOnClickListener {
             showUserProfileDialog()
         }
