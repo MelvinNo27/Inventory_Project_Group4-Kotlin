@@ -143,6 +143,13 @@ class Userdashboard : AppCompatActivity() {
             }
 
             dialog.show()
+
+            // Add report button click listener
+            dialogBinding.forgotPasswordText.setOnClickListener {
+                val intent = Intent(this, ForgotPasswordActivity::class.java)
+                startActivity(intent)
+                dialog.dismiss() // Close the profile dialog
+            }
         } else {
             Toast.makeText(this, "No user is logged in", Toast.LENGTH_SHORT).show()
         }

@@ -15,21 +15,31 @@
             android:id="@+id/imageview"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginStart="100dp"
+            android:layout_marginStart="110dp"
             android:src="@drawable/unite" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Unit"
+        android:textColor="@color/black"
+        android:layout_marginStart="135dp"
+        android:textStyle="bold"
+        android:layout_marginTop="-30dp"
+        android:textSize="14sp"/>
 
     <LinearLayout
         android:layout_width="410dp"
         android:layout_height="500dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/editUnit1Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="6dp"
             android:orientation="horizontal">
 
 
@@ -56,13 +66,13 @@
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="20sp"/>
+                    android:textSize="14sp"/>
 
                 <EditText
                     android:id="@+id/editMonitorID"
                     android:layout_width="150dp"
                     android:layout_height="40dp"
-                    android:inputType="number"
+                    android:textAlignment="center"
                     android:background="@drawable/edit_text_background"
                     android:textColor="@color/white"
                     android:layout_marginEnd="10dp"
@@ -82,16 +92,16 @@
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:layout_marginBottom="8sp"
-                    android:textSize="15sp"/>
+                    android:textSize="14sp"/>
 
                 <EditText
                     android:id="@+id/editMonitorQuantity"
-                    android:layout_width="match_parent"
+                    android:layout_width="60dp"
                     android:layout_height="40dp"
                     android:background="@drawable/edit_text_background"
                     android:textColor="@color/white"
                     android:layout_marginTop="1dp"
+                    android:textAlignment="center"
                     android:inputType="number"
                     android:textColorHint="#BDBABA"
                     android:textSize="13sp" />
@@ -103,7 +113,7 @@
             android:id="@+id/editUnit2Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="6dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -123,6 +133,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/edit_text_background"
                 android:textColor="@color/white"
+                android:textAlignment="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:textColorHint="#BDBABA"
@@ -136,6 +147,8 @@
                 android:layout_height="40dp"
                 android:background="@drawable/edit_text_background"
                 android:textColor="@color/white"
+                android:inputType="number"
+                android:textAlignment="center"
                 android:layout_marginTop="20dp"
                 android:textColorHint="#BDBABA"
                 android:textSize="13sp" />
@@ -145,7 +158,7 @@
             android:id="@+id/editUnit3Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="6dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -167,6 +180,7 @@
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
+                android:textAlignment="center"
                 android:textColorHint="#BDBABA"
                 android:textSize="13sp" />
 
@@ -179,6 +193,8 @@
                 android:background="@drawable/edit_text_background"
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
+                android:inputType="number"
+                android:textAlignment="center"
                 android:textColorHint="#BDBABA"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -187,7 +203,7 @@
             android:id="@+id/editUnit4Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="6dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -209,6 +225,7 @@
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
+                android:textAlignment="center"
                 android:textColorHint="#BDBABA"
                 android:textSize="13sp" />
 
@@ -220,7 +237,9 @@
                 android:layout_height="40dp"
                 android:background="@drawable/edit_text_background"
                 android:textColor="@color/white"
+                android:textAlignment="center"
                 android:layout_marginTop="20dp"
+                android:inputType="number"
                 android:textColorHint="#BDBABA"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -229,7 +248,7 @@
             android:id="@+id/editUnit5Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="6dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -249,6 +268,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/edit_text_background"
                 android:textColor="@color/white"
+                android:textAlignment="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:textColorHint="#BDBABA"
@@ -263,6 +283,8 @@
                 android:background="@drawable/edit_text_background"
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
+                android:inputType="number"
+                android:textAlignment="center"
                 android:textColorHint="#BDBABA"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -270,7 +292,7 @@
             android:id="@+id/editUnit6Container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="6dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -292,6 +314,7 @@
                 android:background="@drawable/edit_text_background"
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
+                android:textAlignment="center"
                 android:layout_marginEnd="10dp"
                 android:textColorHint="#BDBABA"
                 android:textSize="13sp" />
@@ -305,6 +328,8 @@
                 android:background="@drawable/edit_text_background"
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"
+                android:inputType="number"
+                android:textAlignment="center"
                 android:textColorHint="#BDBABA"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -312,8 +337,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginStart="60dp">
 
         <Button
             android:id="@+id/btnCancel"
@@ -321,6 +345,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
             android:text="CANCEL"
+            android:textColor="@color/white"
             android:layout_marginEnd="40dp"
             android:layout_gravity="center"
             android:textStyle="bold"/>
@@ -331,6 +356,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
             android:text="SAVE"
+            android:textColor="@color/white"
             android:layout_gravity="center"
             android:textStyle="bold"/>
 

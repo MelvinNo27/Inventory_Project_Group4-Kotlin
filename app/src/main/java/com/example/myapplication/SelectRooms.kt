@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivitySelectRoomBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -41,6 +42,7 @@ class SelectRooms : AppCompatActivity() {
         }
 
         setupRecyclerView()
+        setupSwipeToDelete()
         setupAddRoomButton()
         loadRoomsFromFirebase()
     }
@@ -51,6 +53,51 @@ class SelectRooms : AppCompatActivity() {
         }
         binding.roomRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.roomRecyclerView.adapter = adapter
+    }
+
+    private fun setupSwipeToDelete() {
+        val swipeHandler = SwipeToDeleteCallback(adapter, this) { position ->
+            val roomToDelete = roomList[position]
+            deleteRoom(roomToDelete)
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.roomRecyclerView)
+    }
+
+    private fun deleteRoom(room: Rooms) {
+        // First check if there are any units in this room
+        val unitsRef = FirebaseDatabase.getInstance().reference.child("units").child(room.id)
+        unitsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    // If units exist, delete them first
+                    unitsRef.removeValue().addOnSuccessListener {
+                        // After units are deleted, delete the room
+                        deleteRoomFromDatabase(room)
+                    }.addOnFailureListener { e ->
+                        showDialog("Error", "Failed to delete room units: ${e.message}")
+                    }
+                } else {
+                    // If no units exist, directly delete the room
+                    deleteRoomFromDatabase(room)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                showDialog("Error", "Failed to check room units: ${error.message}")
+            }
+        })
+    }
+
+    private fun deleteRoomFromDatabase(room: Rooms) {
+        database.child(room.id).removeValue()
+            .addOnSuccessListener {
+                showDialog("Success", "Room deleted successfully")
+            }
+            .addOnFailureListener { e ->
+                showDialog("Error", "Failed to delete room: ${e.message}")
+            }
     }
 
     private fun setupAddRoomButton() {

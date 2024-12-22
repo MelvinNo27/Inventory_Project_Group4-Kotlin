@@ -140,7 +140,7 @@
             android:id="@+id/textViewAVR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Unit ID:"
+            android:text="AvrId:"
             android:textStyle="bold"
             android:visibility="gone" />
 
@@ -150,8 +150,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:visibility="gone" />
-
-
     </LinearLayout>
 
 <androidx.cardview.widget.CardView
@@ -208,7 +206,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="130dp"
+        android:layout_marginStart="100dp"
         android:text="Update" />
 
 </LinearLayout>

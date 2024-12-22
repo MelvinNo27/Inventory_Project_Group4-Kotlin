@@ -119,12 +119,12 @@ class RoomLayout : AppCompatActivity() {
                     keyboardID.text.isNotEmpty() &&
                     mousePadID.text.isNotEmpty() &&
                     unitID.text.isNotEmpty() &&
-                    AVRID.text.isNotEmpty() &&
+                    avrID.text.isNotEmpty() &&
                     MonitorQuantity.text.toString().toIntOrNull()?.let { it in 1..2 } == true &&
                     MouseQuantity.text.toString().toIntOrNull()?.let { it in 1..2 } == true &&
                     KeyboardQuantity.text.toString().toIntOrNull()?.let { it in 1..2 } == true &&
                     mousePadQuantity.text.toString().toIntOrNull()?.let { it in 1..2 } == true &&
-                    AVRQuantity.text.toString().toIntOrNull()?.let { it in 1..2 } == true &&
+                    avrQuantity.text.toString().toIntOrNull()?.let { it in 1..2 } == true &&
                     unitQuantity.text.toString().toIntOrNull()?.let { it in 1..2 } == true
         }
     }
@@ -136,17 +136,18 @@ class RoomLayout : AppCompatActivity() {
                 mouseID = mouseID.text.toString(),
                 keyboardID = keyboardID.text.toString(),
                 mousePadID = mousePadID.text.toString(),
-                AVRID = mousePadID.text.toString(),
+                avrID = avrID.text.toString(),
                 unitID = existingUnit?.unitID ?: unitID.text.toString(),
                 monitorQuantity = MonitorQuantity.text.toString().toIntOrNull() ?: 0,
                 mouseQuantity = MouseQuantity.text.toString().toIntOrNull() ?: 0,
                 keyboardQuantity = KeyboardQuantity.text.toString().toIntOrNull() ?: 0,
                 mousePadQuantity = mousePadQuantity.text.toString().toIntOrNull() ?: 0,
-                AVRQuantity = mousePadQuantity.text.toString().toIntOrNull() ?: 0,
+                avrQuantity = avrQuantity.text.toString().toIntOrNull() ?: 0,
                 unitQuantity = unitQuantity.text.toString().toIntOrNull() ?: 0
             )
         }
     }
+
     private fun saveUnitToFirebase(unit: UnitClass) {
         val roomId = intent.getStringExtra("ROOM_ID") ?: ""
 
@@ -203,13 +204,13 @@ class RoomLayout : AppCompatActivity() {
         dialogBinding.ListMouseID.text = unit.mouseID
         dialogBinding.ListKeyboardID.text = unit.keyboardID
         dialogBinding.ListMousePadID.text = unit.mousePadID
-        dialogBinding.ListAVRID.text = unit.AVRID
+        dialogBinding.ListAVRID.text = unit.avrID
         dialogBinding.ListUnitID.text = unit.unitID
         dialogBinding.MonitorQuantity.text = unit.monitorQuantity.toString()
         dialogBinding.MouseQuantity.text = unit.mouseQuantity.toString()
         dialogBinding.KeyboardQuantity.text = unit.keyboardQuantity.toString()
         dialogBinding.mousePadQuantity.text = unit.mousePadQuantity.toString()
-        dialogBinding.ListAVRQuantity.text = unit.AVRQuantity.toString()
+        dialogBinding.ListAvrQuantity.text = unit.avrQuantity.toString()
         dialogBinding.unitQuantity.text = unit.unitQuantity.toString()
 
         dialogBinding.ListMonitorID.isEnabled = false
@@ -222,7 +223,7 @@ class RoomLayout : AppCompatActivity() {
         dialogBinding.MouseQuantity.isEnabled = false
         dialogBinding.KeyboardQuantity.isEnabled = false
         dialogBinding.mousePadQuantity.isEnabled = false
-        dialogBinding.ListAVRQuantity.isEnabled = false
+        dialogBinding.ListAvrQuantity.isEnabled = false
         dialogBinding.unitQuantity.isEnabled = false
 
         val dialog = AlertDialog.Builder(this)
@@ -250,12 +251,12 @@ class RoomLayout : AppCompatActivity() {
         dialogBinding.editKeyboardID.setText(unit.keyboardID)
         dialogBinding.editMousePadID.setText(unit.mousePadID)
         dialogBinding.editUnitID.setText(unit.unitID)
-        dialogBinding.editAVRID.setText(unit.mousePadID)
+        dialogBinding.editAVRID.setText(unit.avrID)
         dialogBinding.editMonitorQuantity.setText(unit.monitorQuantity.toString())
         dialogBinding.editMouseQuantity.setText(unit.mouseQuantity.toString())
         dialogBinding.editKeyboardQuantity.setText(unit.keyboardQuantity.toString())
         dialogBinding.editMousePadQuantity.setText(unit.mousePadQuantity.toString())
-        dialogBinding.editAVRQuantity.setText(unit.AVRQuantity.toString())
+        dialogBinding.editAVRQuantity.setText(unit.avrQuantity.toString())
         dialogBinding.editUnitQuantity.setText(unit.unitQuantity?.toString())
 
         val dialog = AlertDialog.Builder(this)
@@ -299,7 +300,7 @@ class RoomLayout : AppCompatActivity() {
                                     editUnitQuantity.isEnabled = false
                                     editUnitQuantity.setTextColor(resources.getColor(android.R.color.darker_gray))
                                 }
-                                if (unit.AVRQuantity == 0) {
+                                if (unit.avrQuantity == 0) {
                                     editAVRQuantity.isEnabled = false
                                     editAVRQuantity.setTextColor(resources.getColor(android.R.color.darker_gray))
                                 }
@@ -313,24 +314,26 @@ class RoomLayout : AppCompatActivity() {
                                 mouseID = dialogBinding.editMouseID.text.toString(),
                                 keyboardID = dialogBinding.editKeyboardID.text.toString(),
                                 mousePadID = dialogBinding.editMousePadID.text.toString(),
-                                AVRID = dialogBinding.editAVRID.text.toString(),
+                                avrID = dialogBinding.editAVRID.text.toString(),
                                 unitID = unit.unitID,
                                 monitorQuantity = dialogBinding.editMonitorQuantity.text.toString().toIntOrNull() ?: 0,
                                 mouseQuantity = dialogBinding.editMouseQuantity.text.toString().toIntOrNull() ?: 0,
                                 keyboardQuantity = dialogBinding.editKeyboardQuantity.text.toString().toIntOrNull() ?: 0,
                                 mousePadQuantity = dialogBinding.editMousePadQuantity.text.toString().toIntOrNull() ?: 0,
-                                AVRQuantity = dialogBinding.editAVRQuantity.text.toString().toIntOrNull() ?: 0,
+                                avrQuantity = dialogBinding.editAVRQuantity.text.toString().toIntOrNull() ?: 0,
                                 unitQuantity = dialogBinding.editUnitQuantity.text.toString().toIntOrNull() ?: 0
                             )
 
                             updateUnitInFirebase(unit, updatedUnit)
                             dialog.dismiss()
 
-                            // Check if any quantity is 0 and show report dialog if needed
-                            if (updatedUnit.monitorQuantity == 0 || updatedUnit.mouseQuantity == 0 ||
-                                updatedUnit.keyboardQuantity == 0 || updatedUnit.mousePadQuantity == 0 ||
-                                updatedUnit.AVRQuantity == 0 ||
-                                updatedUnit.unitQuantity == 0) {
+                            // Only show report dialog if user is not admin and quantities are 0
+                            if (!isAdmin && (updatedUnit.monitorQuantity == 0 ||
+                                        updatedUnit.mouseQuantity == 0 ||
+                                        updatedUnit.keyboardQuantity == 0 ||
+                                        updatedUnit.mousePadQuantity == 0 ||
+                                        updatedUnit.avrQuantity == 0 ||
+                                        updatedUnit.unitQuantity == 0)) {
                                 val unitLabel = "Unit ${position + 1}"
                                 showReportDialog(updatedUnit, unitLabel)
                             }
@@ -350,22 +353,17 @@ class RoomLayout : AppCompatActivity() {
         dialog.show()
     }
 
-    // In your RoomLayout activity/fragment:
-    private fun showReportDialog(unit: UnitClass, unitLabel: String) {  // Add unitLabel parameter
+    private fun showReportDialog(unit: UnitClass, unitLabel: String) {
         val reportDialogBinding = DialogReportBinding.inflate(LayoutInflater.from(this))
         val reportDialog = AlertDialog.Builder(this)
             .setView(reportDialogBinding.root)
             .setTitle("Report Unit")
             .create()
 
-        // Get the room number from the Intent
         val roomNumber = intent.getStringExtra("ROOM_NAME") ?: "Unknown Room"
-
-        // Display room and unit name in the report dialog
         reportDialogBinding.textViewRoomNumber.text = roomNumber
-        reportDialogBinding.textViewUnitName.text = unitLabel  // Use the passed unitLabel
+        reportDialogBinding.textViewUnitName.text = unitLabel
 
-        // Rest of your dialog code remains the same
         setFieldVisibility(reportDialogBinding, unit)
 
         reportDialogBinding.btnSubmitReport.setOnClickListener {
@@ -419,8 +417,8 @@ class RoomLayout : AppCompatActivity() {
             reportDialogBinding.textViewUnitID.visibility = View.GONE
             reportDialogBinding.textViewUnit.visibility = View.GONE
         }
-        if (unit.AVRQuantity == null || unit.AVRQuantity == 0) {
-            reportDialogBinding.textViewAVRID.text = "${unit.AVRID}"
+        if (unit.avrQuantity == null || unit.avrQuantity == 0) {
+            reportDialogBinding.textViewAVRID.text = "${unit.avrID}"
             reportDialogBinding.textViewAVRID.visibility = View.VISIBLE
         } else {
             reportDialogBinding.textViewAVRID.visibility = View.GONE
@@ -433,9 +431,8 @@ class RoomLayout : AppCompatActivity() {
         val reportId = reportsRef.push().key ?: return
         val roomNumber = intent.getStringExtra("ROOM_NAME") ?: "Unknown Room"
 
-        // Get the position of the unit to create the proper unit name
         val unitPosition = unitList.indexOfFirst { it.unitID == unit.unitID }
-        val unitName = "Unit ${unitPosition + 1}"  // This creates the format "Unit X"
+        val unitName = "Unit ${unitPosition + 1}"
 
         val report = Report(
             unitID = unit.unitID,
@@ -443,25 +440,27 @@ class RoomLayout : AppCompatActivity() {
             mouseID = unit.mouseID,
             keyboardID = unit.keyboardID,
             mousePadID = unit.mousePadID,
-            AVRQuantity = unit.AVRQuantity,
+            avrQuantity = unit.avrQuantity,
             unitQuantity = unit.unitQuantity,
             monitorQuantity = unit.monitorQuantity,
             mouseQuantity = unit.mouseQuantity,
             keyboardQuantity = unit.keyboardQuantity,
             mousePadQuantity = unit.mousePadQuantity,
-            AVRID = unit.AVRID,
+            avrID = unit.avrID,
             roomNumber = roomNumber,
             reason = reason,
             timestamp = ServerValue.TIMESTAMP,
             unitName = unitName
         )
-        reportsRef.child(reportId).setValue(report).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(this, "Report submitted successfully", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Failed to submit report", Toast.LENGTH_SHORT).show()
+
+        reportsRef.child(reportId).setValue(report)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this, "Report submitted successfully", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Failed to submit report", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
     }
     private fun updateUnitInFirebase(oldUnit: UnitClass, updatedUnit: UnitClass) {
         val roomId = intent.getStringExtra("ROOM_ID") ?: ""
@@ -488,7 +487,7 @@ class RoomLayout : AppCompatActivity() {
                                         val hasZeroQuantity = updatedUnit.run {
                                             monitorQuantity == 0 || mouseQuantity == 0 ||
                                                     keyboardQuantity == 0 || mousePadQuantity == 0
-                                                    || AVRQuantity == 0 ||
+                                                    || avrQuantity == 0 ||
                                                     unitQuantity == 0
                                         }
                                         if (!hasZeroQuantity) {

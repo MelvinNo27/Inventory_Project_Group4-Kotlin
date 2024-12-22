@@ -131,7 +131,7 @@ class AdminDashboard : AppCompatActivity() {
             // Load avatar from Firebase storage or local storage (if available)
             val avatarUrl = currentUser.photoUrl?.toString()
             if (avatarUrl != null) {
-                Glide.with(this).load(avatarUrl).into(dialogBinding.profileAvatar) // Use Glide to load the image
+                Glide.with(this).load(avatarUrl).into(dialogBinding.profileAvatar)
             }
 
             val dialog = AlertDialog.Builder(this)
@@ -162,12 +162,18 @@ class AdminDashboard : AppCompatActivity() {
                 selectAvatarImage()
             }
 
+            // Add report button click listener
+            dialogBinding.forgotPasswordText.setOnClickListener {
+                val intent = Intent(this, ForgotPasswordActivity::class.java)
+                startActivity(intent)
+                dialog.dismiss() // Close the profile dialog
+            }
+
             dialog.show()
         } else {
             Toast.makeText(this, "No user is logged in", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun selectAvatarImage() {
         val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)

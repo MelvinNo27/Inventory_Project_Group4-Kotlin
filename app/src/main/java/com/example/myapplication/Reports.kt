@@ -129,7 +129,7 @@ class Reports : AppCompatActivity(), ReportAdapter.OnReportClickListener {
                 textViewUnitID.visibility = android.view.View.GONE
                 textViewUnit.visibility = android.view.View.GONE
             }
-            if (report.AVRQuantity != null && report.AVRQuantity == 0) {
+            if (report.avrQuantity != null && report.avrQuantity == 0) {
                 textViewAVRID.text = "${report.unitID} (Quantity: ${report.unitQuantity})"
                 textViewAVRID.visibility = android.view.View.VISIBLE
                 textViewUnit.visibility = android.view.View.VISIBLE
