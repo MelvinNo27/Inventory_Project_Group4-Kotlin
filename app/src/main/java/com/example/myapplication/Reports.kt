@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ReportAdminItemsBinding
 import com.example.myapplication.databinding.ReportDialogBinding
 import com.google.firebase.database.*
@@ -31,6 +33,8 @@ class Reports : AppCompatActivity(), ReportAdapter.OnReportClickListener {
         binding.recyclerViewReports.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewReports.adapter = adapter
 
+        setupSwipeToDelete()
+
         binding.ItemReportBack.setOnClickListener {
             startActivity(Intent(this, AdminDashboard::class.java))
             finish()
@@ -42,16 +46,69 @@ class Reports : AppCompatActivity(), ReportAdapter.OnReportClickListener {
         // Fetch and display reports
         fetchReportedUnits()
     }
+    private fun setupSwipeToDelete() {
+        val swipeHandler = object : ItemTouchHelper.SimpleCallback(
+            0, // No drag directions
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT // Swipe directions
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val report = reportList[position]
+
+                // Yes/No confirmation dialog
+                AlertDialog.Builder(this@Reports)
+                    .setTitle("Confirm Deletion")
+                    .setMessage("Do you want to delete this report?")
+                    .setPositiveButton("Yes") { _, _ ->
+                        // Delete from Firebase
+                        report.reportId?.let { reportId ->
+                            databaseReference.child(reportId).removeValue()
+                                .addOnSuccessListener {
+                                    // Remove from local list
+                                    reportList.removeAt(position)
+                                    adapter.notifyItemRemoved(position)
+                                    Toast.makeText(this@Reports, "Report deleted successfully", Toast.LENGTH_SHORT).show()
+
+                                    // Reload reports
+                                    fetchReportedUnits()
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(this@Reports, "Failed to delete report: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    adapter.notifyItemChanged(position)
+                                }
+                        } ?: run {
+                            Toast.makeText(this@Reports, "Report ID not found", Toast.LENGTH_SHORT).show()
+                            adapter.notifyItemChanged(position)
+                        }
+                    }
+                    .setNegativeButton("No") { _, _ ->
+                        // Reset the item position if deletion is canceled
+                        adapter.notifyItemChanged(position)
+                    }
+                    .show()
+            }
+        }
+
+        // Attach the swipe handler to the RecyclerView
+        ItemTouchHelper(swipeHandler).attachToRecyclerView(binding.recyclerViewReports)
+    }
 
     private fun fetchReportedUnits() {
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 reportList.clear()
                 for (data in snapshot.children) {
-                    // Get the report data and set the reportId from the Firebase key
                     val report = data.getValue(Report::class.java)
                     report?.let {
-                        it.reportId = data.key  // Set the reportId to Firebase's unique key
+                        it.reportId = data.key
                         reportList.add(it)
                     }
                 }

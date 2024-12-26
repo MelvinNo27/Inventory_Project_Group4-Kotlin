@@ -25,7 +25,8 @@ class AdminDashboard : AppCompatActivity() {
     private lateinit var binding: ActivityAdminBinding // ViewBinding instance
     private val handler = android.os.Handler()
     private lateinit var rootDatabaseRef: DatabaseReference
-
+    private lateinit var currentProfileDialog: AlertDialog
+    private lateinit var currentProfileBinding: ActivityProfileBinding
 
     private val updateDateTimeRunnable: Runnable = object : Runnable {
         override fun run() {
@@ -126,50 +127,50 @@ class AdminDashboard : AppCompatActivity() {
             val userEmail = currentUser.email ?: "No email"
             val userUid = currentUser.uid
 
-            val dialogBinding = ActivityProfileBinding.inflate(layoutInflater)
+            currentProfileBinding = ActivityProfileBinding.inflate(layoutInflater)
 
-            // Load avatar from Firebase storage or local storage (if available)
+            // Load existing avatar
             val avatarUrl = currentUser.photoUrl?.toString()
             if (avatarUrl != null) {
-                Glide.with(this).load(avatarUrl).into(dialogBinding.profileAvatar)
+                Glide.with(this)
+                    .load(avatarUrl)
+                    .error(R.drawable.avatar1) // Add a default avatar drawable
+                    .into(currentProfileBinding.profileAvatar)
             }
 
-            val dialog = AlertDialog.Builder(this)
+            currentProfileDialog = AlertDialog.Builder(this)
                 .setTitle("User Profile")
-                .setView(dialogBinding.root)
+                .setView(currentProfileBinding.root)
                 .setPositiveButton("Close") { dialogInterface, _ ->
                     dialogInterface.dismiss()
                 }
                 .create()
 
-            // Fetch the admin's name from the database
+            // Fetch admin's name
             rootDatabaseRef.child(userUid).child("name").get()
                 .addOnSuccessListener { snapshot ->
                     val adminName = snapshot.value as? String ?: "Unknown"
-                    dialogBinding.profileName.text = "Name: $adminName"
+                    currentProfileBinding.profileName.text = "Name: $adminName"
                 }
                 .addOnFailureListener { exception ->
                     Toast.makeText(this, "Failed to fetch user name: ${exception.message}", Toast.LENGTH_SHORT).show()
-                    dialogBinding.profileName.text = "Name: Error"
+                    currentProfileBinding.profileName.text = "Name: Error"
                 }
 
-            // Set other profile details
-            dialogBinding.profileEmail.text = "Email: $userEmail"
-            dialogBinding.profileUid.text = "UID: $userUid"
+            currentProfileBinding.profileEmail.text = "Email: $userEmail"
+            currentProfileBinding.profileUid.text = "UID: $userUid"
 
-            // Button to edit avatar
-            dialogBinding.editAvatarButton.setOnClickListener {
+            currentProfileBinding.editAvatarButton.setOnClickListener {
                 selectAvatarImage()
             }
 
-            // Add report button click listener
-            dialogBinding.forgotPasswordText.setOnClickListener {
+            currentProfileBinding.forgotPasswordText.setOnClickListener {
                 val intent = Intent(this, ForgotPasswordActivity::class.java)
                 startActivity(intent)
-                dialog.dismiss() // Close the profile dialog
+                currentProfileDialog.dismiss()
             }
 
-            dialog.show()
+            currentProfileDialog.show()
         } else {
             Toast.makeText(this, "No user is logged in", Toast.LENGTH_SHORT).show()
         }
@@ -184,23 +185,36 @@ class AdminDashboard : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == imagePickerRequestCode && resultCode == RESULT_OK && data != null) {
             val imageUri = data.data
+            // Show selected image immediately
+            Glide.with(this)
+                .load(imageUri)
+                .error(R.drawable.avatar1)
+                .into(currentProfileBinding.profileAvatar)
             uploadAvatarToFirebase(imageUri)
         }
     }
+
 
     private fun uploadAvatarToFirebase(imageUri: Uri?) {
         if (imageUri != null) {
             val user = FirebaseAuth.getInstance().currentUser
             val storageRef = FirebaseStorage.getInstance().reference.child("avatars/${user?.uid}.jpg")
+
+            // Show loading state
+            currentProfileBinding.editAvatarButton.isEnabled = false
+            currentProfileBinding.editAvatarButton.text = "Uploading..."
+
             val uploadTask = storageRef.putFile(imageUri)
 
             uploadTask.addOnSuccessListener { taskSnapshot ->
                 storageRef.downloadUrl.addOnSuccessListener { uri ->
-                    // Update the user's avatar URL in Firebase
                     updateUserProfileWithAvatar(uri.toString())
                 }
             }.addOnFailureListener { exception ->
                 Toast.makeText(this, "Avatar upload failed: ${exception.message}", Toast.LENGTH_SHORT).show()
+                // Reset button state
+                currentProfileBinding.editAvatarButton.isEnabled = true
+                currentProfileBinding.editAvatarButton.text = "Edit Avatar"
             }
         }
     }
@@ -213,29 +227,15 @@ class AdminDashboard : AppCompatActivity() {
 
         user?.updateProfile(profileUpdates)?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // Get dialogBinding after inflating the profile layout
-                val dialogBinding = ActivityProfileBinding.inflate(layoutInflater)
-
-                // Update the avatar ImageView in the profile dialog
-                Glide.with(this).load(avatarUrl).into(dialogBinding.profileAvatar)
-
                 Toast.makeText(this, "Avatar updated successfully", Toast.LENGTH_SHORT).show()
-
-                // Create and show the dialog with updated avatar
-                val dialog = AlertDialog.Builder(this)
-                    .setTitle("User Profile")
-                    .setView(dialogBinding.root)
-                    .setPositiveButton("Close") { dialogInterface, _ -> dialogInterface.dismiss() }
-                    .create()
-
-                dialog.show()
             } else {
                 Toast.makeText(this, "Error updating avatar", Toast.LENGTH_SHORT).show()
             }
+            // Reset button state
+            currentProfileBinding.editAvatarButton.isEnabled = true
+            currentProfileBinding.editAvatarButton.text = "Edit Avatar"
         }
     }
-
-
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(updateDateTimeRunnable) // Stop updating when the activity is destroyed

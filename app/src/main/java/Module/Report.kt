@@ -16,7 +16,7 @@ data class Report(
     val unitQuantity: Int = 0,
     val avrQuantity: Int = 0,
     val roomNumber: String = "",
-    var status: String = "Issue Noted",
+    var status: String = "Pending",
     val unitName: String? = null,
     var isComplete: Boolean = false,
     var isRepairInProcess: Boolean = false,

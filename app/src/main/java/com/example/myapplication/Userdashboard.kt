@@ -107,8 +107,8 @@ class Userdashboard : AppCompatActivity() {
             // Load avatar using Glide
             Glide.with(this)
                 .load(currentUser.photoUrl)
-                .placeholder(R.drawable.avatar)
-                .error(R.drawable.avatar)
+                .placeholder(R.drawable.avatar1)
+                .error(R.drawable.avatar1)
                 .into(dialogBinding.profileAvatar)
 
             // Fetch user name from the Realtime Database
@@ -148,7 +148,7 @@ class Userdashboard : AppCompatActivity() {
             dialogBinding.forgotPasswordText.setOnClickListener {
                 val intent = Intent(this, ForgotPasswordActivity::class.java)
                 startActivity(intent)
-                dialog.dismiss() // Close the profile dialog
+                dialog.dismiss()
             }
         } else {
             Toast.makeText(this, "No user is logged in", Toast.LENGTH_SHORT).show()
