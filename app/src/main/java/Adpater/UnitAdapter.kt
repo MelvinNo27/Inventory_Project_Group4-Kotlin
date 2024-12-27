@@ -42,7 +42,8 @@ class UnitAdapter(
                     unit.mouseQuantity == 0 ||
                     unit.keyboardQuantity == 0 ||
                     unit.mousePadQuantity == 0 ||
-                    unit.unitQuantity == 0
+                    unit.unitQuantity == 0||
+                    unit.avrQuantity == 0
 
             // Set the unit name with error sign if needed
             binding.unitName.text = if (hasEmptyQuantity) {
